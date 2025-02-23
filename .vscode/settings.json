@@ -1,0 +1,57 @@
+{
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "GitHub Light Monochrome Focused",
+    "editor.fontSize": 14,
+    "editor.fontFamily": "Menlo, 'monospace', monospace",
+    "terminal.integrated.fontSize": 14,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.detectIndentation": true,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "window.zoomLevel": 0,
+    "[markdown]": {
+        "editor.unicodeHighlight.ambiguousCharacters": false,
+        "editor.unicodeHighlight.invisibleCharacters": false,
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.fontWeight": "normal",
+        "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace",
+        "editor.fontSize": 14,
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        }
+    },
+    "markdown.preview.fontSize": 14,
+    "workbench.editorAssociations": {
+        //"*.md": "vscode.markdown.preview.editor"
+    },
+    "[dockerfile]": {
+        "editor.fontSize": 14,
+    },
+    "[dockercompose]": {
+        "editor.fontSize": 14,
+    },
+    "[python]": {
+        "editor.fontSize": 14,
+
+    },
+    "[json]": {
+        "editor.fontSize": 14,
+
+    },
+    "[yaml]": {
+        "editor.fontSize": 14,
+
+    },
+    "[go]": {
+        "editor.fontSize": 14,
+    },
+    "python.defaultInterpreterPath": "~/.venv/bin/python",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+}

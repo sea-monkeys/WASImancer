@@ -1,0 +1,61 @@
+{
+	"name": "WASImancer 🧙",
+
+	"dockerComposeFile": "compose.yml",
+	"service": "wasm-workspace",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"features": {
+		"git": "latest"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"vallyscode.crayons",
+				"ms-azuretools.vscode-docker",
+				"golang.go",
+				"Tobermory.es6-string-html",
+				"tamasfe.even-better-toml",
+				"hediet.vscode-drawio",
+				"aaron-bond.better-comments",
+				"PKief.material-icon-theme",
+				"PKief.material-product-icons",
+				"wayou.vscode-todo-highlight",
+				"rust-lang.rust-analyzer",
+				"bytecodealliance.wit-idl",
+				"AmirHA.better-comments-2",
+				"esbenp.prettier-vscode",
+				"irongeek.vscode-env",
+				"equinusocio.vsc-material-theme"
+			]
+		}
+	},
+    "remoteEnv": {
+		"KUBECONFIG": "/home/vscode/.kube/config"
+		//"OLLAMA_HOST": "http://host.docker.internal:11434"
+		//"OLLAMA_HOST": "http://ollama-service:11434"
+    },
+	"forwardPorts": [3000, 3001, 8080, 9090, 5173],
+   	"mounts": [
+        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/${localEnv:USER}/.ssh,type=bind,consistency=cached"
+    ],
+	"remoteUser": "${localEnv:USER}",
+	//"runArgs": [
+	//	"--network=host",
+	//	"-v", "/var/run/docker.sock:/var/run/docker.sock"
+	//],
+	// "features": {},
+	// "forwardPorts": [],
+
+	// Uncomment the next line if you want start specific services in your Docker Compose config.
+	// "runServices": [],
+
+	// Uncomment the next line if you want to keep your containers running after VS Code shuts down.
+	// "shutdownAction": "none",
+
+	// Run commands after the container is created.
+	//"postCreateCommand": "sudo chmod 666 /var/run/docker.sock"
+	"postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}; sudo chmod 666 /var/run/docker.sock"
+
+}

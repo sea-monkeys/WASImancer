@@ -1,0 +1,10 @@
+services:  
+  wasimancer-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - HTTP_PORT=3001
+    ports:
+      - 3001:3001
+
