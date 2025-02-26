@@ -25,12 +25,11 @@
 				"AmirHA.better-comments-2",
 				"esbenp.prettier-vscode",
 				"irongeek.vscode-env",
-				"equinusocio.vsc-material-theme"
 			]
 		}
 	},
     "remoteEnv": {
-		"KUBECONFIG": "/home/vscode/.kube/config"
+		//"KUBECONFIG": "/home/vscode/.kube/config"
 		//"OLLAMA_HOST": "http://host.docker.internal:11434"
 		//"OLLAMA_HOST": "http://ollama-service:11434"
     },

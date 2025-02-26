@@ -40,12 +40,15 @@ async function createTools() {
     console.log(`  Version: ${plugin.version}`);
     console.log(`  Description: ${plugin.description}`);
     
+    // TODO: add other plugin support, first the std wasi support of nodejs
     const wamPlugin = await createPlugin(plugin.path, {
       useWasi: true,
       logger: console,
       runInWorker: true,
       logLevel: 'trace',
+      allowedHosts: ['*'],
     });
+    //TODO: allowedHosts: it should be a parameter(s) in the plugins.yml file
     
     console.log('  🛠️ Functions:');
     await Promise.all(plugin.functions.map(async (funcSpecifications, funcIndex) => {

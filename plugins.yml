@@ -18,5 +18,12 @@ plugins:
       - displayName: 'multiply numbers'
         function: 'multiplyNumbers'
         description: 'a function to multiply numbers'
-
+  - name: 'detch'
+    path: './plugins/fetch/wasimancer-plugin-fetch.wasm'
+    version: '1.0.0'
+    description: 'fetch the content of a url'
+    functions:
+      - displayName: 'fetch'
+        function: 'fetch'
+        description: 'fetch the content of a url'
 
