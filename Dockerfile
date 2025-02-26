@@ -8,6 +8,7 @@ RUN npm install
 #COPY . .
 COPY index.js .
 COPY plugins.yml .
+
 COPY plugins ./plugins
 
 # Stage 2: Production stage

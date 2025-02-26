@@ -6,6 +6,10 @@ plugins:
     functions:
       - displayName: 'say hello'
         function: 'say_hello'
+        arguments: 
+          - name: 'name'
+            type: 'string'
+            description: 'name of the person'
         description: 'a function to say hello'
   - name: 'calc'
     path: './plugins/calc/wasimancer-plugin-calc.wasm'
@@ -14,16 +18,42 @@ plugins:
     functions:
       - displayName: 'add numbers'
         function: 'addNumbers'
+        arguments:
+          - name: 'a'
+            type: 'number'
+            description: 'first number'
+          - name: 'b'
+            type: 'number'
+            description: 'second number'
         description: 'a function to add numbers'
       - displayName: 'multiply numbers'
         function: 'multiplyNumbers'
+        arguments:
+          - name: 'a'
+            type: 'number'
+            description: 'first number'
+          - name: 'b'
+            type: 'number'
+            description: 'second number'
         description: 'a function to multiply numbers'
-  - name: 'detch'
+  - name: 'fetch'
     path: './plugins/fetch/wasimancer-plugin-fetch.wasm'
     version: '1.0.0'
     description: 'fetch the content of a url'
     functions:
       - displayName: 'fetch'
         function: 'fetch'
+        arguments:
+          - name: 'url'
+            type: 'string'
+            description: 'url to fetch'
         description: 'fetch the content of a url'
 
+# TODO: define the parameters for each plugin and then reflect them in the source code
+
+#server.tool("addition",
+#  { a: z.number(), b: z.number() },
+#  async ({ a, b }) => ({
+#    content: [{ type: "text", text: String(a + b) }]
+#  })
+#);

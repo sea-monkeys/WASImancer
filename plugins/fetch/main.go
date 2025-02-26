@@ -2,12 +2,15 @@ package main
 
 import (
 	"encoding/json"
+
 	"github.com/extism/go-pdk"
 )
+
 
 type Arguments struct {
 	Url string `json:"url"`
 }
+
 
 //export fetch
 func fetch() {

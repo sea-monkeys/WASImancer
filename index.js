@@ -17,8 +17,8 @@ function loadYamlFile(filePath) {
     return { pluginsYamlFile: null, error: e };
   }
 }
-
-const { pluginsYamlFile , error } = loadYamlFile('./plugins.yml');
+// use an envronment variable to set the plugins.yml file path
+const { pluginsYamlFile, error } = loadYamlFile('./plugins.yml');
 if (error) {
   console.log("😡:", error);
   process.exit(1);
@@ -30,6 +30,24 @@ const server = new McpServer({
   version: "0.0.0",
 });
 
+// Helper to create Zod schema based on argument type
+function createZodSchema(argType) {
+  switch(argType.toLowerCase()) {
+    case 'string':
+      return z.string();
+    case 'number':
+      return z.number();
+    case 'boolean':
+      return z.boolean();
+    case 'object':
+      return z.record(z.any());
+    case 'array':
+      return z.array(z.any());
+    default:
+      return z.any();
+  }
+}
+
 async function createTools() {
   console.log("🤖 browse wasm plugins and create tools...");
   
@@ -40,7 +58,7 @@ async function createTools() {
     console.log(`  Version: ${plugin.version}`);
     console.log(`  Description: ${plugin.description}`);
     
-    // TODO: add other plugin support, first the std wasi support of nodejs
+    // Create plugin instance
     const wamPlugin = await createPlugin(plugin.path, {
       useWasi: true,
       logger: console,
@@ -51,19 +69,49 @@ async function createTools() {
     //TODO: allowedHosts: it should be a parameter(s) in the plugins.yml file
     
     console.log('  🛠️ Functions:');
-    await Promise.all(plugin.functions.map(async (funcSpecifications, funcIndex) => {
-      console.log(`    ${funcIndex + 1}. ${funcSpecifications.displayName}/${funcSpecifications.function}: ${funcSpecifications.description}`);
-  
-      server.tool(funcSpecifications.displayName, 
-        { 
-          params: z.string() 
-        }, 
-        async ({ params }) => {
-          let out = await wamPlugin.call(funcSpecifications.function, params);
-          return {
-            content: [{ type: "text", text: out.text() }],
-          };
+    await Promise.all(plugin.functions.map(async (funcSpec, funcIndex) => {
+      console.log(`    ${funcIndex + 1}. ${funcSpec.displayName}/${funcSpec.function}: ${funcSpec.description}`);
+      
+      // Handle different function configurations
+      if (funcSpec.arguments && funcSpec.arguments.length > 0) {
+        // Log argument details
+        console.log(`      Arguments:`);
+        funcSpec.arguments.forEach(arg => {
+          console.log(`        - ${arg.name} (${arg.type}): ${arg.description}`);
         });
+        
+        // Create schema object directly
+        const schemaObj = {};
+        funcSpec.arguments.forEach(arg => {
+          schemaObj[arg.name] = createZodSchema(arg.type);
+        });
+        
+        // Register the tool with direct argument mapping
+        server.tool(
+          funcSpec.displayName,
+          schemaObj,
+          async (args) => {
+            // Convert args to JSON string for WASM function
+            const inputData = JSON.stringify(args);
+            let out = await wamPlugin.call(funcSpec.function, inputData);
+            return {
+              content: [{ type: "text", text: out.text() }],
+            };
+          }
+        );
+      } else {
+        // Legacy format without arguments - use string param
+        server.tool(
+          funcSpec.displayName,
+          { params: z.string() },
+          async ({ params }) => {
+            let out = await wamPlugin.call(funcSpec.function, params);
+            return {
+              content: [{ type: "text", text: out.text() }],
+            };
+          }
+        );
+      }
     }));
     console.log(`  ✅ Plugin ${plugin.name} loaded with ${plugin.functions.length} functions`);
   }
