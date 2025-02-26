@@ -48,12 +48,3 @@ plugins:
             type: 'string'
             description: 'url to fetch'
         description: 'fetch the content of a url'
-
-# TODO: define the parameters for each plugin and then reflect them in the source code
-
-#server.tool("addition",
-#  { a: z.number(), b: z.number() },
-#  async ({ a, b }) => ({
-#    content: [{ type: "text", text: String(a + b) }]
-#  })
-#);
