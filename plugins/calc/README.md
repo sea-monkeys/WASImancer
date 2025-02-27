@@ -2,7 +2,7 @@
 
 **Build**:
 ```bash
-docker run --rm -v "$PWD":/src -w /src tinygo-builder \
+docker run --rm -v "$PWD":/src -w /src k33g/tinygo-builder:preview \
   tinygo build -scheduler=none --no-debug \
   -o wasimancer-plugin-calc.wasm \
   -target wasi main.go
@@ -10,7 +10,7 @@ docker run --rm -v "$PWD":/src -w /src tinygo-builder \
 
 **Run**:
 ```bash
-docker run --rm -v "$PWD":/app -w /app tinygo-builder \
+docker run --rm -v "$PWD":/app -w /app k33g/tinygo-builder:preview \
   extism call wasimancer-plugin-calc.wasm addNumbers \
   --input '{"a":12,"b":30}' \
   --log-level "info" \
@@ -18,7 +18,7 @@ docker run --rm -v "$PWD":/app -w /app tinygo-builder \
 ```
 
 ```bash
-docker run --rm -v "$PWD":/app -w /app tinygo-builder \
+docker run --rm -v "$PWD":/app -w /app k33g/tinygo-builder:preview \
   extism call wasimancer-plugin-calc.wasm multiplyNumbers \
   --input '{"a":12,"b":30}' \
   --log-level "info" \

@@ -1,3 +1,11 @@
+variable "REPO" {
+  default = "k33g"
+}
+
+variable "TAG" {
+  default = "preview"
+}
+
 variable "GO_VERSION" {
   default = "1.23.0"
 }
@@ -14,6 +22,10 @@ variable "USER_NAME" {
   default = "tinygo-builder"
 }
 
+group "default" {
+  targets = ["tinygo-builder"]
+}
+
 target "tinygo-builder" {
   context = "."
   dockerfile = "Dockerfile"
@@ -23,5 +35,11 @@ target "tinygo-builder" {
     EXTISM_VERSION = EXTISM_VERSION
     USER_NAME = USER_NAME
   }
-  tags = ["tinygo-builder:latest"]
+  platforms = [
+    "linux/amd64",
+    "linux/arm64"
+  ]
+  tags = ["${REPO}/tinygo-builder:${TAG}"]
 }
+
+# docker buildx bake --push tinygo-builder
