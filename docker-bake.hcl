@@ -1,0 +1,22 @@
+variable "REPO" {
+  default = "k33g"
+}
+
+variable "TAG" {
+  default = "preview"
+}
+
+group "default" {
+  targets = ["wasimancer"]
+}
+
+target "wasimancer" {
+  context = "."
+  platforms = [
+    "linux/amd64",
+    "linux/arm64"
+  ]
+  tags = ["${REPO}/wasimancer:${TAG}"]
+}
+
+# docker buildx bake --push --file docker-bake.hcl
