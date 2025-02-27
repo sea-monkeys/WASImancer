@@ -33,10 +33,10 @@ npx @modelcontextprotocol/inspector
 ## Start Docker distribution of WASImancer
 
 ```bash
-docker run -d --rm -p 3001:3001 \
+docker run --rm -p 3001:3001 \
   -e HTTP_PORT=3001 \
   -e PLUGINS_PATH=./plugins \
   -e PLUGINS_DEFINITION_FILE=plugins.yml \
-  -v "$(pwd)":/app/ \
+  -v "$(pwd)/plugins":/app/plugins \
   k33g/wasimancer:preview 
 ```
