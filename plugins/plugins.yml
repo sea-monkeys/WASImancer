@@ -1,6 +1,6 @@
 plugins:
   - name: 'hello'
-    path: './plugins/hello/wasimancer-plugin-hello.wasm'
+    path: '/hello/wasimancer-plugin-hello.wasm'
     version: '1.0.0'
     description: 'hello greetings'
     functions:
@@ -12,7 +12,7 @@ plugins:
             description: 'name of the person'
         description: 'a function to say hello'
   - name: 'calc'
-    path: './plugins/calc/wasimancer-plugin-calc.wasm'
+    path: '/calc/wasimancer-plugin-calc.wasm'
     version: '1.0.0'
     description: 'calculator'
     functions:
@@ -37,7 +37,7 @@ plugins:
             description: 'second number'
         description: 'a function to multiply numbers'
   - name: 'fetch'
-    path: './plugins/fetch/wasimancer-plugin-fetch.wasm'
+    path: '/fetch/wasimancer-plugin-fetch.wasm'
     version: '1.0.0'
     description: 'fetch the content of a url'
     functions:

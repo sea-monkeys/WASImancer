@@ -5,9 +5,10 @@ services:
       dockerfile: Dockerfile
     environment:
       - HTTP_PORT=3001
+      - PLUGINS_PATH=./plugins
+      - PLUGINS_DEFINITION_FILE=plugins.yml
     ports:
       - 3001:3001
     volumes:
-      #- ./plugins:/app/plugins
-      - ${localWorkspaceFolder}/plugins:/app/plugins
+      - ./:/app/
 

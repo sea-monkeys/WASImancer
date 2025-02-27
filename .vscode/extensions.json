@@ -9,5 +9,6 @@
       "irongeek.vscode-env",
       "hediet.vscode-drawio",
       "esbenp.prettier-vscode",
+      "hashicorp.hcl",
     ]
 }

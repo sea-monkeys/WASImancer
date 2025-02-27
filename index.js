@@ -18,15 +18,14 @@ function loadYamlFile(filePath) {
   }
 }
 
+let pluginsPath = process.env.PLUGINS_PATH || "./plugins";
+let pluginsDefinitionFile = process.env.PLUGINS_DEFINITION_FILE || "plugins.yml";
 
-
-// use an envronment variable to set the plugins.yml file path
-const { pluginsYamlFile, error } = loadYamlFile('./plugins.yml');
+const { pluginsYamlFile, error } = loadYamlFile(`${pluginsPath}/${pluginsDefinitionFile}`);
 if (error) {
   console.log("😡:", error);
   process.exit(1);
 }
-//console.log(pluginsYamlFile);
 
 const server = new McpServer({
   name: "wasimancer-server",
@@ -62,7 +61,7 @@ async function createTools() {
     console.log(`  Description: ${plugin.description}`);
     
     // Create plugin instance
-    const wamPlugin = await createPlugin(plugin.path, {
+    const wamPlugin = await createPlugin(`${pluginsPath}/${plugin.path}`, {
       useWasi: true,
       logger: console,
       runInWorker: true,

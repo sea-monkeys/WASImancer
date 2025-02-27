@@ -25,6 +25,7 @@
 				"AmirHA.better-comments-2",
 				"esbenp.prettier-vscode",
 				"irongeek.vscode-env",
+				"hashicorp.hcl"
 			]
 		}
 	},

@@ -1,1 +1,3 @@
-# WASImancer
+# WASImancer plugins
+
+
