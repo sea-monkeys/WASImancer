@@ -17,6 +17,9 @@ function loadYamlFile(filePath) {
     return { pluginsYamlFile: null, error: e };
   }
 }
+
+
+
 // use an envronment variable to set the plugins.yml file path
 const { pluginsYamlFile, error } = loadYamlFile('./plugins.yml');
 if (error) {
