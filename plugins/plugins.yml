@@ -16,7 +16,7 @@ plugins:
     version: '1.0.0'
     description: 'calculator'
     functions:
-      - displayName: 'add numbers'
+      - displayName: 'add'
         function: 'addNumbers'
         arguments:
           - name: 'a'
@@ -26,7 +26,7 @@ plugins:
             type: 'number'
             description: 'second number'
         description: 'a function to add numbers'
-      - displayName: 'multiply numbers'
+      - displayName: 'multiply'
         function: 'multiplyNumbers'
         arguments:
           - name: 'a'
@@ -48,3 +48,20 @@ plugins:
             type: 'string'
             description: 'url to fetch'
         description: 'fetch the content of a url'
+
+  - name: 'roll dice'
+    path: '/roll-dice/wasimancer-plugin-roll-dice.wasm'
+    version: '1.0.0'
+    description: 'roll dice'
+    functions:
+      - displayName: 'rollDice'
+        function: 'rollDice'
+        arguments:
+          - name: 'numFaces'
+            type: 'number'
+            description: 'number of faces on the dice'
+          - name: 'numDice'
+            type: 'number'
+            description: 'number of dice to roll'
+        description: 'a function to roll dice'
+ 
