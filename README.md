@@ -20,7 +20,7 @@ node index.js
 
 Or:
 ```bash
-docker compose up
+docker compose --file compose.dev.yml up --build
 ```
 
 ## You can use the [Inspector project](https://github.com/modelcontextprotocol/inspector) to test WASImancer
@@ -38,5 +38,31 @@ docker run --rm -p 3001:3001 \
   -e PLUGINS_PATH=./plugins \
   -e PLUGINS_DEFINITION_FILE=plugins.yml \
   -v "$(pwd)/plugins":/app/plugins \
+  -e RESOURCES_PATH=./resources \
+  -e RESOURCES_DEFINITION_FILE=resources.yml \
+  -v "$(pwd)/resources":/app/resources \
   k33g/wasimancer:preview 
+```
+
+Or with Docker Compose:
+
+```yaml
+services:  
+  wasimancer-server:
+    image: k33g/wasimancer:preview
+    environment:
+      - HTTP_PORT=3001
+      - PLUGINS_PATH=./plugins
+      - PLUGINS_DEFINITION_FILE=plugins.yml
+      - RESOURCES_PATH=./resources
+      - RESOURCES_DEFINITION_FILE=resources.yml
+    ports:
+      - 3001:3001
+    volumes:
+      - ./resources:/app/resources
+      - ./plugins:/app/plugins
+```
+
+```bash
+docker compose up
 ```

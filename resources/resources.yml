@@ -1,0 +1,16 @@
+resources:
+  static:
+    - name: server-info
+      uri: config://server
+      contents:
+        - text: 🚀 This is WASImancer [preview], running on MCP!
+
+    - name: k33g-org-info
+      uri: info://k33g-org
+      contents:
+        - text: First name and Last name
+          firstName: Philippe 
+          lastName: Charrière
+        - text: 🎉 tada!
+
+

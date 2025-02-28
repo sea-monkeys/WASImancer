@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN npm install
-COPY index.js .
+COPY *.js .
 
 # Stage 2: Production stage
 FROM gcr.io/distroless/nodejs20-debian12
