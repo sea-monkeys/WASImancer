@@ -8,7 +8,7 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04-arm #ubuntu-latest
 
     steps:
       # Step 1: Checkout the code
@@ -31,24 +31,8 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       # Step 6: Build and push plugin builder image
-      #- name: 🐳 Build and push plugin builder image
-      #  run: docker buildx bake --file ./docker-bake-wasm.hcl --push
-
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ./wasm-builder.Dockerfile
-          push: true
-          platforms: linux/arm64,linux/amd64
-          build-args: |
-            GO_VERSION=1.23.0
-            TINYGO_VERSION=0.35.0
-            EXTISM_VERSION=1.6.2
-            USER_NAME=wasm-builder
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/wasm-builder:preview
+      - name: 🐳 Build and push plugin builder image
+        run: docker buildx bake --file ./docker-bake-wasm.hcl --push
 
       # Step 5: Build and push using Docker Bake
       - name: 🐳 Build and push WASImancer MCP server image
