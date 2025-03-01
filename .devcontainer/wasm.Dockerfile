@@ -100,7 +100,7 @@ wget https://github.com/extism/cli/releases/download/v${EXTISM_VERSION}/extism-v
 tar -xf extism-v${EXTISM_VERSION}-linux-${TARGETARCH}.tar.gz -C /usr/bin
 rm extism-v${EXTISM_VERSION}-linux-${TARGETARCH}.tar.gz
   
-extism --version
+#extism --version
 EOF
 
 # ------------------------------------

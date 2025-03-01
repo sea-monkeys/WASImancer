@@ -19,16 +19,16 @@ variable "EXTISM_VERSION" {
 }
 
 variable "USER_NAME" {
-  default = "tinygo-builder"
+  default = "wasm-builder"
 }
 
 group "default" {
-  targets = ["tinygo-builder"]
+  targets = ["wasm-builder"]
 }
 
-target "tinygo-builder" {
+target "wasm-builder" {
   context = "."
-  dockerfile = "Dockerfile"
+  dockerfile = "wasm-builder.Dockerfile"
   args = {
     GO_VERSION = GO_VERSION
     TINYGO_VERSION = TINYGO_VERSION
@@ -39,7 +39,8 @@ target "tinygo-builder" {
     "linux/amd64",
     "linux/arm64"
   ]
-  tags = ["${REPO}/tinygo-builder:${TAG}"]
+  tags = ["${REPO}/wasm-builder:${TAG}"]
 }
 
-# docker buildx bake --push tinygo-builder
+# docker buildx bake --push --file docker-bake-wasm.hcl
+# docker buildx bake --file docker-bake-wasm.hcl

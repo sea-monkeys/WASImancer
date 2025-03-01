@@ -30,13 +30,6 @@ jobs:
       - name: 🐳 Build and push WASImancer MCP server image
         run: docker buildx bake --file ./docker-bake.hcl --push
 
-      # Step 5: Build and push Tinygo plugin builder image
-      - name: 🐳 Build and push Tinygo plugin builder image
-        working-directory: ./builders/tinygo
-        run: docker buildx bake --file ./docker-bake.hcl --push
-
-      # Step 6: Build and push Rust plugin builder image
-      - name: 🦀 Build and push Rust plugin builder image
-        working-directory: ./builders/rust
-        run: docker buildx bake --file ./docker-bake.hcl --push
-        
+      # Step 5: Build and push plugin builder image
+      - name: 🐳 Build and push plugin builder image
+        run: docker buildx bake --file ./docker-bake-wasm.hcl --push

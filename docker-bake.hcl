@@ -20,3 +20,4 @@ target "wasimancer" {
 }
 
 # docker buildx bake --push --file docker-bake.hcl
+# docker buildx bake --file docker-bake.hcl
