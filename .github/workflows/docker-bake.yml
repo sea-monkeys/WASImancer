@@ -35,6 +35,17 @@ jobs:
         run: docker buildx bake --file ./docker-bake.hcl --push
 
       # Step 6: Build and push plugin builder image
-      - name: 🐳 Build and push plugin builder image
-        run: docker buildx bake --file ./docker-bake-wasm.hcl --push
+      #- name: 🐳 Build and push plugin builder image
+      #  run: docker buildx bake --file ./docker-bake-wasm.hcl --push
 
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./docker-bake-wasm.hcl
+          push: true
+          platforms: "linux/arm64,linux/amd64"
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/wasm-builder:preview
+            #${{ secrets.DOCKER_USERNAME }}/wasm-builder:latest
