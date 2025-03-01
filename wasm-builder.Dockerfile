@@ -116,7 +116,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 export RUSTUP_HOME=~/.rustup
 export CARGO_HOME=~/.cargo
 export PATH=$PATH:$CARGO_HOME/bin
-curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+#curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 EOF
 
 ENV PATH="/home/${USER_NAME}/.cargo/bin:$PATH"
@@ -125,9 +125,6 @@ ENV PATH="/home/${USER_NAME}/.cargo/bin:$PATH"
 # Install wasm-tools
 # ------------------------------------
 RUN <<EOF
-#cargo install --locked wasm-tools
-#cargo install wit-bindgen-cli
-#cargo install cargo-component
 rustup target add wasm32-wasip1
 rustup target add wasm32-unknown-unknown
 EOF
