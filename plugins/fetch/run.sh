@@ -1,6 +1,6 @@
 #!/bin/bash
 extism call wasimancer-plugin-fetch.wasm fetch \
-  --input "https://modelcontextprotocol.io/introduction" \
+  --input '{"url": "https://modelcontextprotocol.io/introduction"}' \
   --allow-host "*" \
   --log-level "info" \
   --wasi

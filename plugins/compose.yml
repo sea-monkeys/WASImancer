@@ -1,9 +1,24 @@
 services:  
+
+  build-plugin-addition:
+    image: k33g/wasm-builder:preview
+    volumes:
+      - ./addition:/addition
+    working_dir: /addition
+    command: >
+      bash -c "
+        cargo clean && \
+        cargo install cargo-cache && \
+        cargo cache -a && \
+        cargo build --release && \
+        cp target/wasm32-unknown-unknown/release/wasimancer_plugin_addition.wasm ./wasimancer_plugin_addition.wasm
+      "
+
   build-plugin-roll-dice:
     image: k33g/wasm-builder:preview
     volumes:
-      - ./roll-dice:/src
-    working_dir: /src
+      - ./roll-dice:/roll-dice
+    working_dir: /roll-dice
     command: >
       tinygo build -scheduler=none --no-debug
       -o wasimancer-plugin-roll-dice.wasm
@@ -12,8 +27,8 @@ services:
   build-plugin-calc:
     image: k33g/wasm-builder:preview
     volumes:
-      - ./calc:/src
-    working_dir: /src
+      - ./calc:/calc
+    working_dir: /calc
     command: >
       tinygo build -scheduler=none --no-debug
       -o wasimancer-plugin-calc.wasm
@@ -22,8 +37,8 @@ services:
   build-plugin-fetch:
     image: k33g/wasm-builder:preview
     volumes:
-      - ./fetch:/src
-    working_dir: /src
+      - ./fetch:/fetch
+    working_dir: /fetch
     command: >
       tinygo build -scheduler=none --no-debug
       -o wasimancer-plugin-fetch.wasm
@@ -32,9 +47,10 @@ services:
   build-plugin-hello:
     image: k33g/wasm-builder:preview
     volumes:
-      - ./hello:/src
-    working_dir: /src
+      - ./hello:/hello
+    working_dir: /hello
     command: >
       tinygo build -scheduler=none --no-debug
       -o wasimancer-plugin-hello.wasm
       -target wasi main.go
+

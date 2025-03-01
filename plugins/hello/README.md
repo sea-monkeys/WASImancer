@@ -14,3 +14,23 @@ extism call wasimancer-plugin-hello.wasm say_hello \
   --log-level "info" \
   --wasi
 ```
+
+## Build with Docker
+
+```bash
+docker run --rm -v "$PWD":/hello -w /hello k33g/wasm-builder:preview \
+  tinygo build -scheduler=none --no-debug \
+    -o wasimancer-plugin-hello.wasm \
+    -target wasi main.go
+```
+
+## Run with Docker
+
+```bash
+docker run --rm -v "$PWD":/hello -w /hello k33g/wasm-builder:preview \
+  extism call wasimancer-plugin-hello.wasm say_hello \
+  --input "Bob Morane" \
+  --log-level "info" \
+  --wasi
+```
+

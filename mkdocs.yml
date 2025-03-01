@@ -1,0 +1,36 @@
+# Serve the website: docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material
+# Build the website: docker run --rm -it -v ${PWD}:/docs squidfunk/mkdocs-material build
+
+site_name: WASImamcer
+site_url: https://sea-monkeys.github.io/wasimancer/
+site_author: Philippe Charrière (@k33g)
+site_description: >-
+  🧙🏻‍♂️ WASImancer is a WebAssembly-Powered MCP SSE Server.
+# Repository
+repo_name: sea-monkeys/wasimancer
+repo_url: https://github.com/sea-monkeys/wasimancer
+
+# Copyright
+copyright: Copyright &copy; 2024 - 2025 Philippe Charrière
+
+nav:
+    - 🏠 Home: index.md
+
+theme:
+  name: material
+  palette:
+    primary: black
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - pymdownx.highlight:
+      use_pygments: true
+      auto_title: false
+      linenums: true
+      anchor_linenums: true
+  - pymdownx.superfences
