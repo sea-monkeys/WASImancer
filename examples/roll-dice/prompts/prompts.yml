@@ -1,0 +1,13 @@
+prompts:
+  predefined:
+    - name: roll-dice
+      arguments:
+        - name: numFaces
+          type: string
+        - name: numDice
+          type: string
+      messages:
+        - text: 🎲 Rolling ${numDice} dice(s) with ${numFaces} faces...
+          role: user
+
+

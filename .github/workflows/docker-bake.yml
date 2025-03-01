@@ -39,3 +39,10 @@ jobs:
         with:
           files: ./builders/tinygo/docker-bake.hcl
           push: true
+
+      # Step 6: Build and push using Docker Bake
+      - name: 🦀 Build and push Rust plugin builder image
+        uses: docker/bake-action@v6
+        with:
+          files: ./builders/rust/docker-bake.hcl
+          push: true

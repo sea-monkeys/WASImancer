@@ -1,0 +1,18 @@
+plugins:
+
+  - name: roll dice
+    path: wasimancer-plugin-roll-dice.wasm
+    version: 1.0.0
+    description: roll dice
+    functions:
+      - displayName: rollDice
+        function: rollDice
+        arguments:
+          - name: numFaces
+            type: number
+            description: number of faces on the dice
+          - name: numDice
+            type: number
+            description: number of dice to roll
+        description: a function to roll dice
+ 
