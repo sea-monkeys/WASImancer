@@ -43,9 +43,6 @@ apt-get autoremove --yes
 rm -rf /var/lib/{apt,dpkg,cache,log}/
 EOF
 
-RUN rm -f /etc/resolv.conf && ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
-RUN ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf || true
-
 # ------------------------------------
 # Install Go
 # ------------------------------------
@@ -64,13 +61,6 @@ ENV PATH="/usr/local/go/bin:${PATH}"
 ENV GOPATH="/home/${USER_NAME}/go"
 ENV GOROOT="/usr/local/go"
 
-#RUN <<EOF
-#go version
-#go install -v golang.org/x/tools/gopls@latest
-#go install -v github.com/ramya-rao-a/go-outline@latest
-#go install -v github.com/stamblerre/gocode@v1.0.0
-#go install -v github.com/mgechev/revive@v1.3.2
-#EOF
 
 # ------------------------------------
 # Install TinyGo
@@ -135,9 +125,9 @@ ENV PATH="/home/${USER_NAME}/.cargo/bin:$PATH"
 # Install wasm-tools
 # ------------------------------------
 RUN <<EOF
-cargo install --locked wasm-tools
-cargo install wit-bindgen-cli
-cargo install cargo-component
+#cargo install --locked wasm-tools
+#cargo install wit-bindgen-cli
+#cargo install cargo-component
 rustup target add wasm32-wasip1
 rustup target add wasm32-unknown-unknown
 EOF
