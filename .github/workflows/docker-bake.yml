@@ -46,5 +46,10 @@ jobs:
           file: ./wasm-builder.Dockerfile
           push: true
           platforms: "linux/arm64,linux/amd64"
+          build-args: |
+            GO_VERSION=1.23.0
+            TINYGO_VERSION=0.35.0
+            EXTISM_VERSION=1.6.2
+            USER_NAME=wasm-builder
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/wasm-builder:preview
