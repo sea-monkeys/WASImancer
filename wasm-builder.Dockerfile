@@ -14,17 +14,17 @@ ARG USER_NAME=${USER_NAME}
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Add this at the beginning of your Dockerfile
-RUN apt-get update && \
-    apt-get install -y locales && \
-    locale-gen en_US.UTF-8 && \
-    update-locale LANG=en_US.UTF-8
+#RUN apt-get update && \
+#    apt-get install -y locales && \
+#    locale-gen en_US.UTF-8 && \
+#    update-locale LANG=en_US.UTF-8
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+#ENV LANG en_US.UTF-8
+#ENV LANGUAGE en_US:en
+#ENV LC_ALL en_US.UTF-8
 
-#ENV LANG=en_US.UTF-8
-#ENV LANGUAGE=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
 ENV LC_COLLATE=C
 ENV LC_CTYPE=en_US.UTF-8
 
@@ -77,6 +77,10 @@ EOF
 # Install Extism CLI
 # ------------------------------------
 RUN <<EOF
+# hack because of the multi architecture build on GitHub Actions
+if [ "${TARGETARCH}" = "arm64" ]; then
+  TARGETARCH="amd64"
+fi
 wget https://github.com/extism/cli/releases/download/v${EXTISM_VERSION}/extism-v${EXTISM_VERSION}-linux-${TARGETARCH}.tar.gz
   
 tar -xf extism-v${EXTISM_VERSION}-linux-${TARGETARCH}.tar.gz -C /usr/bin
