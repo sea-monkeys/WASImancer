@@ -64,6 +64,10 @@ ENV GOROOT="/usr/local/go"
 # Install TinyGo
 # ------------------------------------
 RUN <<EOF
+# hack because of the multi architecture build on GitHub Actions
+if [ "${TARGETARCH}" = "arm64" ]; then
+  TARGETARCH="amd64"
+fi
 wget https://github.com/tinygo-org/tinygo/releases/download/v${TINYGO_VERSION}/tinygo_${TINYGO_VERSION}_${TARGETARCH}.deb
 dpkg -i tinygo_${TINYGO_VERSION}_${TARGETARCH}.deb
 rm tinygo_${TINYGO_VERSION}_${TARGETARCH}.deb
