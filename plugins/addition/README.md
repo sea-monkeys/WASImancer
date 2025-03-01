@@ -11,6 +11,7 @@ docker run --rm -v "$PWD":/src -w /src k33g/rust-builder:preview \
 ```
 
 docker run -it --rm -v $(pwd):/work k33g/rust-builder:preview 
+docker run -it --rm k33g/rust-builder:preview 
 docker run -it --rm -v $(pwd):/work k33g/tinygo-builder:preview 
 
 

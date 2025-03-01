@@ -28,21 +28,15 @@ jobs:
 
       # Step 4: Build and push using Docker Bake
       - name: 🐳 Build and push WASImancer MCP server image
-        uses: docker/bake-action@v6
-        with:
-          files: ./docker-bake.hcl
-          push: true
+        run: docker buildx bake --file ./docker-bake.hcl --push
 
-      # Step 5: Build and push using Docker Bake
+      # Step 5: Build and push Tinygo plugin builder image
       - name: 🐳 Build and push Tinygo plugin builder image
-        uses: docker/bake-action@v6
-        with:
-          files: ./builders/tinygo/docker-bake.hcl
-          push: true
+        working-directory: ./builders/tinygo
+        run: docker buildx bake --file ./docker-bake.hcl --push
 
-      # Step 6: Build and push using Docker Bake
+      # Step 6: Build and push Rust plugin builder image
       - name: 🦀 Build and push Rust plugin builder image
-        uses: docker/bake-action@v6
-        with:
-          files: ./builders/rust/docker-bake.hcl
-          push: true
+        working-directory: ./builders/rust
+        run: docker buildx bake --file ./docker-bake.hcl --push
+        
