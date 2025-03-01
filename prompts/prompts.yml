@@ -1,0 +1,25 @@
+prompts:
+  predefined:
+    - name: 'greet-user'
+      arguments:
+        - name: 'nickName'
+          type: 'string'
+      messages:
+        - text: 'Say hello to ${nickName}!'
+          role: 'user'
+
+    - name: 'code-analyst'
+      arguments:
+        - name: 'botName'
+          type: 'string'
+        - name: 'code'
+          type: 'string'
+      messages:
+        - text: 'My name is ${botName}. I am an expert in analyzing code.'
+          role: 'assistant'
+        - text: 'Analyze my source code: ${code}'
+          role: 'user'
+
+# TODO: investigate why I cannot add a message with a role 'system'
+
+  with-completion: # 🚧 work in progress

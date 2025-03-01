@@ -1,10 +1,17 @@
 import { createZodSchema } from './zod-utils.js';
 import createPlugin from '@extism/extism';
 
-export async function createTools(server, pluginsPath, pluginsYamlFile) {
+/**
+ * 
+ * @param {Object} server - The server object to register plugins with
+ * @param {string} pluginsPath - Path to the plugins directory
+ * @param {Object} pluginsData - The plugins data object containing plugin definitions
+ */
+
+export async function createTools(server, pluginsPath, pluginsData) {
   console.log("🤖 browse wasm plugins and create tools...");
   
-  for (const [pluginIndex, plugin] of pluginsYamlFile.plugins.entries()) {
+  for (const [pluginIndex, plugin] of pluginsData.plugins.entries()) {
     console.log(`\n🔌 Plugin ${pluginIndex + 1}:`);
     console.log(`  Name: ${plugin.name}`);
     console.log(`  Path: ${plugin.path}`);

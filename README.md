@@ -41,6 +41,9 @@ docker run --rm -p 3001:3001 \
   -e RESOURCES_PATH=./resources \
   -e RESOURCES_DEFINITION_FILE=resources.yml \
   -v "$(pwd)/resources":/app/resources \
+  -e PROMPTS_PATH=./prompts \
+  -e PROMPTS_DEFINITION_FILE=prompts.yml \
+  -v "$(pwd)/prompts":/app/prompts \
   k33g/wasimancer:preview 
 ```
 
@@ -56,11 +59,15 @@ services:
       - PLUGINS_DEFINITION_FILE=plugins.yml
       - RESOURCES_PATH=./resources
       - RESOURCES_DEFINITION_FILE=resources.yml
+      - PROMPTS_PATH=./prompts
+      - PROMPTS_DEFINITION_FILE=prompts.yml
     ports:
       - 3001:3001
     volumes:
       - ./resources:/app/resources
       - ./plugins:/app/plugins
+      - ./prompts:/app/prompts
+
 ```
 
 ```bash

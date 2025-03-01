@@ -5,14 +5,15 @@ import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 //import createPlugin from '@extism/extism';
 
 // project helpers
-import { loadPluginsYamlFile, loadResourcesYamlFile } from './yaml-utils.js';
+import { loadPluginsYamlFile, loadResourcesYamlFile, loadPromptsYamlFile } from './yaml-utils.js';
 import { createTools } from './tools.js';
 import { registerStaticResources } from './resources.js';
+import { registerPredefinedPrompts } from './prompts.js';
 
 let pluginsPath = process.env.PLUGINS_PATH || "./plugins";
 let pluginsDefinitionFile = process.env.PLUGINS_DEFINITION_FILE || "plugins.yml";
 
-const { plugins, errorPlugin } = loadPluginsYamlFile(pluginsPath, pluginsDefinitionFile);
+const { pluginsData, errorPlugins: errorPlugin } = loadPluginsYamlFile(pluginsPath, pluginsDefinitionFile);
 if (errorPlugin) {
   console.log("😡:", errorPlugin);
   process.exit(1);
@@ -21,10 +22,18 @@ if (errorPlugin) {
 let resourcesPath = process.env.RESOURCES_PATH || "./resources";
 let resourcesDefinitionFile = process.env.RESOURCES_DEFINITION_FILE || "resources.yml";
 
-
-const { resources, errorResource} = loadResourcesYamlFile(resourcesPath, resourcesDefinitionFile);
+const { resourcesData, errorResources: errorResource} = loadResourcesYamlFile(resourcesPath, resourcesDefinitionFile);
 if (errorResource) {
   console.log("😠:", errorResource);
+  //process.exit(1);
+}
+
+let promptsPath = process.env.PROMPTS_PATH || "./prompts";
+let promptsDefinitionFile = process.env.PROMPTS_DEFINITION_FILE || "prompts.yml";
+
+const { promptsData, errorPrompts: errorPrompt } = loadPromptsYamlFile(promptsPath, promptsDefinitionFile);
+if (errorPrompt) {
+  console.log("😠:", errorPrompt);
   //process.exit(1);
 }
 
@@ -35,13 +44,12 @@ const server = new McpServer({
   version: "preview",
 });
 
-
-
 async function startServer() {
   // Create the WASM MCP server tools
-  await createTools(server, pluginsPath, plugins);
+  await createTools(server, pluginsPath, pluginsData);
 
-  registerStaticResources(server, resources);
+  registerStaticResources(server, resourcesData);
+  registerPredefinedPrompts(server, promptsData);
   
   const app = express();
   var transport = null;
