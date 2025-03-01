@@ -37,7 +37,7 @@ target "wasm-builder" {
   }
   platforms = [
     "linux/amd64",
-    "linux/arm64"
+    #"linux/arm64"
   ]
   tags = ["${REPO}/wasm-builder:${TAG}"]
 }
