@@ -7,8 +7,8 @@ on:
   pull_request:
 
 jobs:
-  docker:
-    runs-on: ubuntu-22.04-arm #ubuntu-latest
+  wasm-builder:
+    runs-on: ubuntu-22.04-arm
 
     steps:
       # Step 1: Checkout the code
@@ -30,12 +30,34 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Step 5: Build and push using Docker Bake
-      - name: 🐳 Build and push WASImancer MCP server image
-        run: docker buildx bake --file ./docker-bake.hcl --push 
-
       # Step 6: Build and push plugin builder image
       - name: 🐳 Build and push plugin builder image
         run: docker buildx bake --file ./docker-bake-wasm.hcl --push
 
-         
+  wasimancer:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Login to Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Step 3: Set up QEMU for cross-platform builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      # Step 4: Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Step 5: Build and push using Docker Bake
+      - name: 🐳 Build and push WASImancer MCP server image
+        run: docker buildx bake --file ./docker-bake.hcl --push 
+       

@@ -1,0 +1,88 @@
+services:  
+  build-plugin-roll-dice:
+    build:
+      context: .
+      dockerfile: wasm-builder.Dockerfile
+      platforms:
+        - "linux/amd64"
+        - "linux/arm64"
+      args:
+        - GO_VERSION=1.23.0
+        - TINYGO_VERSION=0.35.0
+        - EXTISM_VERSION=1.6.2
+        - NODE_MAJOR=22
+        - USER_NAME=wasm-builder
+
+    volumes:
+      - ./roll-dice:/src
+    working_dir: /src
+    command: >
+      tinygo build -scheduler=none --no-debug
+      -o wasimancer-plugin-roll-dice.wasm
+      -target wasi main.go
+
+  build-plugin-calc:
+    build:
+      context: .
+      dockerfile: wasm-builder.Dockerfile
+      platforms:
+        - "linux/amd64"
+        - "linux/arm64"
+      args:
+        - GO_VERSION=1.23.0
+        - TINYGO_VERSION=0.35.0
+        - EXTISM_VERSION=1.6.2
+        - NODE_MAJOR=22
+        - USER_NAME=wasm-builder
+
+    volumes:
+      - ./calc:/src
+    working_dir: /src
+    command: >
+      tinygo build -scheduler=none --no-debug
+      -o wasimancer-plugin-calc.wasm
+      -target wasi main.go
+
+  build-plugin-fetch:
+    build:
+      context: .
+      dockerfile: wasm-builder.Dockerfile
+      platforms:
+        - "linux/amd64"
+        - "linux/arm64"
+      args:
+        - GO_VERSION=1.23.0
+        - TINYGO_VERSION=0.35.0
+        - EXTISM_VERSION=1.6.2
+        - NODE_MAJOR=22
+        - USER_NAME=wasm-builder
+
+    volumes:
+      - ./fetch:/src
+    working_dir: /src
+    command: >
+      tinygo build -scheduler=none --no-debug
+      -o wasimancer-plugin-fetch.wasm
+      -target wasi main.go
+
+  build-plugin-hello:
+    build:
+      context: .
+      dockerfile: wasm-builder.Dockerfile
+      platforms:
+        - "linux/amd64"
+        - "linux/arm64"
+      args:
+        - GO_VERSION=1.23.0
+        - TINYGO_VERSION=0.35.0
+        - EXTISM_VERSION=1.6.2
+        - NODE_MAJOR=22
+        - USER_NAME=wasm-builder
+
+    volumes:
+      - ./hello:/src
+    working_dir: /src
+    command: >
+      tinygo build -scheduler=none --no-debug
+      -o wasimancer-plugin-hello.wasm
+      -target wasi main.go
