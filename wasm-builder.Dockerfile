@@ -43,6 +43,7 @@ apt-get autoremove --yes
 rm -rf /var/lib/{apt,dpkg,cache,log}/
 EOF
 
+RUN rm -f /etc/resolv.conf && ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 RUN ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf || true
 
 # ------------------------------------
