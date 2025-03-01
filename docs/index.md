@@ -1,3 +1,4 @@
-# 🧙🏻‍♂️ WASImancer: A WebAssembly-Powered MCP SSE Server
+# 🧙🏻‍♂️ WASImancer
+> A WebAssembly-Powered MCP SSE Server
 
 
