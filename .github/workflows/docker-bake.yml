@@ -30,22 +30,18 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Step 5: Build and push using Docker Bake
-      - name: 🐳 Build and push WASImancer MCP server image
-        run: docker buildx bake --file ./docker-bake.hcl --push
-
       # Step 6: Build and push plugin builder image
       #- name: 🐳 Build and push plugin builder image
       #  run: docker buildx bake --file ./docker-bake-wasm.hcl --push
 
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./wasm-builder.Dockerfile
           push: true
-          platforms: "linux/arm64,linux/amd64"
+          platforms: linux/arm64,linux/amd64
           build-args: |
             GO_VERSION=1.23.0
             TINYGO_VERSION=0.35.0
@@ -53,3 +49,7 @@ jobs:
             USER_NAME=wasm-builder
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/wasm-builder:preview
+
+      # Step 5: Build and push using Docker Bake
+      - name: 🐳 Build and push WASImancer MCP server image
+        run: docker buildx bake --file ./docker-bake.hcl --push          
