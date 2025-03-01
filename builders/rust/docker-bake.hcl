@@ -29,7 +29,7 @@ target "rust-builder" {
     "linux/amd64",
     "linux/arm64"
   ]
-  tags = ["${REPO}/tinygo-rust:${TAG}"]
+  tags = ["${REPO}/rust-builder:${TAG}"]
 }
 
 # docker buildx bake --push rust-builder
