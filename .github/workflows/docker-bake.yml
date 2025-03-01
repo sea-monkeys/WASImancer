@@ -43,7 +43,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./docker-bake-wasm.hcl
+          file: ./wasm-builder.Dockerfile
           push: true
           platforms: "linux/arm64,linux/amd64"
           tags: |
