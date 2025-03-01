@@ -48,4 +48,3 @@ jobs:
           platforms: "linux/arm64,linux/amd64"
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/wasm-builder:preview
-            #${{ secrets.DOCKER_USERNAME }}/wasm-builder:latest
