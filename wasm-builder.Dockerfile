@@ -68,9 +68,9 @@ wget https://github.com/tinygo-org/tinygo/releases/download/v${TINYGO_VERSION}/t
 dpkg -i tinygo_${TINYGO_VERSION}_${TARGETARCH}.deb
 rm tinygo_${TINYGO_VERSION}_${TARGETARCH}.deb
 
-wget https://github.com/tinygo-org/tinygo/releases/download/v0.35.0/tinygo_0.35.0_arm64.deb
-dpkg -i tinygo_0.35.0_arm64.deb
-tinygo_0.35.0_arm64.deb
+#wget https://github.com/tinygo-org/tinygo/releases/download/v0.35.0/tinygo_0.35.0_arm64.deb
+#dpkg -i tinygo_0.35.0_arm64.deb
+#tinygo_0.35.0_arm64.deb
 
 EOF
 
