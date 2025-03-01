@@ -43,6 +43,8 @@ apt-get autoremove --yes
 rm -rf /var/lib/{apt,dpkg,cache,log}/
 EOF
 
+RUN ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf || true
+
 # ------------------------------------
 # Install Go
 # ------------------------------------
