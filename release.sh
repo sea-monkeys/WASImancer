@@ -39,6 +39,8 @@ go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/roll-dice/R
 
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./examples/roll-dice-project/compose.yml"
 
+go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./README.md"
+
 echo "🛠️ Generating release: ${ABOUT}"
 
 find . -name '.DS_Store' -type f -delete

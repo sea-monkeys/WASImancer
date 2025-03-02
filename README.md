@@ -44,7 +44,7 @@ docker run --rm -p 3001:3001 \
   -e PROMPTS_PATH=./prompts \
   -e PROMPTS_DEFINITION_FILE=prompts.yml \
   -v "$(pwd)/prompts":/app/prompts \
-  k33g/wasimancer:preview 
+  k33g/wasimancer:0.0.0 
 ```
 
 Or with Docker Compose:
@@ -52,7 +52,7 @@ Or with Docker Compose:
 ```yaml
 services:  
   wasimancer-server:
-    image: k33g/wasimancer:preview
+    image: k33g/wasimancer:0.0.0
     environment:
       - HTTP_PORT=3001
       - PLUGINS_PATH=./plugins
