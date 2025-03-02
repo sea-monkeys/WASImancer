@@ -37,7 +37,7 @@ go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/fetch/READM
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/hello/README.md"
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/roll-dice/README.md"
 
-go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./examples/roll-dice/compose.yml"
+go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./examples/roll-dice-project/compose.yml"
 
 echo "🛠️ Generating release: ${ABOUT}"
 
