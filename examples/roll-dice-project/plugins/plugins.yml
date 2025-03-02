@@ -1,7 +1,7 @@
 plugins:
 
   - name: roll dice
-    path: wasimancer-plugin-roll-dice.wasm
+    path: ./roll-dice/wasimancer-plugin-roll-dice.wasm
     version: 1.0.0
     description: roll dice
     functions:

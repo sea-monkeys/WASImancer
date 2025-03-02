@@ -1,19 +1,23 @@
+# docker compose --file compose.dev.yml up --build 
+
+# Build's configuration
+x-build-config: &build-config
+  context: .
+  dockerfile: wasm-builder.Dockerfile
+  platforms:
+    - "linux/amd64"
+    - "linux/arm64"
+  args: 
+    - GO_VERSION=1.23.0
+    - TINYGO_VERSION=0.35.0
+    - EXTISM_VERSION=1.6.2
+    - NODE_MAJOR=22
+    - USER_NAME=wasm-builder
+
 services:  
 
-
   build-plugin-addition:
-    build:
-      context: .
-      dockerfile: wasm-builder.Dockerfile
-      platforms:
-        - "linux/amd64"
-        - "linux/arm64"
-      args:
-        - GO_VERSION=1.23.0
-        - TINYGO_VERSION=0.35.0
-        - EXTISM_VERSION=1.6.2
-        - NODE_MAJOR=22
-        - USER_NAME=wasm-builder
+    build: *build-config
     volumes:
       - ./addition:/addition
     working_dir: /addition
@@ -27,19 +31,7 @@ services:
       "
 
   build-plugin-roll-dice:
-    build:
-      context: .
-      dockerfile: wasm-builder.Dockerfile
-      platforms:
-        - "linux/amd64"
-        - "linux/arm64"
-      args:
-        - GO_VERSION=1.23.0
-        - TINYGO_VERSION=0.35.0
-        - EXTISM_VERSION=1.6.2
-        - NODE_MAJOR=22
-        - USER_NAME=wasm-builder
-
+    build: *build-config
     volumes:
       - ./roll-dice:/roll-dice
     working_dir: /roll-dice
@@ -49,19 +41,7 @@ services:
       -target wasi main.go
 
   build-plugin-calc:
-    build:
-      context: .
-      dockerfile: wasm-builder.Dockerfile
-      platforms:
-        - "linux/amd64"
-        - "linux/arm64"
-      args:
-        - GO_VERSION=1.23.0
-        - TINYGO_VERSION=0.35.0
-        - EXTISM_VERSION=1.6.2
-        - NODE_MAJOR=22
-        - USER_NAME=wasm-builder
-
+    build: *build-config
     volumes:
       - ./calc:/calc
     working_dir: /calc
@@ -71,19 +51,7 @@ services:
       -target wasi main.go
 
   build-plugin-fetch:
-    build:
-      context: .
-      dockerfile: wasm-builder.Dockerfile
-      platforms:
-        - "linux/amd64"
-        - "linux/arm64"
-      args:
-        - GO_VERSION=1.23.0
-        - TINYGO_VERSION=0.35.0
-        - EXTISM_VERSION=1.6.2
-        - NODE_MAJOR=22
-        - USER_NAME=wasm-builder
-
+    build: *build-config
     volumes:
       - ./fetch:/fetch
     working_dir: /fetch
@@ -93,19 +61,7 @@ services:
       -target wasi main.go
 
   build-plugin-hello:
-    build:
-      context: .
-      dockerfile: wasm-builder.Dockerfile
-      platforms:
-        - "linux/amd64"
-        - "linux/arm64"
-      args:
-        - GO_VERSION=1.23.0
-        - TINYGO_VERSION=0.35.0
-        - EXTISM_VERSION=1.6.2
-        - NODE_MAJOR=22
-        - USER_NAME=wasm-builder
-
+    build: *build-config
     volumes:
       - ./hello:/hello
     working_dir: /hello

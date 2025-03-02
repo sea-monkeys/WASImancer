@@ -3,7 +3,7 @@ variable "REPO" {
 }
 
 variable "TAG" {
-  default = "preview"
+  default = "0.0.0"
 }
 
 group "default" {
