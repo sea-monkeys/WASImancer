@@ -226,6 +226,42 @@ async function startServer() {
     //res.json({ message: "🚧 Remove plugin endpoint is under construction" });
   });
 
+  import multer from "multer";
+
+  // 🔹 Configure file upload
+  const upload = multer({ dest: "uploads/" });
+  
+  app.put("/override-plugin", upload.single("wasmFile"), async (req, res) => {
+    const token = req.headers["authorization"];
+  
+    // 🔒 Validate token
+    if (!token || token !== `Bearer ${AUTH_TOKEN}`) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+  
+    const pluginData = JSON.parse(req.body.pluginData); // Ensure JSON is correctly parsed
+  
+    if (!pluginData || !pluginData.name || !pluginData.functions) {
+      return res.status(400).json({ error: "Invalid plugin data" });
+    }
+  
+    // Ensure the file is provided
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+  
+    // 📂 Move file to plugins directory
+    const targetDir = "./plugins";
+    const newFilePath = `${targetDir}/${req.file.originalname}`;
+    fs.renameSync(req.file.path, newFilePath);
+  
+    // 🚀 Override the plugin
+    const result = await overridePluginAndUpdateYaml(server, targetDir, "plugins.yml", pluginData, newFilePath);
+    res.json(result);
+  });
+  
+
+
   // Get HTTP_PORT from environment or default to 3001
   const HTTP_PORT = process.env.PORT || 3001;
 
