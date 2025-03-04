@@ -1,74 +1,72 @@
 plugins:
-  - name: 'hello'
-    path: '/hello/wasimancer-plugin-hello.wasm'
-    version: '1.0.0'
-    description: 'hello greetings'
+  - name: hello
+    path: /hello/wasimancer-plugin-hello.wasm
+    version: 1.0.0
+    description: hello greetings
     functions:
-      - displayName: 'say hello'
-        function: 'say_hello'
-        arguments: 
-          - name: 'name'
-            type: 'string'
-            description: 'name of the person'
-        description: 'a function to say hello'
-  - name: 'calc'
-    path: '/calc/wasimancer-plugin-calc.wasm'
-    version: '1.0.0'
-    description: 'calculator'
+      - displayName: say hello
+        function: say_hello
+        arguments:
+          - name: name
+            type: string
+            description: name of the person
+        description: a function to say hello
+  - name: calc
+    path: /calc/wasimancer-plugin-calc.wasm
+    version: 1.0.0
+    description: calculator
     functions:
-      - displayName: 'add'
-        function: 'addNumbers'
+      - displayName: add
+        function: addNumbers
         arguments:
-          - name: 'a'
-            type: 'number'
-            description: 'first number'
-          - name: 'b'
-            type: 'number'
-            description: 'second number'
-        description: 'a function to add numbers'
-      - displayName: 'multiply'
-        function: 'multiplyNumbers'
+          - name: a
+            type: number
+            description: first number
+          - name: b
+            type: number
+            description: second number
+        description: a function to add numbers
+      - displayName: multiply
+        function: multiplyNumbers
         arguments:
-          - name: 'a'
-            type: 'number'
-            description: 'first number'
-          - name: 'b'
-            type: 'number'
-            description: 'second number'
-        description: 'a function to multiply numbers'
-  - name: 'fetch'
-    path: '/fetch/wasimancer-plugin-fetch.wasm'
-    version: '1.0.0'
-    description: 'fetch the content of a url'
+          - name: a
+            type: number
+            description: first number
+          - name: b
+            type: number
+            description: second number
+        description: a function to multiply numbers
+  - name: fetch
+    path: /fetch/wasimancer-plugin-fetch.wasm
+    version: 1.0.0
+    description: fetch the content of a url
     functions:
-      - displayName: 'fetch'
-        function: 'fetch'
+      - displayName: fetch
+        function: fetch
         arguments:
-          - name: 'url'
-            type: 'string'
-            description: 'url to fetch'
-        description: 'fetch the content of a url'
-
-  - name: 'roll dice'
-    path: '/roll-dice/wasimancer-plugin-roll-dice.wasm'
-    version: '1.0.0'
-    description: 'roll dice'
+          - name: url
+            type: string
+            description: url to fetch
+        description: fetch the content of a url
+  - name: roll dice
+    path: /roll-dice/wasimancer-plugin-roll-dice.wasm
+    version: 1.0.0
+    description: roll dice
     functions:
-      - displayName: 'rollDice'
-        function: 'rollDice'
+      - displayName: rollDice
+        function: rollDice
         arguments:
-          - name: 'numFaces'
-            type: 'number'
-            description: 'number of faces on the dice'
-          - name: 'numDice'
-            type: 'number'
-            description: 'number of dice to roll'
-        description: 'a function to roll dice'
-
+          - name: numFaces
+            type: number
+            description: number of faces on the dice
+          - name: numDice
+            type: number
+            description: number of dice to roll
+        description: a function to roll dice
   - name: addition
-    path: '/addition/wasimancer_plugin_addition.wasm'
-    version: '1.0.0'
-    description: 'addition'
+    path: /addition/wasimancer_plugin_addition.wasm
+    version: 1.0.0
+    description: addition
     functions:
       - displayName: add with rust
         function: add
@@ -80,3 +78,43 @@ plugins:
             type: number
             description: second number
         description: a function to add numbers
+  - name: demo-1
+    path: ./demo-1.wasm
+    version: 1.0.0
+    description: calculator
+    functions:
+      - displayName: add-1
+        function: addNumbers
+        arguments:
+          - name: a
+            type: number
+            description: first number
+          - name: b
+            type: number
+            description: second number
+        description: a function to add numbers
+  - name: demo-2
+    path: ./demo-2.wasm
+    version: 1.0.0
+    description: calculator
+    functions:
+      - displayName: add-2
+        function: addNumbers
+        arguments:
+          - name: a
+            type: number
+            description: first number
+          - name: b
+            type: number
+            description: second number
+        description: a function to add numbers
+      - displayName: multiply-2
+        function: multiplyNumbers
+        arguments:
+          - name: a
+            type: number
+            description: first number
+          - name: b
+            type: number
+            description: second number
+        description: a function to multiply numbers

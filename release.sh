@@ -41,6 +41,8 @@ go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./examples/roll-dice-
 
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./README.md"
 
+go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./index.js"
+
 echo "🛠️ Generating release: ${ABOUT}"
 
 find . -name '.DS_Store' -type f -delete
