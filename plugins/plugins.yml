@@ -95,10 +95,10 @@ plugins:
         description: a function to add numbers
   - name: demo-2
     path: ./demo-2.wasm
-    version: 1.0.0
+    version: 2.0.0
     description: calculator
     functions:
-      - displayName: add-2
+      - displayName: add-2.5
         function: addNumbers
         arguments:
           - name: a
@@ -108,7 +108,7 @@ plugins:
             type: number
             description: second number
         description: a function to add numbers
-      - displayName: multiply-2
+      - displayName: multiply-2.5
         function: multiplyNumbers
         arguments:
           - name: a
