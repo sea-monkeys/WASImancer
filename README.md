@@ -44,6 +44,8 @@ docker run --rm -p 3001:3001 \
   -e PROMPTS_PATH=./prompts \
   -e PROMPTS_DEFINITION_FILE=prompts.yml \
   -v "$(pwd)/prompts":/app/prompts \
+  -e UPLOAD_AUTH_TOKEN=wasimancer-rocks \
+  -e UPLOAD_PATH=./plugins/bucket \
   k33g/wasimancer:0.0.1 
 ```
 
@@ -61,6 +63,8 @@ services:
       - RESOURCES_DEFINITION_FILE=resources.yml
       - PROMPTS_PATH=./prompts
       - PROMPTS_DEFINITION_FILE=prompts.yml
+      - UPLOAD_AUTH_TOKEN=wasimancer-rocks
+      - UPLOAD_PATH=./plugins/bucket
     ports:
       - 3001:3001
     volumes:
