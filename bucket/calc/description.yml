@@ -1,0 +1,25 @@
+  - name: calc
+    path: /calc/wasimancer-plugin-calc.wasm
+    version: 1.0.0
+    description: calculator
+    functions:
+      - displayName: add
+        function: addNumbers
+        arguments:
+          - name: a
+            type: number
+            description: first number
+          - name: b
+            type: number
+            description: second number
+        description: a function to add numbers
+      - displayName: multiply
+        function: multiplyNumbers
+        arguments:
+          - name: a
+            type: number
+            description: first number
+          - name: b
+            type: number
+            description: second number
+        description: a function to multiply numbers

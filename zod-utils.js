@@ -7,6 +7,7 @@ import { z } from "zod";
  * @returns {z.ZodType<any, any, any>}
  */
 export function createZodSchema(argType) {
+  
   switch(argType.toLowerCase()) {
     case 'string':
       return z.string();
