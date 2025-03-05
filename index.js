@@ -90,7 +90,7 @@ function ensureDirectoryExists(directory) {
 
 const server = new McpServer({
   name: "wasimancer-server",
-  version: "0.0.0",
+  version: "0.0.1",
 });
 
 async function startServer() {
@@ -317,7 +317,7 @@ async function startServer() {
   const HTTP_PORT = process.env.PORT || 3001;
 
   app.listen(HTTP_PORT);
-  console.log(`🚀🤖 Server ready at http://0.0.0.0:${HTTP_PORT}`);
+  console.log(`🚀🤖 Server ready at http://0.0.1.0:${HTTP_PORT}`);
 }
 
 startServer();

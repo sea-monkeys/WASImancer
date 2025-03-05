@@ -16,7 +16,7 @@ extism call character-name-generator.wasm GenerateCharacterName \
 ## Build with Docker
 
 ```bash
-docker run --rm -v "$PWD":/character-name-generator-new -w /character-name-generator-new k33g/wasm-builder:0.0.0 \
+docker run --rm -v "$PWD":/character-name-generator-new -w /character-name-generator-new k33g/wasm-builder:0.0.1 \
   tinygo build -scheduler=none --no-debug \
     -o character-name-generator.wasm \
     -target wasi main.go
@@ -25,7 +25,7 @@ docker run --rm -v "$PWD":/character-name-generator-new -w /character-name-gener
 ## Run with Docker
 
 ```bash
-docker run --rm -v "$PWD":/character-name-generator-new -w /character-name-generator-new k33g/wasm-builder:0.0.0 \
+docker run --rm -v "$PWD":/character-name-generator-new -w /character-name-generator-new k33g/wasm-builder:0.0.1 \
   extism call character-name-generator.wasm GenerateCharacterName \
   --wasi
 ```

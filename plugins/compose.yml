@@ -3,7 +3,7 @@
 services:  
 
   build-plugin-addition:
-    image: k33g/wasm-builder:0.0.0
+    image: k33g/wasm-builder:0.0.1
     volumes:
       - ./addition:/addition
     working_dir: /addition
@@ -17,7 +17,7 @@ services:
       "
 
   build-plugin-roll-dice:
-    image: k33g/wasm-builder:0.0.0
+    image: k33g/wasm-builder:0.0.1
     volumes:
       - ./roll-dice:/roll-dice
     working_dir: /roll-dice
@@ -27,7 +27,7 @@ services:
       -target wasi main.go
 
   build-plugin-calc:
-    image: k33g/wasm-builder:0.0.0
+    image: k33g/wasm-builder:0.0.1
     volumes:
       - ./calc:/calc
     working_dir: /calc
@@ -37,7 +37,7 @@ services:
       -target wasi main.go
 
   build-plugin-fetch:
-    image: k33g/wasm-builder:0.0.0
+    image: k33g/wasm-builder:0.0.1
     volumes:
       - ./fetch:/fetch
     working_dir: /fetch
@@ -47,7 +47,7 @@ services:
       -target wasi main.go
 
   build-plugin-hello:
-    image: k33g/wasm-builder:0.0.0
+    image: k33g/wasm-builder:0.0.1
     volumes:
       - ./hello:/hello
     working_dir: /hello
