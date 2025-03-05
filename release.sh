@@ -32,10 +32,14 @@ go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./compose.yml"
 
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/compose.yml"
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/addition/README.md"
-go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/calc/README.md"
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/fetch/README.md"
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/hello/README.md"
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/roll-dice/README.md"
+
+go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./bucket/character-name-generator/README.md"
+go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./bucket/character-name-generator-new/README.md"
+go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./bucket/calc/README.md"
+
 
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./examples/roll-dice-project/compose.yml"
 

@@ -64,11 +64,13 @@ if (errorPrompt) {
 }
 
 const authenticationToken = process.env.UPLOAD_AUTH_TOKEN || "i-love-parakeets";
+// Default plugin directory
 const uploadRootPath = process.env.UPLOAD_PATH || "./plugins";
+//const  uploadRootPath = pluginsPath;
 
 // 📝 Define the upload middleware (using Multer)
 const upload = multer({
-  dest: "uploads/", // Temporary directory
+  dest: `${pluginsPath}/tmp-uploads/`, // Temporary directory
   limits: { fileSize: 10 * 1024 * 1024 }, // Limit to 10MB
   fileFilter: (req, file, cb) => {
     if (path.extname(file.originalname) !== ".wasm") {

@@ -70,7 +70,7 @@ export async function loadPlugins(server, pluginsPath, pluginsData) {
         // Legacy format without arguments - use string param
         server.tool(
           funcSpec.displayName,
-          { params: z.string() },
+          { },
           async ({ params }) => {
             let out = await wamPlugin.call(funcSpec.function, params);
             return {
