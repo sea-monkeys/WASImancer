@@ -26,6 +26,13 @@ case $1 in
     emoji="📝"
     ;;
 
+  # 🌍: website
+  website)
+    message="Update website"
+    emoji="🌍"
+    ;;
+
+
   # 🌸: cherry_blossom
   gardening|garden|clean|cleaning)
     message="Gardening"

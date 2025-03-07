@@ -15,6 +15,12 @@ copyright: Copyright &copy; 2024 - 2025 Philippe Charrière
 
 nav:
     - 🏠 Home: index.md
+    - 🔌 WebAssembly Plugin: wasm-plugins-concept.md
+    - 🐿️ Create Go Plugins: go-plugin-guide.md
+    - 🦀 Create Rust Plugins: rust-plugin-guide.md
+    - 🌐 Plugins REST API: rest-api-guide.md
+    - 📦 Resources: resources-guide.md
+    - 🗣️ Prompts: prompts-guide.md
 
 theme:
   name: material
@@ -33,4 +39,8 @@ markdown_extensions:
       auto_title: false
       linenums: true
       anchor_linenums: true
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
