@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://sea-monkeys.github.io/wasimancer/</loc>
+         <lastmod>2025-03-07</lastmod>
+    </url>
+    <url>
+         <loc>https://sea-monkeys.github.io/wasimancer/go-plugin-guide/</loc>
+         <lastmod>2025-03-07</lastmod>
+    </url>
+    <url>
+         <loc>https://sea-monkeys.github.io/wasimancer/prompts-guide/</loc>
+         <lastmod>2025-03-07</lastmod>
+    </url>
+    <url>
+         <loc>https://sea-monkeys.github.io/wasimancer/resources-guide/</loc>
+         <lastmod>2025-03-07</lastmod>
+    </url>
+    <url>
+         <loc>https://sea-monkeys.github.io/wasimancer/rest-api-guide/</loc>
+         <lastmod>2025-03-07</lastmod>
+    </url>
+    <url>
+         <loc>https://sea-monkeys.github.io/wasimancer/rust-plugin-guide/</loc>
+         <lastmod>2025-03-07</lastmod>
+    </url>
+    <url>
+         <loc>https://sea-monkeys.github.io/wasimancer/wasm-plugins-concept/</loc>
+         <lastmod>2025-03-07</lastmod>
+    </url>
+</urlset>
