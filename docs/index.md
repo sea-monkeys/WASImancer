@@ -130,8 +130,9 @@ WASImancer is ideal for:
 
 ## Next Steps
 
-- Explore the [examples](./examples/) directory for sample implementations
-- Learn how to [develop your own plugins](./plugins/) in Go, Rust, or other languages
+- Explore the [examples](https://github.com/sea-monkeys/WASImancer/tree/main/examples) and [plugins](https://github.com/sea-monkeys/WASImancer/tree/main/plugins) directories for sample implementations
+- Learn how to [develop your own plugins](go-plugin-guide/) in Go
+- Learn how to [develop your own plugins](rust-plugin-guide/) in Rust
 - Check out the [Inspector tool](https://github.com/modelcontextprotocol/inspector) to interact with your WASImancer server
 
 Think of **WASImancer** as a bridge between the MCP ecosystem and the vast possibilities of WebAssembly, allowing developers to write plugins in their preferred language while maintaining high performance and security in a distributed architecture.
