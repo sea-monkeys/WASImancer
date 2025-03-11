@@ -46,7 +46,7 @@ docker run --rm -p 3001:3001 \
   -v "$(pwd)/prompts":/app/prompts \
   -e UPLOAD_AUTH_TOKEN=wasimancer-rocks \
   -e UPLOAD_PATH=./plugins/bucket \
-  k33g/wasimancer:0.0.1 
+  k33g/wasimancer:0.0.2 
 ```
 
 Or with Docker Compose:
@@ -54,7 +54,7 @@ Or with Docker Compose:
 ```yaml
 services:  
   wasimancer-server:
-    image: k33g/wasimancer:0.0.1
+    image: k33g/wasimancer:0.0.2
     environment:
       - HTTP_PORT=3001
       - PLUGINS_PATH=./plugins
