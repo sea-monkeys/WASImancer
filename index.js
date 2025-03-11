@@ -21,7 +21,7 @@ import {
   addPluginAndUpdateYaml,
   removePluginAndUpdateYaml,
 } from "./tools.js";
-import { registerStaticResources } from "./resources.js";
+import { registerStaticResources, registerDynamicResources } from "./resources.js";
 import { registerPredefinedPrompts } from "./prompts.js";
 
 let pluginsPath = process.env.PLUGINS_PATH || "./plugins";
@@ -103,6 +103,13 @@ async function startServer() {
   // Register the static resources
   //==============================================
   registerStaticResources(server, resourcesData);
+
+  //==============================================
+  // Register the dynamic resources
+  //==============================================
+  registerDynamicResources(server, resourcesData);
+
+
 
   //==============================================
   // Register the predefined prompts
@@ -317,7 +324,7 @@ async function startServer() {
   const HTTP_PORT = process.env.PORT || 3001;
 
   app.listen(HTTP_PORT);
-  console.log(`🚀🤖 Server ready at http://0.0.1.0:${HTTP_PORT}`);
+  console.log(`🚀🤖 Server ready at http://0.0.0.0:${HTTP_PORT}`);
 }
 
 startServer();

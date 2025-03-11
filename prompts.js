@@ -4,7 +4,7 @@ import { z } from 'zod'; // Assuming you're using Zod for validation
  * Registers prompts defined in a YAML file with the server
  * 
  * @param {Object} server - The server object to register prompts with
- * @param {string} yamlFilePath - Path to the YAML file containing prompt definitions
+ * @param {Object} promptsData - The prompts data object containing prompts
  */
 function registerPredefinedPrompts(server, promptsData) {
   

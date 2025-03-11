@@ -1,3 +1,9 @@
+about: |
+  Resources in WASImancer are predefined information elements that can be accessed by MCP clients. 
+  They provide a way to store and deliver static data, contextual information, 
+  or configuration details that AI models or applications can query and utilize.
+
+
 resources:
   static:
     - name: server-info
@@ -13,4 +19,25 @@ resources:
           lastName: Charrière
         - text: 🎉 tada!
 
-  dynamic: # 🚧 work in progress
+# Dynamic resources are resoc templates
+  dynamic: 
+    - name: echo
+      uri: echo://{message}
+      arguments:
+        - name: 'message'
+          type: 'string' # for informational purposes only
+      contents:
+        - text: 'Resource echo: ${message}'
+
+    - name: greet-user
+      uri: greet-user://{firstName}/{lastName}
+      arguments:
+        - name: 'firstName'
+          type: 'string' # for informational purposes only
+        - name: 'lastName'
+          type: 'string' # for informational purposes only
+      contents:
+        - text: 'Say 👋 to ${firstName}!'
+        - text: 'Say 🖖 to ${lastName}!'
+        - text: '🤗 hello ${firstName} ${lastName}!'
+    
