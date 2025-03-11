@@ -1,3 +1,8 @@
+about: |
+  Prompts in WASImancer are predefined templates that define how AI models should interact with users or tools. 
+  They serve as reusable interaction patterns with customizable variables, 
+  allowing for consistent and structured communications between AI applications and the MCP server.
+
 prompts:
   predefined:
     - name: 'greet-user'

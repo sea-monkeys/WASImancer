@@ -20,6 +20,7 @@ nav:
     - 🦀 Create Rust Plugins: rust-plugin-guide.md
     - 🌐 Plugins REST API: rest-api-guide.md
     - 📦 Resources: resources-guide.md
+    - 📦 Dynamic Resources: dynamic-resources-guide.md
     - 🗣️ Prompts: prompts-guide.md
 
 theme:
