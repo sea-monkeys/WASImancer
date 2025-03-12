@@ -1,4 +1,5 @@
 # Creating Rust Plugins for WASImancer: A Step-by-Step Guide
+!!! info "🚧 work in progress"
 
 This guide will walk you through the process of creating, building, and running a WebAssembly plugin for WASImancer using Rust. We'll create a simple calculator plugin that can add two numbers.
 

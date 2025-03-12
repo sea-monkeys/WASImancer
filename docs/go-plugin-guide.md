@@ -1,4 +1,5 @@
 # Creating Go Plugins for WASImancer: A Step-by-Step Guide
+!!! info "🚧 work in progress"
 
 This guide will walk you through the process of creating, building, and running a WebAssembly plugin for WASImancer using Go. We'll create a simple plugin that generates random character names.
 

@@ -1,12 +1,17 @@
-about: |
-  In WASImancer, WebAssembly (WASM) plugins are the building blocks that enable the MCP server to execute tools. 
+about: >
+  In WASImancer, WebAssembly (WASM) plugins are the building blocks that enable
+  the MCP server to execute tools. 
+
   These plugins are compiled WebAssembly modules that:
 
-  1. Contain one or more functions that can be called by the MCP server
-  2. Run in a sandboxed environment for security
-  3. Execute at near-native speed
-  4. Can be written in multiple programming languages
 
+  1. Contain one or more functions that can be called by the MCP server
+
+  2. Run in a sandboxed environment for security
+
+  3. Execute at near-native speed
+
+  4. Can be written in multiple programming languages
 plugins:
   - name: hello
     path: /hello/wasimancer-plugin-hello.wasm

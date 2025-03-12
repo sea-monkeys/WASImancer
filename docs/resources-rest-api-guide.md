@@ -1,4 +1,5 @@
 # WASImancer Resource API Guide
+!!! info "🚧 work in progress"
 
 This guide explains how to use WASImancer's REST API to dynamically add, update, and remove resources without restarting the server.
 
@@ -14,11 +15,11 @@ These operations allow you to manage your MCP server's resources at runtime with
 
 ## Authentication
 
-All API endpoints require authentication using a Bearer token. This token is configured when starting the WASImancer server using the `UPLOAD_AUTH_TOKEN` environment variable:
+All API endpoints require authentication using a Bearer token. This token is configured when starting the WASImancer server using the `WASIMANCER_AUTH_TOKEN` environment variable:
 
 ```yaml
 environment:
-  - UPLOAD_AUTH_TOKEN=wasimancer-rocks
+  - WASIMANCER_AUTH_TOKEN=wasimancer-rocks
 ```
 
 In all API requests, include this header:
@@ -73,7 +74,7 @@ Add a new static or dynamic resource to the server.
   ],
   "contents": [
     {
-      "text": "Hello ${firstName} ${lastName}, welcome!"
+      "text": "Hello \${firstName} \${lastName}, welcome!"
     }
   ]
 }
@@ -146,7 +147,7 @@ read -r -d '' DATA <<- EOM
   ],
   "contents": [
     {
-      "text": "Welcome ${username}! You selected ${language} as your preferred language."
+      "text": "Welcome \${username}! You selected \${language} as your preferred language."
     }
   ]
 }
@@ -300,73 +301,3 @@ Organize resources by purpose and keep them focused:
 - Group related information in a single resource
 - Prefer multiple content items over deeply nested JSON
 - Use clear, consistent structure across resources
-
-### Security
-
-Keep your authorization token secure:
-- Use a strong, unique token
-- Store tokens in environment variables or secure storage
-- Rotate tokens periodically
-
-## Example Resource Types
-
-### Configuration Resources
-
-```json
-{
-  "name": "app-config",
-  "uri": "config://application",
-  "contents": [
-    {
-      "text": "Application Configuration",
-      "version": "1.0",
-      "features": {
-        "search": true,
-        "notifications": false
-      },
-      "limits": {
-        "maxUsers": 1000,
-        "requestsPerMinute": 60
-      }
-    }
-  ]
-}
-```
-
-### LLM Instructions
-
-```json
-{
-  "name": "coding-assistant",
-  "uri": "llm://coding-instructions",
-  "contents": [
-    {
-      "text": "You are an expert coding assistant. You help users write, understand, and debug code. Focus on providing clear explanations and practical solutions."
-    }
-  ]
-}
-```
-
-### Dynamic User Greeting
-
-```json
-{
-  "name": "user-greeting",
-  "uri": "greeting://{name}/{time}",
-  "arguments": [
-    {
-      "name": "name",
-      "type": "string"
-    },
-    {
-      "name": "time",
-      "type": "string"
-    }
-  ],
-  "contents": [
-    {
-      "text": "Good ${time}, ${name}! Welcome back to our platform."
-    }
-  ]
-}
-```
