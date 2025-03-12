@@ -18,7 +18,7 @@ extism call wasimancer-plugin-roll-dice.wasm rollDice \
 ## Build with Docker
 
 ```bash
-docker run --rm -v "$PWD":/roll-dice -w /roll-dice k33g/wasm-builder:0.0.2 \
+docker run --rm -v "$PWD":/roll-dice -w /roll-dice k33g/wasm-builder:0.0.3 \
   tinygo build -scheduler=none --no-debug \
     -o wasimancer-plugin-roll-dice.wasm \
     -target wasi main.go
@@ -27,7 +27,7 @@ docker run --rm -v "$PWD":/roll-dice -w /roll-dice k33g/wasm-builder:0.0.2 \
 ## Run with Docker
 
 ```bash
-docker run --rm -v "$PWD":/roll-dice -w /roll-dice k33g/wasm-builder:0.0.2 \
+docker run --rm -v "$PWD":/roll-dice -w /roll-dice k33g/wasm-builder:0.0.3 \
   extism call wasimancer-plugin-roll-dice.wasm rollDice \
   --input '{"numFaces":6,"numDice":2}' \
   --log-level "info" \
