@@ -2,7 +2,6 @@ import express from "express";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 
-
 import multer from "multer";
 import fs from "fs";
 import path from "path";
@@ -22,11 +21,14 @@ import {
   addPluginAndUpdateYaml,
   removePluginAndUpdateYaml,
 } from "./tools.js";
-import { registerStaticResources, registerDynamicResources } from "./resources.js";
+import {
+  registerStaticResources,
+  registerDynamicResources,
+} from "./resources.js";
 import { registerPredefinedPrompts } from "./prompts.js";
 
 import { registerResourceApiEndpoints } from "./resources-api.js";
-
+import { registerPromptApiEndpoints } from "./prompts-api.js";
 
 let pluginsPath = process.env.PLUGINS_PATH || "./plugins";
 let pluginsDefinitionFile =
@@ -67,7 +69,7 @@ if (errorPrompt) {
   //process.exit(1);
 }
 
-const authenticationToken = process.env.UPLOAD_AUTH_TOKEN || "i-love-parakeets";
+const authenticationToken = process.env.WASIMANCER_AUTH_TOKEN || "i-love-parakeets";
 // Default plugin directory
 const uploadRootPath = process.env.UPLOAD_PATH || "./plugins";
 //const  uploadRootPath = pluginsPath;
@@ -140,7 +142,7 @@ async function startServer() {
     const pluginData = req.body.pluginData
       ? JSON.parse(req.body.pluginData)
       : {};
-    
+
     if (!pluginData || !pluginData.name || !pluginData.functions) {
       return res.status(400).json({ error: "😡 Invalid plugin data" });
     }
@@ -227,7 +229,9 @@ async function startServer() {
           .status(500)
           .json({ error: error || "😡 Failed to remove plugin" });
       }
-      return res.status(200).json({ message: "🙂 Plugin removed successfully" });
+      return res
+        .status(200)
+        .json({ message: "🙂 Plugin removed successfully" });
     } catch (error) {
       return res
         .status(500)
@@ -327,13 +331,23 @@ async function startServer() {
   // ⏺️ Register Resource Management API Endpoints
   //===============================================
   registerResourceApiEndpoints(
-    app, 
-    server, 
-    authenticationToken, 
-    resourcesPath, 
+    app,
+    server,
+    authenticationToken,
+    resourcesPath,
     resourcesDefinitionFile
   );
 
+  //===============================================
+  // ⏺️ Register Prompt Management API Endpoints
+  //===============================================
+  registerPromptApiEndpoints(
+    app,
+    server,
+    authenticationToken,
+    promptsPath,
+    promptsDefinitionFile
+  );
 
   // Get HTTP_PORT from environment or default to 3001
   const HTTP_PORT = process.env.PORT || 3001;

@@ -237,7 +237,7 @@ export function registerResourceApiEndpoints(
           resourceUri = resourcesData.resources.dynamic[dynamicIndex].uri;
 
           console.log(
-            "🔴👋🙃 dynamicIndex resourceUri",
+            "dynamicIndex resourceUri",
             dynamicIndex,
             resourceUri
           );

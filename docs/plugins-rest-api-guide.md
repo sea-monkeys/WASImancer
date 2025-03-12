@@ -1,4 +1,5 @@
 # WASImancer Plugin Management API Guide
+!!! info "🚧 work in progress"
 
 This guide explains how to use WASImancer's REST API to dynamically publish, update, and remove WebAssembly plugins without restarting the server.
 
@@ -14,11 +15,11 @@ These operations allow you to manage your MCP server's capabilities at runtime w
 
 ## Authentication
 
-All API endpoints require authentication using a Bearer token. This token is configured when starting the WASImancer server using the `UPLOAD_AUTH_TOKEN` environment variable:
+All API endpoints require authentication using a Bearer token. This token is configured when starting the WASImancer server using the `WASIMANCER_AUTH_TOKEN` environment variable:
 
 ```yaml
 environment:
-  - UPLOAD_AUTH_TOKEN=wasimancer-rocks
+  - WASIMANCER_AUTH_TOKEN=wasimancer-rocks
 ```
 
 In all API requests, include this header:
@@ -510,7 +511,7 @@ echo "Success: $response_body"
 
 ### Common Issues
 
-1. **Invalid Token Error (403)**: Verify that your `UPLOAD_AUTH_TOKEN` environment variable matches the token in your request.
+1. **Invalid Token Error (403)**: Verify that your `WASIMANCER_AUTH_TOKEN` environment variable matches the token in your request.
 
 2. **Plugin Not Found (500)**: When updating or removing, check that the plugin name in your request matches exactly with the registered plugin.
 
