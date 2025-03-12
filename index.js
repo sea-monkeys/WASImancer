@@ -2,6 +2,7 @@ import express from "express";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 
+
 import multer from "multer";
 import fs from "fs";
 import path from "path";
@@ -23,6 +24,9 @@ import {
 } from "./tools.js";
 import { registerStaticResources, registerDynamicResources } from "./resources.js";
 import { registerPredefinedPrompts } from "./prompts.js";
+
+import { registerResourceApiEndpoints } from "./resources-api.js";
+
 
 let pluginsPath = process.env.PLUGINS_PATH || "./plugins";
 let pluginsDefinitionFile =
@@ -109,14 +113,13 @@ async function startServer() {
   //==============================================
   registerDynamicResources(server, resourcesData);
 
-
-
   //==============================================
   // Register the predefined prompts
   //==============================================
   registerPredefinedPrompts(server, promptsData);
 
   const app = express();
+  //app.use(express.json()); you cannot use it otherwise you will not be able use the SSE transport
   var transport = null;
 
   app.get("/sse", async (req, res) => {
@@ -319,6 +322,18 @@ async function startServer() {
       }
     });
   });
+
+  //===============================================
+  // ⏺️ Register Resource Management API Endpoints
+  //===============================================
+  registerResourceApiEndpoints(
+    app, 
+    server, 
+    authenticationToken, 
+    resourcesPath, 
+    resourcesDefinitionFile
+  );
+
 
   // Get HTTP_PORT from environment or default to 3001
   const HTTP_PORT = process.env.PORT || 3001;
