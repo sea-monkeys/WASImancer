@@ -18,9 +18,10 @@ nav:
     - 🔌 WebAssembly Plugin: wasm-plugins-concept.md
     - 🐿️ Create Go Plugins: go-plugin-guide.md
     - 🦀 Create Rust Plugins: rust-plugin-guide.md
-    - 🌐 Plugins REST API: rest-api-guide.md
+    - 🌐 Plugins REST API: plugins-rest-api-guide.md
     - 📦 Resources: resources-guide.md
     - 📦 Dynamic Resources: dynamic-resources-guide.md
+    - 📦 Resources REST API: resources-rest-api-guide.md
     - 🗣️ Prompts: prompts-guide.md
 
 theme:
