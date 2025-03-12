@@ -3,6 +3,11 @@ import path from "path";
 import jsyaml from "js-yaml";
 import express from "express";
 
+import {
+  McpServer,
+  ResourceTemplate,
+} from "@modelcontextprotocol/sdk/server/mcp.js";
+
 /**
  * Registers resource management endpoints for the Express application
  * @param {Object} app - Express application instance
@@ -119,10 +124,9 @@ export function registerResourceApiEndpoints(
           }));
         } else {
           // For dynamic resources, we need to handle URI templates and arguments
-          const template = new server.constructor.ResourceTemplate(
-            resourceData.uri,
-            { list: undefined }
-          );
+          const template = new ResourceTemplate(resourceData.uri, {
+            list: undefined,
+          });
 
           server.resource(
             resourceData.name,
@@ -230,7 +234,13 @@ export function registerResourceApiEndpoints(
         );
         if (dynamicIndex !== -1) {
           // get the uri of the resource to unregister it from the MCP server
-          resourceUri = resourcesData.resources.static[staticIndex].uri;
+          resourceUri = resourcesData.resources.dynamic[dynamicIndex].uri;
+
+          console.log(
+            "🔴👋🙃 dynamicIndex resourceUri",
+            dynamicIndex,
+            resourceUri
+          );
 
           resourcesData.resources.dynamic.splice(dynamicIndex, 1);
           resourceFound = true;
@@ -256,10 +266,42 @@ export function registerResourceApiEndpoints(
       }
 
       // 🔄 Unregister the resource from the server
+      /*
+        In the MCP TypeScript SDK, resources are tracked in different internal collections based on their type. 
+
+        - Static resources (with specific URIs) are registered in _registeredResources
+        - Dynamic resources (using templates/patterns) are registered in _registeredResourceTemplates
+
+        This is visible in the McpServer class implementation in src/server/mcp.ts
+
+        So if you wanted to remove a resource template (dynamic resource), 
+        you would need to access the _registeredResourceTemplates object, 
+        similar to how you would access _registeredResources for static resources.
+
+        Note that resource templates are indexed by name rather than URI, 
+        so you would need to know the name of the template you want to remove, not its URI pattern.
+
+      */
       try {
-        if (server._registeredResources?.[resourceUri]) {
-          delete server._registeredResources[resourceUri];
-          console.log(`🗑 Unregistered resource: ${resourceName} URI: ${resourceUri}`);
+        
+        if (resourceType === "dynamic") {
+
+          if (server._registeredResourceTemplates?.[resourceName]) {
+            delete server._registeredResourceTemplates[resourceName];
+            console.log(
+              `🗑 Unregistered dynamic resource: ${resourceName} URI: ${resourceUri}`
+            );
+          }
+        } else {
+          if (resourceType === "static") {
+
+            if (server._registeredResources?.[resourceUri]) {
+              delete server._registeredResources[resourceUri];
+              console.log(
+                `🗑 Unregistered static resource: ${resourceName} URI: ${resourceUri}`
+              );
+            }
+          }
         }
 
         return res.status(200).json({
@@ -359,7 +401,7 @@ export function registerResourceApiEndpoints(
         );
         if (dynamicIndex !== -1) {
           // get the uri of the resource to unregister it from the MCP server
-          resourceUri = resourcesData.resources.static[staticIndex].uri;
+          resourceUri = resourcesData.resources.dynamic[dynamicIndex].uri;
 
           oldResource = resourcesData.resources.dynamic[dynamicIndex];
           resourcesData.resources.dynamic.splice(dynamicIndex, 1);
@@ -395,10 +437,32 @@ export function registerResourceApiEndpoints(
       // 🔄 Update the resource in the server
       try {
         // First, unregister the existing resource
+        /*
         if (server._registeredResources?.[resourceUri]) {
           delete server._registeredResources[resourceUri];
-          console.log(`🗑 Unregistered resource before update: ${resourceName} URI: ${resourceUri}`);
+          console.log(
+            `🗑 Unregistered resource before update: ${resourceName} URI: ${resourceUri}`
+          );
         }
+        */
+
+        if (isStatic) {
+            if (server._registeredResources?.[resourceUri]) {
+                delete server._registeredResources[resourceUri];
+                console.log(
+                  `🗑 Unregistered static resource before update: ${resourceName} URI: ${resourceUri}`
+                );
+              }
+        } else { // dynamic
+            if (server._registeredResourceTemplates?.[resourceName]) {
+                delete server._registeredResourceTemplates[resourceName];
+                console.log(
+                  `🗑 Unregistered dynamic resource before update: ${resourceName} URI: ${resourceUri}`
+                );
+              }
+        }
+
+
 
         // Then register the updated resource
         if (isStatic) {
@@ -410,10 +474,9 @@ export function registerResourceApiEndpoints(
           }));
         } else {
           // For dynamic resources, handle URI templates and arguments
-          const template = new server.constructor.ResourceTemplate(
-            resourceData.uri,
-            { list: undefined }
-          );
+          const template = new ResourceTemplate(resourceData.uri, {
+            list: undefined,
+          });
 
           server.resource(
             resourceData.name,
