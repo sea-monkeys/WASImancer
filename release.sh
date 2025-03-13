@@ -27,7 +27,7 @@ echo "📝 Replacing ${PREVIOUS_TAG} by ${TAG} in files..."
 
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./docker-bake.hcl"
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./docker-bake-wasm.hcl"
-go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./docker-bake-wasi.hcl"
+#go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./docker-bake-wasi.hcl"
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./compose.yml"
 
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/compose.yml"
@@ -46,6 +46,19 @@ go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./examples/roll-dice-
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./README.md"
 
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./index.js"
+
+# documentation
+
+# Loop through each file in the docs directory
+for filepath in docs/*; do
+  # Check if it's a file (not a directory)
+  if [ -f "$filepath" ]; then
+    echo "Processing file: $filepath"
+    go run main.go -old="k33g/wasm-builder:${PREVIOUS_TAG}" -new="k33g/wasm-builder:${TAG}" -file="./${filepath}"
+    go run main.go -old="k33g/wasimancer:${PREVIOUS_TAG}" -new="k33g/wasimancer:${TAG}" -file="./${filepath}"
+  fi
+done
+
 
 echo "🛠️ Generating release: ${ABOUT}"
 

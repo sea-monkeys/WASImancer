@@ -2,9 +2,15 @@ name: Build and Push with Docker Bake
 
 on:
   push:
-    branches:
-      - main
+    #branches:
+    #  - main
+
+    tags:
+      - 'v*'  # This will match any tag that starts with 'v', like v1.0.0, v2.3.1, etc.
+      # You can also use other patterns like '*' to match all tags
+
   #pull_request:
+
 
 jobs:
   wasm-builder:

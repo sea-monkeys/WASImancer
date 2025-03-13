@@ -76,7 +76,7 @@ resources:
     - name: server-info
       uri: config://server
       contents:
-        - text: This is WASImancer [0.0.1], running on MCP!
+        - text: This is WASImancer [0.0.3], running on MCP!
 ```
 
 ### User Profile Information

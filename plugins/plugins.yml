@@ -67,3 +67,15 @@ plugins:
             type: number
             description: second number
         description: a function to add numbers
+  - name: greetings
+    path: ./bucket/greetings.wasm
+    version: 1.0.0
+    description: a greetings message
+    functions:
+      - displayName: greet
+        function: greet
+        arguments:
+          - name: name
+            type: string
+            description: person's name to greet
+        description: a function to generate a greet message

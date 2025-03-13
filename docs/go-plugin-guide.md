@@ -13,7 +13,7 @@ To follow this guide, you'll need:
 
 Alternatively, you can use the Docker image provided by WASImancer:
 ```bash
-docker pull k33g/wasm-builder:0.0.1
+docker pull k33g/wasm-builder:0.0.3
 ```
 
 ## Project Setup
@@ -127,7 +127,7 @@ tinygo build -scheduler=none --no-debug \
 If you're using the WASImancer's Docker image:
 
 ```bash
-docker run --rm -v "$PWD":/character-name-generator -w /character-name-generator k33g/wasm-builder:0.0.1 \
+docker run --rm -v "$PWD":/character-name-generator -w /character-name-generator k33g/wasm-builder:0.0.3 \
   tinygo build -scheduler=none --no-debug \
     -o character-name-generator.wasm \
     -target wasi main.go
@@ -148,7 +148,7 @@ extism call character-name-generator.wasm GenerateCharacterName --wasi
 ### Using Docker
 
 ```bash
-docker run --rm -v "$PWD":/character-name-generator -w /character-name-generator k33g/wasm-builder:0.0.1 \
+docker run --rm -v "$PWD":/character-name-generator -w /character-name-generator k33g/wasm-builder:0.0.3 \
   extism call character-name-generator.wasm GenerateCharacterName --wasi
 ```
 
