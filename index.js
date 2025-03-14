@@ -3,7 +3,6 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 
 import multer from "multer";
-import fs from "fs";
 import path from "path";
 
 //import { z } from "zod";
@@ -17,18 +16,20 @@ import {
 } from "./yaml-utils.js";
 
 import {
-  loadPlugins,
-  addPluginAndUpdateYaml,
-  removePluginAndUpdateYaml,
+  registerAndLoadPlugins,
 } from "./tools.js";
+
 import {
   registerStaticResources,
   registerDynamicResources,
 } from "./resources.js";
+
 import { registerPredefinedPrompts } from "./prompts.js";
+
 
 import { registerResourceApiEndpoints } from "./resources-api.js";
 import { registerPromptApiEndpoints } from "./prompts-api.js";
+import { registerToolApiEndpoints } from "./tools-api.js";
 
 let pluginsPath = process.env.PLUGINS_PATH || "./plugins";
 let pluginsDefinitionFile =
@@ -75,7 +76,7 @@ const uploadRootPath = process.env.UPLOAD_PATH || "./plugins";
 //const  uploadRootPath = pluginsPath;
 
 // 📝 Define the upload middleware (using Multer)
-const upload = multer({
+const uploadMiddelware = multer({
   dest: `${pluginsPath}/tmp-uploads/`, // Temporary directory
   limits: { fileSize: 10 * 1024 * 1024 }, // Limit to 10MB
   fileFilter: (req, file, cb) => {
@@ -86,13 +87,6 @@ const upload = multer({
   },
 });
 
-// 📂 Ensure directory exists
-function ensureDirectoryExists(directory) {
-  if (!fs.existsSync(directory)) {
-    // Create directory if it doesn't exist 🤔
-    fs.mkdirSync(directory, { recursive: true });
-  }
-}
 
 const server = new McpServer({
   name: "wasimancer-server",
@@ -103,7 +97,7 @@ async function startServer() {
   //==============================================
   // Create the WASM MCP server tools
   //==============================================
-  await loadPlugins(server, pluginsPath, pluginsData);
+  await registerAndLoadPlugins(server, pluginsPath, pluginsData);
 
   //==============================================
   // Register the static resources
@@ -134,198 +128,17 @@ async function startServer() {
   });
 
   //==============================================
-  // 🟣 Upload Wasm Plugin Endpoint
+  // ⏺️ Register Plugin Management API Endpoints
   //==============================================
-  app.post("/upload-plugin", upload.single("wasmFile"), async (req, res) => {
-    const token = req.headers["authorization"];
-    const targetDir = req.query.dir || uploadRootPath; // Default: plugins directory
-    const pluginData = req.body.pluginData
-      ? JSON.parse(req.body.pluginData)
-      : {};
-
-    if (!pluginData || !pluginData.name || !pluginData.functions) {
-      return res.status(400).json({ error: "😡 Invalid plugin data" });
-    }
-
-    // 🔒 Validate the authentication token
-    if (!token || token !== `Bearer ${authenticationToken}`) {
-      return res.status(403).json({ error: "😡 Unauthorized" });
-    }
-
-    // 🔍 Validate file upload
-    if (!req.file) {
-      return res.status(400).json({ error: "😡 No file uploaded" });
-    }
-
-    // 📂 Ensure the directory exists
-    ensureDirectoryExists(targetDir);
-
-    // 🛠 Move the uploaded file to the target directory
-    const newFilePath = path.join(targetDir, req.file.originalname);
-    fs.rename(req.file.path, newFilePath, async (err) => {
-      if (err) {
-        return res
-          .status(500)
-          .json({ error: "😡 File saving failed", details: err.message });
-      }
-
-      console.log(`✅ File uploaded to: ${newFilePath}`);
-      console.log(`📝 Received Metadata:`, pluginData);
-
-      // 🚀 Load the plugin (Wait for the async function result)
-      try {
-        const { success, error } = await addPluginAndUpdateYaml(
-          server,
-          pluginsPath,
-          pluginsDefinitionFile,
-          pluginData
-        );
-
-        if (!success) {
-          return res
-            .status(500)
-            .json({ error: error || "😡 Failed to load plugin" });
-        }
-
-        return res.status(200).json({
-          message: "🎉 File uploaded successfully",
-          filePath: newFilePath,
-          metadata: pluginData,
-        });
-      } catch (error) {
-        return res
-          .status(500)
-          .json({ error: error.message || "😡 Unexpected error" });
-      }
-    });
-  });
-
-  //==============================================
-  // 🟣 Remove Wasm Plugin Endpoint
-  //==============================================
-  app.delete("/remove-plugin/:name", async (req, res) => {
-    const token = req.headers["authorization"];
-
-    // 🔒 Validate token (replace with a more secure method)
-    if (!token || token !== `Bearer ${authenticationToken}`) {
-      return res.status(403).json({ error: "😡 Unauthorized" });
-    }
-
-    const pluginName = req.params.name;
-    if (!pluginName) {
-      return res.status(400).json({ error: "😡 Plugin name is required" });
-    }
-
-    try {
-      const { success, error } = await removePluginAndUpdateYaml(
-        server,
-        pluginsPath,
-        pluginsDefinitionFile,
-        pluginName
-      );
-      //const { success, error } = await removeTool(server, pluginName);
-      if (!success) {
-        return res
-          .status(500)
-          .json({ error: error || "😡 Failed to remove plugin" });
-      }
-      return res
-        .status(200)
-        .json({ message: "🙂 Plugin removed successfully" });
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ error: error.message || "😡 Unexpected error" });
-    }
-  });
-
-  //==============================================
-  // 🟣 Update Wasm File Endpoint
-  //==============================================
-  app.put("/update-plugin", upload.single("wasmFile"), async (req, res) => {
-    const token = req.headers["authorization"];
-    const targetDir = req.query.dir || uploadRootPath; // Default: plugins directory
-    const pluginData = req.body.pluginData
-      ? JSON.parse(req.body.pluginData)
-      : {};
-
-    if (!pluginData || !pluginData.name || !pluginData.functions) {
-      return res.status(400).json({ error: "😡 Invalid plugin data" });
-    }
-
-    // 🔒 Validate token
-    if (!token || token !== `Bearer ${authenticationToken}`) {
-      return res.status(403).json({ error: "😡 Unauthorized" });
-    }
-
-    // 🗑️ remove the existing plugin
-    let pluginName = pluginData.name;
-    try {
-      const { success, error } = await removePluginAndUpdateYaml(
-        server,
-        pluginsPath,
-        pluginsDefinitionFile,
-        pluginName
-      );
-      if (!success) {
-        return res
-          .status(500)
-          .json({ error: error || "😡 Failed to remove plugin" });
-      }
-      //return res.status(200).json({ message: "Plugin removed successfully" });
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ error: error.message || "😡 Unexpected error" });
-    }
-
-    // 🔍 Validate file upload
-    if (!req.file) {
-      return res.status(400).json({ error: "😡 No file uploaded" });
-    }
-
-    // 📂 Ensure the directory exists
-    ensureDirectoryExists(targetDir);
-
-    // 🛠 Move the uploaded file to the target directory
-    const newFilePath = path.join(targetDir, req.file.originalname);
-    fs.rename(req.file.path, newFilePath, async (err) => {
-      if (err) {
-        return res
-          .status(500)
-          .json({ error: "😡 File saving failed", details: err.message });
-      }
-
-      console.log(`✅ File uploaded to: ${newFilePath}`);
-      console.log(`📝 Received Metadata:`, pluginData);
-
-      // 🚀 Load the plugin (Wait for the async function result)
-      try {
-        const { success, error } = await addPluginAndUpdateYaml(
-          server,
-          pluginsPath,
-          pluginsDefinitionFile,
-          pluginData
-        );
-
-        if (!success) {
-          return res
-            .status(500)
-            .json({ error: error || "😡 Failed to load plugin" });
-        }
-
-        return res.status(200).json({
-          message: "🎉 File uploaded successfully",
-          filePath: newFilePath,
-          metadata: pluginData,
-        });
-      } catch (error) {
-        return res
-          .status(500)
-          .json({ error: error.message || "😡 Unexpected error" });
-      }
-    });
-  });
+  registerToolApiEndpoints(
+    app,
+    server,
+    authenticationToken,
+    uploadRootPath,
+    pluginsPath,
+    pluginsDefinitionFile,
+    uploadMiddelware
+  );
 
   //===============================================
   // ⏺️ Register Resource Management API Endpoints
