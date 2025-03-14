@@ -13,7 +13,7 @@ import path from "path";
  * @param {Object} pluginsData - The plugins data object containing plugin definitions
  */
 
-export async function loadPlugins(server, pluginsPath, pluginsData) {
+export async function registerAndLoadPlugins(server, pluginsPath, pluginsData) {
   // a plugin can have multiple functions
   // a function is a tool in the MCP server
   console.log("🤖 browse wasm plugins and create tools...");
