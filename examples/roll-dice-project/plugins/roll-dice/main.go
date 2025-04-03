@@ -17,7 +17,7 @@ type Arguments struct {
 // and returns the sum of the results
 
 //export rollDice
-func rollDice() {
+func rollDice() int32 {
 
 	arguments := pdk.InputString()
 
@@ -37,7 +37,7 @@ func rollDice() {
 	}
 	
 	pdk.OutputString(strconv.Itoa(sum))
-	
+	return 0
 }
 
 func main() {
