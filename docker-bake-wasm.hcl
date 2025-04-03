@@ -3,15 +3,15 @@ variable "REPO" {
 }
 
 variable "TAG" {
-  default = "0.0.3"
+  default = "0.0.4"
 }
 
 variable "GO_VERSION" {
-  default = "1.23.0"
+  default = "1.24.0"
 }
 
 variable "TINYGO_VERSION" {
-  default = "0.35.0"
+  default = "0.37.0"
 }
 
 variable "EXTISM_VERSION" {

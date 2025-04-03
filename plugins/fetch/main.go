@@ -13,7 +13,7 @@ type Arguments struct {
 
 
 //export fetch
-func fetch() {
+func fetch() int32 {
 	arguments := pdk.InputString()
 
 	var args Arguments
@@ -24,6 +24,7 @@ func fetch() {
 
 	res := req.Send()
 	pdk.OutputMemory(res.Memory())
+	return 0
 	
 }
 

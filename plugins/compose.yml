@@ -1,58 +1,23 @@
-# docker compose up
-
-services:  
-
-  build-plugin-addition:
-    image: k33g/wasm-builder:0.0.3
+services:
+  plugins-ide:
+    build:
+      context: .
+      dockerfile: ide.Dockerfile
+      args:
+        - GO_VERSION=${GO_VERSION} 
+        - TINYGO_VERSION=${TINYGO_VERSION}
+        - NODE_MAJOR=${NODE_MAJOR}
+        - EXTISM_VERSION=${EXTISM_VERSION}
+        - USER_NAME=${USER_NAME}  
+        - BUILDPLATFORM=${BUILDPLATFORM:-linux/arm64}  
+    image: k33g/plugins-ide:experimental
+    ports:
+      - 4000:3000
     volumes:
-      - ./addition:/addition
-    working_dir: /addition
-    command: >
-      bash -c "
-        cargo clean && \
-        cargo install cargo-cache && \
-        cargo cache -a && \
-        cargo build --release && \
-        cp target/wasm32-unknown-unknown/release/wasimancer_plugin_addition.wasm ./wasimancer_plugin_addition.wasm
-      "
-
-  build-plugin-roll-dice:
-    image: k33g/wasm-builder:0.0.3
-    volumes:
-      - ./roll-dice:/roll-dice
-    working_dir: /roll-dice
-    command: >
-      tinygo build -scheduler=none --no-debug
-      -o wasimancer-plugin-roll-dice.wasm
-      -target wasi main.go
-
-  build-plugin-calc:
-    image: k33g/wasm-builder:0.0.3
-    volumes:
-      - ./calc:/calc
-    working_dir: /calc
-    command: >
-      tinygo build -scheduler=none --no-debug
-      -o wasimancer-plugin-calc.wasm
-      -target wasi main.go
-
-  build-plugin-fetch:
-    image: k33g/wasm-builder:0.0.3
-    volumes:
-      - ./fetch:/fetch
-    working_dir: /fetch
-    command: >
-      tinygo build -scheduler=none --no-debug
-      -o wasimancer-plugin-fetch.wasm
-      -target wasi main.go
-
-  build-plugin-hello:
-    image: k33g/wasm-builder:0.0.3
-    volumes:
-      - ./hello:/hello
-    working_dir: /hello
-    command: >
-      tinygo build -scheduler=none --no-debug
-      -o wasimancer-plugin-hello.wasm
-      -target wasi main.go
-
+      #- ./workspace:/home/workspace:cached
+      - ./:/home/workspace:cached
+      - ./install-extensions.sh:/install-extensions.sh
+    init: true
+    restart: unless-stopped
+    post_start:
+      - command: /install-extensions.sh

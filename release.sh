@@ -30,7 +30,7 @@ go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./docker-bake-wasm.hc
 #go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./docker-bake-wasi.hcl"
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./compose.yml"
 
-go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/compose.yml"
+#go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/compose.yml"
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/addition/README.md"
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/fetch/README.md"
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./plugins/hello/README.md"

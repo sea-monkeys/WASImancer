@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+      "golang.go",
+      "vallyscode.crayons",
+      "pkief.material-icon-theme",
+      "pkief.material-product-icons",
+      "aaron-bond.better-comments",
+      "vallyscode.crayons",
+      "irongeek.vscode-env",
+      "hediet.vscode-drawio",
+      "esbenp.prettier-vscode",
+      "hashicorp.hcl",
+    ]
+}

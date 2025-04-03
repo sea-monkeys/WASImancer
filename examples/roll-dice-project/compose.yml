@@ -1,6 +1,6 @@
 services:  
   wasimancer-server:
-    image: k33g/wasimancer:0.0.3
+    image: k33g/wasimancer:0.0.4
     environment:
       - HTTP_PORT=3001
       - PLUGINS_PATH=./plugins

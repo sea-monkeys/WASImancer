@@ -13,7 +13,7 @@ To follow this guide, you'll need:
 
 Alternatively, you can use the Docker image provided by WASImancer:
 ```bash
-docker pull k33g/wasm-builder:0.0.3
+docker pull k33g/wasm-builder:0.0.4
 ```
 
 ## Project Setup
@@ -132,7 +132,7 @@ cp target/wasm32-unknown-unknown/release/wasimancer_plugin_addition.wasm ./
 If you're using the WASImancer's Docker image:
 
 ```bash
-docker run --rm -v "$PWD":/addition -w /addition k33g/wasm-builder:0.0.3 \
+docker run --rm -v "$PWD":/addition -w /addition k33g/wasm-builder:0.0.4 \
   bash -c "
     cargo clean && \
     cargo install cargo-cache && \
@@ -158,7 +158,7 @@ extism call wasimancer_plugin_addition.wasm add \
 ### Using Docker
 
 ```bash
-docker run --rm -v "$PWD":/addition -w /addition k33g/wasm-builder:0.0.3 \
+docker run --rm -v "$PWD":/addition -w /addition k33g/wasm-builder:0.0.4 \
   extism call wasimancer_plugin_addition.wasm add \
   --input '{"left":30, "right":12}' \
   --log-level "info" \

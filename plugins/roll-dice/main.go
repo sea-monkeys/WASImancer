@@ -16,8 +16,9 @@ type Arguments struct {
 
 // RollDice rolls a specified number of dice with a specified number of faces
 // and returns the sum of the results
+
 //export rollDice
-func rollDice() {
+func rollDice() int32 {
 
 	arguments := pdk.InputString()
 
@@ -40,10 +41,9 @@ func rollDice() {
 	}
 	
 	pdk.OutputString(strconv.Itoa(sum))
+	return 0
 	
 }
-
-
 
 func main() {
 }

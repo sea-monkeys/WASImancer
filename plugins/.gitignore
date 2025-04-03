@@ -1,1 +1,7 @@
 tmp-uploads
+backup
+
+.cache
+.config
+.openvscode-server
+.bash_history

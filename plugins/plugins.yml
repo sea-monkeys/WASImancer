@@ -39,6 +39,7 @@ plugins:
         description: fetch the content of a url
   - name: roll dice
     path: /roll-dice/wasimancer-plugin-roll-dice.wasm
+    #path: /roll-dice/roll-dice.wasm
     version: 1.0.0
     description: roll dice
     functions:
@@ -67,3 +68,30 @@ plugins:
             type: number
             description: second number
         description: a function to add numbers
+  # Moonbit plugin
+  #- name: greetings
+  #  path: /greetings/moonbit.greetings.wasm
+  #  version: 1.0.0
+  #  description: greetings
+  #  functions:
+  #    - displayName: hello
+  #      function: hello
+  #      arguments:
+  #        - name: firstName
+  #          type: string
+  #          description: firstName of the person
+  #        - name: lastName
+  #          type: string
+  #          description: lastName of the person
+  #      description: a function to say hello
+  #    - displayName: vulcan_salute
+  #      function: vulcan_salute
+  #      arguments:
+  #        - name: firstName
+  #          type: string
+  #          description: firstName of the person
+  #        - name: lastName
+  #          type: string
+  #          description: lastName of the person
+  #      description: a function to say hello as a vulcan
+                

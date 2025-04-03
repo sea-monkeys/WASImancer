@@ -275,7 +275,7 @@ func main() {}
 EOF
 
 # Step 4: Compile the plugin
-docker run --rm -v "$PWD":/roll-dice -w /roll-dice k33g/wasm-builder:0.0.3 \
+docker run --rm -v "$PWD":/roll-dice -w /roll-dice k33g/wasm-builder:0.0.4 \
   tinygo build -scheduler=none --no-debug \
     -o wasimancer-plugin-roll-dice.wasm \
     -target wasi main.go
@@ -386,7 +386,7 @@ func main() {}
 EOF
 
 # Step 2: Recompile the plugin
-docker run --rm -v "$PWD":/roll-dice -w /roll-dice k33g/wasm-builder:0.0.3 \
+docker run --rm -v "$PWD":/roll-dice -w /roll-dice k33g/wasm-builder:0.0.4 \
   tinygo build -scheduler=none --no-debug \
     -o wasimancer-plugin-roll-dice.wasm \
     -target wasi main.go

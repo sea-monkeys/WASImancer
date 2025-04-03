@@ -3,7 +3,7 @@ package main
 import "github.com/extism/go-pdk"
 
 //export say_hello
-func say_hello() {
+func say_hello() int32 {
 
 	// read input
 	// read the function argument from the memory
@@ -16,6 +16,7 @@ func say_hello() {
 	// copy output to host memory
 	mem := pdk.AllocateString(output)
 	pdk.OutputMemory(mem)
+	return 0
 	
 }
 
