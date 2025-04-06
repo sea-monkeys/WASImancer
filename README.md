@@ -12,6 +12,15 @@ What makes WASImancer special is its ability to load and execute tools as WebAss
 
 Think of **WASImancer** as a bridge between the MCP ecosystem and the vast possibilities of WebAssembly, allowing developers to write plugins in their preferred language while maintaining high performance and security.
 
+## Authentication and Admin tokens
+
+WASImancer needs two tokens, and you can set these two tokens with environment variables:
+
+1. A **bearer authentication token** to protect the SSE endpoints (the communications between the MCP Client and the MCP Server), use `WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way`
+2. A **bearer admin token** to protect the prompts, ressources and tools management endpoints (eg: uploading a new tool, removing a resource...), use `WASIMANCER_ADMIN_TOKEN=wasimancer-rocks`
+
+> ✋ If you don't set these tokens, the server will generate them for you at evry start (Look at the logs). You can use them to test the server, but you should set your own tokens for production.
+
 ## Start WASImancer
 
 ```bash
@@ -44,7 +53,8 @@ docker run --rm -p 3001:3001 \
   -e PROMPTS_PATH=./prompts \
   -e PROMPTS_DEFINITION_FILE=prompts.yml \
   -v "$(pwd)/prompts":/app/prompts \
-  -e WASIMANCER_AUTH_TOKEN=wasimancer-rocks \
+  -e WASIMANCER_ADMIN_TOKEN=wasimancer-rocks \
+  -e WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way \
   -e UPLOAD_PATH=./plugins/bucket \
   k33g/wasimancer:0.0.4 
 ```
@@ -63,7 +73,8 @@ services:
       - RESOURCES_DEFINITION_FILE=resources.yml
       - PROMPTS_PATH=./prompts
       - PROMPTS_DEFINITION_FILE=prompts.yml
-      - WASIMANCER_AUTH_TOKEN=wasimancer-rocks
+      - WASIMANCER_ADMIN_TOKEN=wasimancer-rocks
+      - WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way
       - UPLOAD_PATH=./plugins/bucket
     ports:
       - 3001:3001

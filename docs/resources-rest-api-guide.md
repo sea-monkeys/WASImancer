@@ -13,13 +13,13 @@ WASImancer provides REST API endpoints that enable:
 
 These operations allow you to manage your MCP server's resources at runtime without service interruption.
 
-## Authentication
+## Administration authentication
 
-All API endpoints require authentication using a Bearer token. This token is configured when starting the WASImancer server using the `WASIMANCER_AUTH_TOKEN` environment variable:
+All Administration API endpoints require authentication using a Bearer token. This token is configured when starting the WASImancer server using the `WASIMANCER_ADMIN_TOKEN` environment variable:
 
 ```yaml
 environment:
-  - WASIMANCER_AUTH_TOKEN=wasimancer-rocks
+  - WASIMANCER_ADMIN_TOKEN=wasimancer-rocks
 ```
 
 In all API requests, include this header:

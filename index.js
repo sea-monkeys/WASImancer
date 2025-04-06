@@ -1,12 +1,11 @@
 import express from "express";
+import crypto from "crypto"; 
+
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 
 import multer from "multer";
 import path from "path";
-
-//import { z } from "zod";
-//import createPlugin from '@extism/extism';
 
 // project helpers
 import {
@@ -25,7 +24,6 @@ import {
 } from "./resources.js";
 
 import { registerPredefinedPrompts } from "./prompts.js";
-
 
 import { registerResourceApiEndpoints } from "./resources-api.js";
 import { registerPromptApiEndpoints } from "./prompts-api.js";
@@ -70,7 +68,25 @@ if (errorPrompt) {
   //process.exit(1);
 }
 
-const authenticationToken = process.env.WASIMANCER_AUTH_TOKEN || "i-love-parakeets";
+// This function generate a token if the environment variable
+//  WASIMANCER_ADMIN_TOKEN is not set
+function generateBearerAdminToken() {
+  const token = crypto.randomBytes(16).toString("hex");
+  console.log(`🔐 Generated authentication token: ${token}`);
+  console.log(`🔐 Set authentication token in your environment variables: export WASIMANCER_ADMIN_TOKEN=${token}`);
+  return token;
+}
+
+// This function generate a token if the environment variables 
+// WASIMANCER_AUTHENTICATION_TOKEN is not set
+function generateBearerAuthenticationToken() {
+  const token = crypto.randomBytes(16).toString("hex");
+  console.log(`🔐 Generated bearer token: ${token}`);
+  console.log(`🔐 Set bearer token in your environment variables: export WASIMANCER_AUTHENTICATION_TOKEN=${token}`);
+  return token;
+}
+
+const adminToken = process.env.WASIMANCER_ADMIN_TOKEN || generateBearerAdminToken();
 // Default plugin directory
 const uploadRootPath = process.env.UPLOAD_PATH || "./plugins";
 //const  uploadRootPath = pluginsPath;
@@ -88,9 +104,16 @@ const uploadMiddelware = multer({
 });
 
 
+
+const bearerToken = process.env.WASIMANCER_AUTHENTICATION_TOKEN || generateBearerAuthenticationToken();
+
 const server = new McpServer({
   name: "wasimancer-server",
   version: "0.0.4",
+  auth: {
+    type: "bearer",
+    token: bearerToken
+  }
 });
 
 async function startServer() {
@@ -118,12 +141,30 @@ async function startServer() {
   //app.use(express.json()); you cannot use it otherwise you will not be able use the SSE transport
   var transport = null;
 
-  app.get("/sse", async (req, res) => {
+  // Authentication middleware
+  const authenticateRequest = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      res.status(401).send('Unauthorized: Missing or invalid token');
+      return;
+    }
+
+    const token = authHeader.split(' ')[1];
+    if (token !== bearerToken) {
+      res.status(401).send('Unauthorized: Invalid token');
+      return;
+    }
+
+    next();
+  };
+
+  app.get("/sse", authenticateRequest, async (req, res) => {
     transport = new SSEServerTransport("/messages", res);
     await server.connect(transport);
   });
 
-  app.post("/messages", async (req, res) => {
+  app.post("/messages", authenticateRequest, async (req, res) => {
     await transport.handlePostMessage(req, res);
   });
 
@@ -133,7 +174,7 @@ async function startServer() {
   registerToolApiEndpoints(
     app,
     server,
-    authenticationToken,
+    adminToken,
     uploadRootPath,
     pluginsPath,
     pluginsDefinitionFile,
@@ -146,7 +187,7 @@ async function startServer() {
   registerResourceApiEndpoints(
     app,
     server,
-    authenticationToken,
+    adminToken,
     resourcesPath,
     resourcesDefinitionFile
   );
@@ -157,7 +198,7 @@ async function startServer() {
   registerPromptApiEndpoints(
     app,
     server,
-    authenticationToken,
+    adminToken,
     promptsPath,
     promptsDefinitionFile
   );

@@ -13,13 +13,13 @@ WASImancer provides a REST API that enables:
 
 These operations allow you to manage your MCP server's capabilities at runtime without service interruption.
 
-## Authentication
+## Administration authentication
 
-All API endpoints require authentication using a Bearer token. This token is configured when starting the WASImancer server using the `WASIMANCER_AUTH_TOKEN` environment variable:
+All Administration API endpoints require authentication using a Bearer token. This token is configured when starting the WASImancer server using the `WASIMANCER_ADMIN_TOKEN` environment variable:
 
 ```yaml
 environment:
-  - WASIMANCER_AUTH_TOKEN=wasimancer-rocks
+  - WASIMANCER_ADMIN_TOKEN=wasimancer-rocks
 ```
 
 In all API requests, include this header:
@@ -511,7 +511,7 @@ echo "Success: $response_body"
 
 ### Common Issues
 
-1. **Invalid Token Error (403)**: Verify that your `WASIMANCER_AUTH_TOKEN` environment variable matches the token in your request.
+1. **Invalid Token Error (403)**: Verify that your `WASIMANCER_ADMIN_TOKEN` environment variable matches the token in your request.
 
 2. **Plugin Not Found (500)**: When updating or removing, check that the plugin name in your request matches exactly with the registered plugin.
 

@@ -7,7 +7,10 @@ import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 
 const bearerToken = "mcp-is-the-way";
 
+/*
+curl -v -H "Authorization: Bearer mcp-is-the-way" http://localhost:3001/sse
 
+*/
 
 // Set up the SSE client transport (with auth headers)
 const transport = new SSEClientTransport(new URL("http://localhost:3001/sse"), {
@@ -93,48 +96,14 @@ async function startClient() {
     const resources = await mcpClient.listResources();
     console.log("📜 Available Resources:", resources);
 
-    const llmInstruction = await mcpClient.readResource({
-      uri: "llm://instructions",
-    });
-    // Resource Content:
-    let systemInstructions = llmInstruction.contents[0].text;
-    console.log("📝 System Instructions:", systemInstructions);
     console.log("=====================================");
 
     // Prompts
     const prompts = await mcpClient.listPrompts();
     console.log("📜 Available Prompts:", prompts);
 
-    const prompt = await mcpClient.getPrompt({
-      name: "roll-dice",
-      arguments: { numDice: "3", numFaces: "12" }, // always use strings for arguments
-    });
-    let userInstructions = prompt.messages[0].content.text;
-    console.log("📝 User Instructions:", userInstructions);
     console.log("=====================================");
 
-    // Bind the tools to the LLM instance
-    const llmWithTools = llm.bindTools(langchainTools);
-
-    let messages = [
-      ["system", systemInstructions],
-      ["user", userInstructions],
-    ];
-
-    // Invoke the LLM with the messages
-    let llmOutput = await llmWithTools.invoke(messages);
-
-    // Output the LLM response
-    console.log("📦 LLM (response )Output:");
-    console.log("llmOutput:", llmOutput.tool_calls[0]);
-    console.log("=====================================");
-
-    // Call the tool via MCP with the LLM response
-    let result = await mcpClient.callTool({
-      name: llmOutput.tool_calls[0].name,
-      arguments: llmOutput.tool_calls[0].args,
-    });
-    console.log("✅ Server Response:", result);
 
     // Exit the client
     console.log("👋 Closing connection...");
