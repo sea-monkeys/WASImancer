@@ -39,7 +39,6 @@ plugins:
         description: fetch the content of a url
   - name: roll dice
     path: /roll-dice/wasimancer-plugin-roll-dice.wasm
-    #path: /roll-dice/roll-dice.wasm
     version: 1.0.0
     description: roll dice
     functions:
@@ -68,7 +67,6 @@ plugins:
             type: number
             description: second number
         description: a function to add numbers
-  # Hawaiian pizzas plugin
   - name: hawaiian
     path: /hawaiian-pizza/wasimancer-plugin-hawaiian-pizza.wasm
     version: 1.0.0
@@ -79,41 +77,11 @@ plugins:
         arguments:
           - name: city
             type: string
-            description: city where some pizzerias are cooking hawaiian pizza 
+            description: city where some pizzerias are cooking hawaiian pizza
         description: a function to get hawaiian pizza addresses
-      
       - displayName: listOfCitiesWithHawaiianPizzas
         function: listOfCitiesWithHawaiianPizzas
         description: a function to get a list of cities where hawaiian pizzas are cooked
-
       - displayName: whoDared
         function: whoDared
         description: a function to get information of the author of the hawaiian pizza API
-
-  # Moonbit plugin
-  #- name: greetings
-  #  path: /greetings/moonbit.greetings.wasm
-  #  version: 1.0.0
-  #  description: greetings
-  #  functions:
-  #    - displayName: hello
-  #      function: hello
-  #      arguments:
-  #        - name: firstName
-  #          type: string
-  #          description: firstName of the person
-  #        - name: lastName
-  #          type: string
-  #          description: lastName of the person
-  #      description: a function to say hello
-  #    - displayName: vulcan_salute
-  #      function: vulcan_salute
-  #      arguments:
-  #        - name: firstName
-  #          type: string
-  #          description: firstName of the person
-  #        - name: lastName
-  #          type: string
-  #          description: lastName of the person
-  #      description: a function to say hello as a vulcan
-                

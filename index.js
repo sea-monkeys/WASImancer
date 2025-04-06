@@ -27,19 +27,6 @@ import { registerResourceApiEndpoints } from "./resources-api.js";
 import { registerPromptApiEndpoints } from "./prompts-api.js";
 import { registerToolApiEndpoints } from "./tools-api.js";
 
-let pluginsPath = process.env.PLUGINS_PATH || "./plugins";
-let pluginsDefinitionFile =
-  process.env.PLUGINS_DEFINITION_FILE || "plugins.yml";
-
-const { pluginsData, errorPlugins: errorPlugin } = loadPluginsYamlFile(
-  pluginsPath,
-  pluginsDefinitionFile
-);
-if (errorPlugin) {
-  console.log("😡:", errorPlugin);
-  process.exit(1);
-}
-
 // This function generate a token if the environment variable
 //  WASIMANCER_ADMIN_TOKEN is not set
 function generateBearerAdminToken() {
@@ -64,21 +51,6 @@ function generateBearerAuthenticationToken() {
 
 const adminToken =
   process.env.WASIMANCER_ADMIN_TOKEN || generateBearerAdminToken();
-// Default plugin directory
-const uploadRootPath = process.env.UPLOAD_PATH || "./plugins";
-//const  uploadRootPath = pluginsPath;
-
-// 📝 Define the upload middleware (using Multer)
-const uploadMiddelware = multer({
-  dest: `${pluginsPath}/tmp-uploads/`, // Temporary directory
-  limits: { fileSize: 10 * 1024 * 1024 }, // Limit to 10MB
-  fileFilter: (req, file, cb) => {
-    if (path.extname(file.originalname) !== ".wasm") {
-      return cb(new Error("✋ Only .wasm files are allowed"));
-    }
-    cb(null, true);
-  },
-});
 
 const bearerToken =
   process.env.WASIMANCER_AUTHENTICATION_TOKEN ||
@@ -116,15 +88,62 @@ async function startServer() {
     next();
   };
 
-  //==============================================
-  // Create the WASM MCP server tools
-  //==============================================
-  await registerAndLoadPlugins(server, pluginsPath, pluginsData);
+  //!==============================================
+  //! PLUGINS ? TOOLS
+  //!==============================================
+  let pluginsPath = process.env.PLUGINS_PATH || "";
+  const usePlugins = pluginsPath !== "" ? true : false;
+  if (usePlugins) {
+    let pluginsDefinitionFile =
+      process.env.PLUGINS_DEFINITION_FILE || "plugins.yml";
 
+    const { pluginsData, errorPlugins: errorPlugin } = loadPluginsYamlFile(
+      pluginsPath,
+      pluginsDefinitionFile
+    );
+    if (errorPlugin) {
+      console.log("😡:", errorPlugin);
+      process.exit(1);
+    }
+
+    // Default plugin directory
+    const uploadRootPath = process.env.UPLOAD_PATH || "./plugins";
+    //const  uploadRootPath = pluginsPath;
+
+    // 📝 Define the upload middleware (using Multer)
+    const uploadMiddelware = multer({
+      dest: `${pluginsPath}/tmp-uploads/`, // Temporary directory
+      limits: { fileSize: 10 * 1024 * 1024 }, // Limit to 10MB
+      fileFilter: (req, file, cb) => {
+        if (path.extname(file.originalname) !== ".wasm") {
+          return cb(new Error("✋ Only .wasm files are allowed"));
+        }
+        cb(null, true);
+      },
+    });
+
+    //==============================================
+    // Create the WASM MCP server tools
+    //==============================================
+    await registerAndLoadPlugins(server, pluginsPath, pluginsData);
+
+    //==============================================
+    // ⏺️ Register Plugin Management API Endpoints
+    //==============================================
+    registerToolApiEndpoints(
+      app,
+      server,
+      adminToken,
+      uploadRootPath,
+      pluginsPath,
+      pluginsDefinitionFile,
+      uploadMiddelware
+    );
+  }
 
   //!==============================================
   //! RESOURCES
-  //!============================================== 
+  //!==============================================
   //let resourcesPath = process.env.RESOURCES_PATH || "./resources";
   let resourcesPath = process.env.RESOURCES_PATH || "";
   const useResources = resourcesPath !== "" ? true : false;
@@ -161,7 +180,6 @@ async function startServer() {
       resourcesDefinitionFile
     );
   }
-
 
   //!==============================================
   //! PROMPTS
@@ -207,19 +225,6 @@ async function startServer() {
   app.post("/messages", authenticateRequest, async (req, res) => {
     await transport.handlePostMessage(req, res);
   });
-
-  //==============================================
-  // ⏺️ Register Plugin Management API Endpoints
-  //==============================================
-  registerToolApiEndpoints(
-    app,
-    server,
-    adminToken,
-    uploadRootPath,
-    pluginsPath,
-    pluginsDefinitionFile,
-    uploadMiddelware
-  );
 
   // Get HTTP_PORT from environment or default to 3001
   const HTTP_PORT = process.env.PORT || 3001;
