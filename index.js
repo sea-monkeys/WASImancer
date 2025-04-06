@@ -1,5 +1,5 @@
 import express from "express";
-import crypto from "crypto"; 
+import crypto from "crypto";
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
@@ -14,9 +14,7 @@ import {
   loadPromptsYamlFile,
 } from "./yaml-utils.js";
 
-import {
-  registerAndLoadPlugins,
-} from "./tools.js";
+import { registerAndLoadPlugins } from "./tools.js";
 
 import {
   registerStaticResources,
@@ -42,19 +40,6 @@ if (errorPlugin) {
   process.exit(1);
 }
 
-let resourcesPath = process.env.RESOURCES_PATH || "./resources";
-let resourcesDefinitionFile =
-  process.env.RESOURCES_DEFINITION_FILE || "resources.yml";
-
-const { resourcesData, errorResources: errorResource } = loadResourcesYamlFile(
-  resourcesPath,
-  resourcesDefinitionFile
-);
-if (errorResource) {
-  console.log("😠:", errorResource);
-  //process.exit(1);
-}
-
 let promptsPath = process.env.PROMPTS_PATH || "./prompts";
 let promptsDefinitionFile =
   process.env.PROMPTS_DEFINITION_FILE || "prompts.yml";
@@ -73,20 +58,25 @@ if (errorPrompt) {
 function generateBearerAdminToken() {
   const token = crypto.randomBytes(16).toString("hex");
   console.log(`🔐 Generated authentication token: ${token}`);
-  console.log(`🔐 Set authentication token in your environment variables: export WASIMANCER_ADMIN_TOKEN=${token}`);
+  console.log(
+    `🔐 Set authentication token in your environment variables: export WASIMANCER_ADMIN_TOKEN=${token}`
+  );
   return token;
 }
 
-// This function generate a token if the environment variables 
+// This function generate a token if the environment variables
 // WASIMANCER_AUTHENTICATION_TOKEN is not set
 function generateBearerAuthenticationToken() {
   const token = crypto.randomBytes(16).toString("hex");
   console.log(`🔐 Generated bearer token: ${token}`);
-  console.log(`🔐 Set bearer token in your environment variables: export WASIMANCER_AUTHENTICATION_TOKEN=${token}`);
+  console.log(
+    `🔐 Set bearer token in your environment variables: export WASIMANCER_AUTHENTICATION_TOKEN=${token}`
+  );
   return token;
 }
 
-const adminToken = process.env.WASIMANCER_ADMIN_TOKEN || generateBearerAdminToken();
+const adminToken =
+  process.env.WASIMANCER_ADMIN_TOKEN || generateBearerAdminToken();
 // Default plugin directory
 const uploadRootPath = process.env.UPLOAD_PATH || "./plugins";
 //const  uploadRootPath = pluginsPath;
@@ -103,39 +93,20 @@ const uploadMiddelware = multer({
   },
 });
 
-
-
-const bearerToken = process.env.WASIMANCER_AUTHENTICATION_TOKEN || generateBearerAuthenticationToken();
+const bearerToken =
+  process.env.WASIMANCER_AUTHENTICATION_TOKEN ||
+  generateBearerAuthenticationToken();
 
 const server = new McpServer({
   name: "wasimancer-server",
   version: "0.0.4",
   auth: {
     type: "bearer",
-    token: bearerToken
-  }
+    token: bearerToken,
+  },
 });
 
 async function startServer() {
-  //==============================================
-  // Create the WASM MCP server tools
-  //==============================================
-  await registerAndLoadPlugins(server, pluginsPath, pluginsData);
-
-  //==============================================
-  // Register the static resources
-  //==============================================
-  registerStaticResources(server, resourcesData);
-
-  //==============================================
-  // Register the dynamic resources
-  //==============================================
-  registerDynamicResources(server, resourcesData);
-
-  //==============================================
-  // Register the predefined prompts
-  //==============================================
-  registerPredefinedPrompts(server, promptsData);
 
   const app = express();
   //app.use(express.json()); you cannot use it otherwise you will not be able use the SSE transport
@@ -144,20 +115,70 @@ async function startServer() {
   // Authentication middleware
   const authenticateRequest = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      res.status(401).send('Unauthorized: Missing or invalid token');
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      res.status(401).send("Unauthorized: Missing or invalid token");
       return;
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
     if (token !== bearerToken) {
-      res.status(401).send('Unauthorized: Invalid token');
+      res.status(401).send("Unauthorized: Invalid token");
       return;
     }
 
     next();
   };
+
+
+
+  //==============================================
+  // Create the WASM MCP server tools
+  //==============================================
+  await registerAndLoadPlugins(server, pluginsPath, pluginsData);
+
+  //let resourcesPath = process.env.RESOURCES_PATH || "./resources";
+  let resourcesPath = process.env.RESOURCES_PATH || "";
+  const useResources = resourcesPath !== "" ? true : false;
+
+  if (useResources) {
+    let resourcesDefinitionFile =
+      process.env.RESOURCES_DEFINITION_FILE || "resources.yml";
+
+    const { resourcesData, errorResources: errorResource } =
+      loadResourcesYamlFile(resourcesPath, resourcesDefinitionFile);
+    if (errorResource) {
+      console.log("😠:", errorResource);
+      //process.exit(1);
+    }
+
+    //==============================================
+    // Register the static resources
+    //==============================================
+    registerStaticResources(server, resourcesData);
+
+    //==============================================
+    // Register the dynamic resources
+    //==============================================
+    registerDynamicResources(server, resourcesData);
+
+    //===============================================
+    // ⏺️ Register Resource Management API Endpoints
+    //===============================================
+    registerResourceApiEndpoints(
+      app,
+      server,
+      adminToken,
+      resourcesPath,
+      resourcesDefinitionFile
+    );
+  }
+
+  //==============================================
+  // Register the predefined prompts
+  //==============================================
+  registerPredefinedPrompts(server, promptsData);
+
 
   app.get("/sse", authenticateRequest, async (req, res) => {
     transport = new SSEServerTransport("/messages", res);
@@ -179,17 +200,6 @@ async function startServer() {
     pluginsPath,
     pluginsDefinitionFile,
     uploadMiddelware
-  );
-
-  //===============================================
-  // ⏺️ Register Resource Management API Endpoints
-  //===============================================
-  registerResourceApiEndpoints(
-    app,
-    server,
-    adminToken,
-    resourcesPath,
-    resourcesDefinitionFile
   );
 
   //===============================================
