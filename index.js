@@ -58,7 +58,7 @@ const bearerToken =
 
 const server = new McpServer({
   name: "wasimancer-server",
-  version: "0.0.4",
+  version: "0.0.5",
   auth: {
     type: "bearer",
     token: bearerToken,

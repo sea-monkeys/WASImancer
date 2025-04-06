@@ -101,7 +101,7 @@ docker run --rm -p 3001:3001 \
   -e WASIMANCER_ADMIN_TOKEN=wasimancer-rocks \
   -e WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way \
   -e UPLOAD_PATH=./plugins/bucket \
-  k33g/wasimancer:0.0.4 
+  k33g/wasimancer:0.0.5 
 ```
 
 Or with Docker Compose:
@@ -109,7 +109,7 @@ Or with Docker Compose:
 ```yaml
 services:  
   wasimancer-server:
-    image: k33g/wasimancer:0.0.4
+    image: k33g/wasimancer:0.0.5
     environment:
       - HTTP_PORT=3001
       - PLUGINS_PATH=./plugins
