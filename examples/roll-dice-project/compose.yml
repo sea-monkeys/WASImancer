@@ -9,6 +9,7 @@ services:
       - RESOURCES_DEFINITION_FILE=resources.yml
       - PROMPTS_PATH=./prompts
       - PROMPTS_DEFINITION_FILE=prompts.yml
+      - WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way
     ports:
       - 3001:3001
     volumes:
