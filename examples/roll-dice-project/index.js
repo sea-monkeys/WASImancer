@@ -7,8 +7,6 @@ import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 
 const bearerToken = "mcp-is-the-way";
 
-
-
 // Set up the SSE client transport (with auth headers)
 const transport = new SSEClientTransport(new URL("http://localhost:3001/sse"), {
   authProvider: {
