@@ -1,7 +1,7 @@
 # Serve the website: docker run --rm -it -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material
 # Build the website: docker run --rm -it -v ${PWD}:/docs squidfunk/mkdocs-material build
 
-site_name: WASImamcer
+site_name: WASImancer
 site_url: https://sea-monkeys.github.io/wasimancer/
 site_author: Philippe Charrière (@k33g)
 site_description: >-
