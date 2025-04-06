@@ -40,19 +40,6 @@ if (errorPlugin) {
   process.exit(1);
 }
 
-let promptsPath = process.env.PROMPTS_PATH || "./prompts";
-let promptsDefinitionFile =
-  process.env.PROMPTS_DEFINITION_FILE || "prompts.yml";
-
-const { promptsData, errorPrompts: errorPrompt } = loadPromptsYamlFile(
-  promptsPath,
-  promptsDefinitionFile
-);
-if (errorPrompt) {
-  console.log("😠:", errorPrompt);
-  //process.exit(1);
-}
-
 // This function generate a token if the environment variable
 //  WASIMANCER_ADMIN_TOKEN is not set
 function generateBearerAdminToken() {
@@ -107,7 +94,6 @@ const server = new McpServer({
 });
 
 async function startServer() {
-
   const app = express();
   //app.use(express.json()); you cannot use it otherwise you will not be able use the SSE transport
   var transport = null;
@@ -130,13 +116,15 @@ async function startServer() {
     next();
   };
 
-
-
   //==============================================
   // Create the WASM MCP server tools
   //==============================================
   await registerAndLoadPlugins(server, pluginsPath, pluginsData);
 
+
+  //!==============================================
+  //! RESOURCES
+  //!============================================== 
   //let resourcesPath = process.env.RESOURCES_PATH || "./resources";
   let resourcesPath = process.env.RESOURCES_PATH || "";
   const useResources = resourcesPath !== "" ? true : false;
@@ -174,11 +162,42 @@ async function startServer() {
     );
   }
 
-  //==============================================
-  // Register the predefined prompts
-  //==============================================
-  registerPredefinedPrompts(server, promptsData);
 
+  //!==============================================
+  //! PROMPTS
+  //!==============================================
+  let promptsPath = process.env.PROMPTS_PATH || "";
+  const usePrompts = promptsPath !== "" ? true : false;
+
+  if (usePrompts) {
+    let promptsDefinitionFile =
+      process.env.PROMPTS_DEFINITION_FILE || "prompts.yml";
+
+    const { promptsData, errorPrompts: errorPrompt } = loadPromptsYamlFile(
+      promptsPath,
+      promptsDefinitionFile
+    );
+    if (errorPrompt) {
+      console.log("😠:", errorPrompt);
+      //process.exit(1);
+    }
+
+    //==============================================
+    // Register the predefined prompts
+    //==============================================
+    registerPredefinedPrompts(server, promptsData);
+
+    //===============================================
+    // ⏺️ Register Prompt Management API Endpoints
+    //===============================================
+    registerPromptApiEndpoints(
+      app,
+      server,
+      adminToken,
+      promptsPath,
+      promptsDefinitionFile
+    );
+  }
 
   app.get("/sse", authenticateRequest, async (req, res) => {
     transport = new SSEServerTransport("/messages", res);
@@ -200,17 +219,6 @@ async function startServer() {
     pluginsPath,
     pluginsDefinitionFile,
     uploadMiddelware
-  );
-
-  //===============================================
-  // ⏺️ Register Prompt Management API Endpoints
-  //===============================================
-  registerPromptApiEndpoints(
-    app,
-    server,
-    adminToken,
-    promptsPath,
-    promptsDefinitionFile
   );
 
   // Get HTTP_PORT from environment or default to 3001
