@@ -15,6 +15,7 @@ services:
       - PROMPTS_DEFINITION_FILE=prompts.yml
       - WASIMANCER_ADMIN_TOKEN=wasimancer-rocks
       - WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way
+      #- WASIMANCER_AUTHENTICATION_TOKEN=NO_AUTHENTICATION
       - UPLOAD_PATH=./plugins/bucket
     ports:
       - 3001:3001

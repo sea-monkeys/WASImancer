@@ -77,7 +77,7 @@ Set up your MCP environment using simple YAML files:
 
 WASImancer needs two tokens, and you can set these two tokens with environment variables:
 
-1. A **bearer authentication token** to protect the SSE endpoints (the communications between the MCP Client and the MCP Server), use `WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way`
+1. A **bearer authentication token** to protect the SSE endpoints (the communications between the MCP Client and the MCP Server), use `WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way` (if you want to disable the authentication, set it to `NO_AUTHENTICATION`).
 2. A **bearer admin token** to protect the prompts, ressources and tools management endpoints (eg: uploading a new tool, removing a resource...), use `WASIMANCER_ADMIN_TOKEN=wasimancer-rocks`
 
 > ✋ If you don't set these tokens, the server will generate them for you at evry start (Look at the logs). You can use them to test the server, but you should set your own tokens for production.
@@ -101,7 +101,7 @@ docker run --rm -p 3001:3001 \
   -e WASIMANCER_ADMIN_TOKEN=wasimancer-rocks \
   -e WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way \
   -e UPLOAD_PATH=./plugins/bucket \
-  k33g/wasimancer:0.0.5 
+  k33g/wasimancer:0.0.6 
 ```
 
 Or with Docker Compose:
@@ -109,7 +109,7 @@ Or with Docker Compose:
 ```yaml
 services:  
   wasimancer-server:
-    image: k33g/wasimancer:0.0.5
+    image: k33g/wasimancer:0.0.6
     environment:
       - HTTP_PORT=3001
       - PLUGINS_PATH=./plugins

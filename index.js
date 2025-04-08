@@ -26,6 +26,7 @@ import { registerPredefinedPrompts } from "./prompts.js";
 import { registerResourceApiEndpoints } from "./resources-api.js";
 import { registerPromptApiEndpoints } from "./prompts-api.js";
 import { registerToolApiEndpoints } from "./tools-api.js";
+import { copyFileSync } from "fs";
 
 // This function generate a token if the environment variable
 //  WASIMANCER_ADMIN_TOKEN is not set
@@ -58,12 +59,40 @@ const bearerToken =
 
 const server = new McpServer({
   name: "wasimancer-server",
-  version: "0.0.5",
+  version: "0.0.6",
   auth: {
     type: "bearer",
     token: bearerToken,
   },
 });
+
+function getAuthenticationRequestMiddelware(bearerToken) {
+  if (bearerToken==="NO_AUTHENTICATION") {
+    return (req, res, next) => {
+      // No authentication required
+      // you need to set the environment variable
+      // WASIMANCER_AUTHENTICATION_TOKEN to NO_AUTHENTICATION
+      next();
+    }
+  } else {
+    return (req, res, next) => {
+      const authHeader = req.headers.authorization;
+  
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        res.status(401).send("Unauthorized: Missing or invalid token");
+        return;
+      }
+  
+      const token = authHeader.split(" ")[1];
+      if (token !== bearerToken) {
+        res.status(401).send("Unauthorized: Invalid token");
+        return;
+      }
+  
+      next();
+    };
+  }
+}
 
 async function startServer() {
   const app = express();
@@ -71,22 +100,7 @@ async function startServer() {
   var transport = null;
 
   // Authentication middleware
-  const authenticateRequest = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      res.status(401).send("Unauthorized: Missing or invalid token");
-      return;
-    }
-
-    const token = authHeader.split(" ")[1];
-    if (token !== bearerToken) {
-      res.status(401).send("Unauthorized: Invalid token");
-      return;
-    }
-
-    next();
-  };
+  const authenticateRequest = getAuthenticationRequestMiddelware(bearerToken);
 
   //!==============================================
   //! PLUGINS ? TOOLS

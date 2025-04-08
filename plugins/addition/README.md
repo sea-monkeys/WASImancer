@@ -27,12 +27,12 @@ extism call wasimancer_plugin_addition.wasm add \
 ## Build with Docker
 
 ```bash
-docker run --rm -v "$PWD":/addition -w /addition k33g/wasm-builder:0.0.5 ./build.sh
+docker run --rm -v "$PWD":/addition -w /addition k33g/wasm-builder:0.0.6 ./build.sh
 ```
 
 Or:
 ```bash
-docker run --rm -v "$PWD":/addition -w /addition k33g/wasm-builder:0.0.5 \
+docker run --rm -v "$PWD":/addition -w /addition k33g/wasm-builder:0.0.6 \
   bash -c "
     cargo clean && \
     cargo install cargo-cache && \
