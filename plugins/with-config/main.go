@@ -2,15 +2,18 @@ package main
 
 import "github.com/extism/go-pdk"
 
-//export say_hello
-func say_hello() int32 {
+//export display_variables
+func display_variables() int32 {
 
 	// read input
 	// read the function argument from the memory
 	input := pdk.Input()
 
+    version,_ := pdk.GetConfig("WASM_VERSION")
+    message,_ := pdk.GetConfig("WASM_MESSAGE")
+
 	// create output
-	output := "🎉 Extism is 💜, 🌍, by " + string(input)
+	output := "Argument: " + string(input) + "\nVersion:" + version + "\nMessage:" + message
 	
 	// return the value
 	// copy output to host memory
@@ -21,5 +24,5 @@ func say_hello() int32 {
 }
 
 func main() {
-	//say_hello()
+	//display_variables()
 }

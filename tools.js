@@ -21,7 +21,7 @@ export async function registerAndLoadPlugins(server, pluginsPath, pluginsData) {
   console.log("🤖 browse wasm plugins and create tools...");
 
   const wasmEnvVars = getWasmEnvVarsList();
-  console.log("📛 WASM Environment Variables:", wasmEnvVars);
+  //console.log("📛 WASM Environment Variables:", wasmEnvVars);
   
   for (const [pluginIndex, plugin] of pluginsData.plugins.entries()) {
     console.log(`\n🔌 Plugin ${pluginIndex + 1}:`);

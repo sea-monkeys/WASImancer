@@ -3,4 +3,7 @@
 
 ## Overview
 
-See `examples/roll-dice-project` for a complete example.
+See this examples:
+
+- `examples/roll-dice-project` 
+- `examples/pizzerias`

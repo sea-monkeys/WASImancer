@@ -7,7 +7,7 @@ prompts:
         - name: numDice
           type: string
       messages:
-        - text: 🎲 Rolling ${numDice} dice(s) with ${numFaces} faces...
+        - text: rool ${numDice} dice(s) of ${numFaces} sides.
           role: user
 
 
