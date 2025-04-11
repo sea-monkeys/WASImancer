@@ -16,10 +16,9 @@ const transport = new SSEClientTransport(new URL("http://localhost:3001/sse"), {
       return {
         access_token: bearerToken,
       };
-    }
+    },
   },
 });
-
 
 const llm = new ChatOllama({
   model: "qwen2.5:0.5b",
@@ -67,46 +66,14 @@ async function startClient() {
       additionalToolNamePrefix: "",
     });
 
-
-    console.log("=====================================");
-    console.log("✅ Available Tools:", tools);
-
-    //mcpTools.tools.forEach((tool) => {
-    //  console.log("🔨 tool:", tool.name);
-    //  console.log("🔨 schema:", tool.inputSchema);
-    //});
-    console.log("=====================================");
-
-    // Resources
-    const resources = await mcpClient.listResources();
-    console.log("📜 Available Resources:", resources);
-
-    const llmInstruction = await mcpClient.readResource({
-      uri: "llm://instructions",
-    });
-    // Resource Content:
-    let systemInstructions = llmInstruction.contents[0].text;
-    console.log("📝 System Instructions:", systemInstructions);
-    console.log("=====================================");
-
-    // Prompts
-    const prompts = await mcpClient.listPrompts();
-    console.log("📜 Available Prompts:", prompts);
-
-    const prompt = await mcpClient.getPrompt({
-      name: "roll-dice",
-      arguments: { numDice: "3", numFaces: "12" }, // always use strings for arguments
-    });
-    let userInstructions = prompt.messages[0].content.text;
-    console.log("📝 User Instructions:", userInstructions);
-    console.log("=====================================");
+    console.log("🔧 Tools loaded:", tools);
 
     // Bind the tools to the LLM instance
     const llmWithTools = llm.bindTools(tools);
 
     let messages = [
-      ["system", systemInstructions],
-      ["user", userInstructions],
+      ["system", "you are a pizza expert"],
+      ["user", "give me pizzerias addresses in Paris"],
     ];
 
     // Invoke the LLM with the messages
@@ -147,4 +114,3 @@ transport.onerror = (error) => {
 
 // Start the client
 startClient();
-

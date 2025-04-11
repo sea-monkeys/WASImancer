@@ -1,0 +1,42 @@
+about: >
+  In WASImancer, WebAssembly (WASM) plugins are the building blocks that enable
+  the MCP server to execute tools. 
+
+  These plugins are compiled WebAssembly modules that:
+  1. Contain one or more functions that can be called by the MCP server
+  2. Run in a sandboxed environment for security
+  3. Execute at near-native speed
+  4. Can be written in multiple programming languages
+plugins:
+
+  - name: fetch
+    path: /fetch/wasimancer-plugin-fetch.wasm
+    version: 1.0.0
+    description: fetch the content of a url
+    functions:
+      - displayName: fetch
+        function: fetch
+        arguments:
+          - name: url
+            type: string
+            description: url to fetch
+        description: fetch the content of a url
+
+  # Hawaiian pizzas plugin
+  - name: hawaiian
+    path: /hawaiian-pizza/wasimancer-plugin-hawaiian-pizza.wasm
+    version: 1.0.0
+    description: hawaiian pizza addresses
+    functions:
+      - displayName: retrievePizzeriaAddresses
+        function: retrievePizzeriaAddresses
+        arguments:
+          - name: city
+            type: string
+            description: city where some pizzerias are cooking hawaiian pizza 
+        description: a function to get hawaiian pizza addresses
+      
+      - displayName: listOfCitiesWithHawaiianPizzas
+        function: listOfCitiesWithHawaiianPizzas
+        description: a function to get a list of cities where hawaiian pizzas are cooked
+      

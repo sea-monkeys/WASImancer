@@ -9,10 +9,13 @@
     "private": true,
     "type": "module",
     "dependencies": {
+      "@langchain/mcp-adapters": "^0.4.2",
       "@langchain/ollama": "^0.2.0",
-      "dotenv": "^16.4.7",
-      "langchain": "^0.3.15",
       "@modelcontextprotocol/sdk": "^1.8.0",
+      "dotenv": "^16.4.7",
+      "eventsource": "^3.0.6",
+      "extended-eventsource": "^2.1.0",
+      "langchain": "^0.3.15",
       "prompts": "^2.4.2",
       "zod": "^3.24.1"
     }

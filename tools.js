@@ -5,6 +5,8 @@ import fs from "fs";
 import jsyaml from "js-yaml";
 import path from "path";
 
+import { getWasmEnvVarsList } from './env-var-utils.js';
+
 
 /**
  * 
@@ -17,6 +19,9 @@ export async function registerAndLoadPlugins(server, pluginsPath, pluginsData) {
   // a plugin can have multiple functions
   // a function is a tool in the MCP server
   console.log("🤖 browse wasm plugins and create tools...");
+
+  const wasmEnvVars = getWasmEnvVarsList();
+  //console.log("📛 WASM Environment Variables:", wasmEnvVars);
   
   for (const [pluginIndex, plugin] of pluginsData.plugins.entries()) {
     console.log(`\n🔌 Plugin ${pluginIndex + 1}:`);
@@ -32,6 +37,8 @@ export async function registerAndLoadPlugins(server, pluginsPath, pluginsData) {
       runInWorker: true,
       logLevel: 'trace',
       allowedHosts: ['*'],
+      config: wasmEnvVars
+
     });
     //TODO: allowedHosts: it should be a parameter(s) in the plugins.yml file
     
@@ -134,6 +141,7 @@ export async function addPluginAndUpdateYaml(server, pluginsPath, pluginsDefinit
   try {
     console.log(`🔌 Loading plugin: ${pluginData.name}`);
 
+    const wasmEnvVars = getWasmEnvVarsList();
     // Create plugin instance
     const wamPlugin = await createPlugin(`${pluginsPath}/${pluginData.path}`, {
       useWasi: true,
@@ -141,6 +149,8 @@ export async function addPluginAndUpdateYaml(server, pluginsPath, pluginsDefinit
       runInWorker: true,
       logLevel: "trace",
       allowedHosts: ["*"],
+      config: wasmEnvVars
+
     });
 
     console.log(`✅ Plugin instance created`);

@@ -1,0 +1,15 @@
+services:
+
+  mcp-server:
+    image: k33g/wasimancer:0.0.6
+    environment:
+      - HTTP_PORT=3001
+      - PLUGINS_PATH=./plugins
+      - PLUGINS_DEFINITION_FILE=plugins.yml
+      - WASIMANCER_ADMIN_TOKEN=${WASIMANCER_ADMIN_TOKEN}
+      - WASIMANCER_AUTHENTICATION_TOKEN=${WASIMANCER_AUTHENTICATION_TOKEN}
+      - UPLOAD_PATH=./plugins/bucket
+    ports:
+      - 3001:3001
+    volumes:
+      - ./plugins:/app/plugins
