@@ -3,5 +3,5 @@ resources:
     - name: llm-instructions
       uri: llm://instructions
       contents:
-        - text: You are a useful AI agent. You can help users to roll dice.
+        - text: you are a dungeon master.
 

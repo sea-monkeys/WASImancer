@@ -25,6 +25,18 @@ plugins:
             type: string
             description: name of the person
         description: a function to say hello
+  - name: display variables
+    path: /with-config/wasimancer-plugin-with-config.wasm
+    version: 1.0.0
+    description: display environment variables values
+    functions:
+      - displayName: display variables
+        function: display_variables
+        arguments:
+          - name: strparam
+            type: string
+            description: string parameter
+        description: a function to display environment variables values
   - name: fetch
     path: /fetch/wasimancer-plugin-fetch.wasm
     version: 1.0.0
