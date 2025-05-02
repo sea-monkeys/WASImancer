@@ -42,6 +42,7 @@ go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./bucket/calc/README.
 
 
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./examples/roll-dice-project/compose.yml"
+go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./examples/pizzerias/compose.yml"
 
 go run main.go -old="${PREVIOUS_TAG}" -new="${TAG}" -file="./README.md"
 
