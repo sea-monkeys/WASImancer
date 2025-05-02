@@ -36,19 +36,20 @@ import { ChatOllama } from "@langchain/ollama";
 import { z } from "zod";
 import { tool } from "@langchain/core/tools";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+
 ```
 
 The code imports:
 - `ChatOllama` from LangChain to use Ollama's language models
 - `z` from Zod for schema validation
 - `tool` from LangChain core for defining tools
-- `Client` and `SSEClientTransport` from the Model Context Protocol SDK
+- `Client` and `StreamableHTTPClientTransport` from the Model Context Protocol SDK
 
 ### 2. Configuration
 
 ```javascript
-const transport = new SSEClientTransport(new URL("http://localhost:3001/sse"));
+const transport = new StreamableHTTPClientTransport(new URL("http://localhost:3001/mcp"));
 
 const llm = new ChatOllama({
   model: "qwen2.5:0.5b",
@@ -57,7 +58,7 @@ const llm = new ChatOllama({
 });
 ```
 
-- Sets up an SSE transport at `localhost:3001/sse`
+- Sets up a StreamableHTTP transport at `localhost:3001/mcp`
 - Configures a local Ollama LLM using Qwen 2.5 (`0.5b` parameter model) with deterministic outputs (temperature `0.0` because we want to make function calling thanks the tools support of Qwen 2.5)
 
 ### 3. MCP Client Setup
@@ -200,7 +201,7 @@ flowchart TB
     subgraph "Client Application"
         App["JavaScript Application"]
         MCPClient["MCP Client"]
-        Transport["SSE Transport"]
+        Transport["StreamableHTTP Transport"]
         LLM["Ollama LLM (qwen2.5:3b)"]
         Zod["Zod Schema Validation"]
         LangchainTools["LangChain Tools"]

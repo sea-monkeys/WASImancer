@@ -1,8 +1,13 @@
 import express from "express";
 import crypto from "crypto";
 
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import {
+  McpServer,
+  ResourceTemplate,
+} from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
+
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 
 import multer from "multer";
 import path from "path";
@@ -66,29 +71,45 @@ const server = new McpServer({
   },
 });
 
+// Add this after server initialization
+console.log("🔑 Server configured with bearer token:", bearerToken);
+
+function getServer() {
+  return server;
+}
+
 function getAuthenticationRequestMiddelware(bearerToken) {
-  if (bearerToken==="NO_AUTHENTICATION") {
+  if (bearerToken === "NO_AUTHENTICATION") {
     return (req, res, next) => {
       // No authentication required
       // you need to set the environment variable
       // WASIMANCER_AUTHENTICATION_TOKEN to NO_AUTHENTICATION
       next();
-    }
+    };
   } else {
     return (req, res, next) => {
       const authHeader = req.headers.authorization;
-  
+
+      if (process.env.DEBUG) {
+        console.log("✋ Debug: headers:", req.headers);
+        console.log("📝 Received auth header:", authHeader);
+        console.log("🔐 Expected token:", bearerToken);
+      }
+
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        console.log("❌ Missing or invalid Authorization header format");
         res.status(401).send("Unauthorized: Missing or invalid token");
         return;
       }
-  
+
       const token = authHeader.split(" ")[1];
       if (token !== bearerToken) {
+        console.log("❌ Token mismatch");
         res.status(401).send("Unauthorized: Invalid token");
         return;
       }
-  
+      console.log("✅ Authentication successful");
+
       next();
     };
   }
@@ -231,7 +252,46 @@ async function startServer() {
     );
   }
 
+  app.post("/mcp", authenticateRequest, async (req, res) => {
+    // In stateless mode, create a new instance of transport and server for each request
+    // to ensure complete isolation. A single instance would cause request ID collisions
+    // when multiple clients connect concurrently.
+
+    try {
+      const server = getServer();
+      const transport = new StreamableHTTPServerTransport({
+        sessionIdGenerator: undefined,
+      });
+      res.on("close", () => {
+        console.log("Request closed");
+        transport.close();
+        server.close();
+      });
+      await server.connect(transport);
+      await transport.handleRequest(req, res, req.body);
+    } catch (error) {
+      console.error("Error handling MCP request:", error);
+      if (!res.headersSent) {
+        res.status(500).json({
+          jsonrpc: "2.0",
+          error: {
+            code: -32603,
+            message: "Internal server error",
+          },
+          id: null,
+        });
+      }
+    }
+  });
+
+  /*
   app.get("/sse", authenticateRequest, async (req, res) => {
+    transport = new SSEServerTransport("/messages", res);
+    await server.connect(transport);
+  });
+  */
+
+  app.get("/mcp", authenticateRequest, async (req, res) => {
     transport = new SSEServerTransport("/messages", res);
     await server.connect(transport);
   });
@@ -243,8 +303,11 @@ async function startServer() {
   // Get HTTP_PORT from environment or default to 3001
   const HTTP_PORT = process.env.PORT || 3001;
 
-  app.listen(HTTP_PORT);
-  console.log(`🚀🤖 Server ready at http://0.0.0.0:${HTTP_PORT}`);
+  app.listen(HTTP_PORT, () => {
+    console.log(
+      `🚀🤖 MCP Stateless Streamable HTTP Server ready at http://0.0.0.0:${HTTP_PORT}`
+    );
+  });
 }
 
 startServer();

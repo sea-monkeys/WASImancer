@@ -1,4 +1,4 @@
-# WASImancer: A WebAssembly-Powered MCP SSE Server
+# WASImancer: A WebAssembly-Powered MCP StreamableHTTP Server
 
 WASImancer is an innovative Model Context Protocol (MCP) server built with Node.js that enhances tool execution through WebAssembly plugins. Leveraging the [Extism](https://extism.org/) framework, it enables seamless integration of WebAssembly modules as plugin functions, creating a flexible and powerful environment for model interactions.
 
@@ -18,9 +18,8 @@ WASImancer needs two tokens, and you can set these two tokens with environment v
 
 1. A **bearer authentication token** to protect the SSE endpoints (the communications between the MCP Client and the MCP Server), use `WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way` (if you want to disable the authentication, set it to `NO_AUTHENTICATION`).
 
-   > ⚠️ **Important**: The authentication token is used to protect the SSE endpoints. If you don't set it, anyone can connect to your server and send commands. This is a security risk, so make sure to set it in production.
+   > ⚠️ **Important**: The authentication token is used to protect the endpoints. If you don't set it, anyone can connect to your server and send commands. This is a security risk, so make sure to set it in production.
 
-   > ⚠️ **Important**: The authentication token is used to protect the SSE endpoints. If you don't set it, anyone can connect to your server and send commands. This is a security risk, so make sure to set it in production.
 2. A **bearer admin token** to protect the prompts, ressources and tools management endpoints (eg: uploading a new tool, removing a resource...), use `WASIMANCER_ADMIN_TOKEN=wasimancer-rocks`
 
 > ✋ If you don't set these tokens, the server will generate them for you at evry start (Look at the logs). You can use them to test the server, but you should set your own tokens for production.

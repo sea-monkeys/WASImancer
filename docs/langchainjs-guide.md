@@ -1,4 +1,4 @@
-# MCP SSE client and LangchainJS
+# MCP StreamableHTTP client and LangchainJS
 !!! info "🚧 work in progress"
 
 ## Overview

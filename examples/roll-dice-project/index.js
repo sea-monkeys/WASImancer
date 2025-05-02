@@ -3,14 +3,14 @@ import { ChatOllama } from "@langchain/ollama";
 //import { tool } from "@langchain/core/tools";
 
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 
 import { loadMcpTools } from "@langchain/mcp-adapters";
 
 const bearerToken = "mcp-is-the-way";
 
-// Set up the SSE client transport (with auth headers)
-const transport = new SSEClientTransport(new URL("http://localhost:3001/sse"), {
+// Set up the StreamableHTTP client transport (with auth headers)
+const transport = new StreamableHTTPClientTransport(new URL("http://localhost:3001/mcp"), {
   authProvider: {
     tokens: async () => {
       return {
