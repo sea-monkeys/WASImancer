@@ -1,7 +1,7 @@
 services:
 
   mcp-server:
-    image: k33g/wasimancer:0.0.6
+    image: k33g/wasimancer:0.0.7
     environment:
       - HTTP_PORT=3001
       - PLUGINS_PATH=./plugins
