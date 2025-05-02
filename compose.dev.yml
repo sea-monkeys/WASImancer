@@ -14,12 +14,13 @@ services:
       - PROMPTS_PATH=./prompts
       - PROMPTS_DEFINITION_FILE=prompts.yml
       - WASIMANCER_ADMIN_TOKEN=wasimancer-rocks
-      #- WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way
-      - WASIMANCER_AUTHENTICATION_TOKEN=NO_AUTHENTICATION
+      - WASIMANCER_AUTHENTICATION_TOKEN=mcp-is-the-way
+      #- WASIMANCER_AUTHENTICATION_TOKEN=NO_AUTHENTICATION
       - UPLOAD_PATH=./plugins/bucket
       # All the variables starting with WASM_ are passed as config to the Extism plugin
       - WASM_MESSAGE=wasm plugins are the way
       - WASM_VERSION=0.0.1
+      - DEBUG=true
     ports:
       - 3001:3001
     volumes:

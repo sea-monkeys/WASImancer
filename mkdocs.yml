@@ -23,7 +23,8 @@ nav:
     - 📦 Dynamic Resources: dynamic-resources-guide.md
     - 📦 Resources REST API: resources-rest-api-guide.md
     - 🗣️ Prompts: prompts-guide.md
-    - 📒 SSE Client and LangchainJS: langchainjs-guide.md
+    - ✅ Testing Guide with curl: test-with-curl.md
+    - 📒 StreamableHTTP Client and LangchainJS: langchainjs-guide.md
 
 theme:
   name: material

@@ -1,5 +1,5 @@
 # 🧙🏻‍♂️ WASImancer
-> A WebAssembly-Powered MCP SSE Server
+> A WebAssembly-Powered MCP StreamableHTTP Server
 
 ## What is WASImancer?
 
@@ -9,7 +9,7 @@ WASImancer is an innovative Model Context Protocol (MCP) server built with Node.
 
 ### Distributed Architecture with SSE Transport
 
-Unlike traditional MCP servers that use STDIO transport (requiring installation on the same machine as your AI application), WASImancer uses Server-Sent Events (SSE) transport, enabling a distributed architecture where:
+Unlike traditional MCP servers that use STDIO transport (requiring installation on the same machine as your AI application), WASImancer uses **StreamableHTTP** transport, enabling a distributed architecture where:
 
 - A single WASImancer instance can serve multiple AI applications across different machines
 - Applications can access tools, resources, and prompts remotely
@@ -19,7 +19,7 @@ Unlike traditional MCP servers that use STDIO transport (requiring installation 
 ```mermaid
 graph TD
     subgraph "Workstation A"
-        MCP[MCP SSE Server]
+        MCP[MCP StreamableHTTP Server]
     end
     
     subgraph "Workstation B"
