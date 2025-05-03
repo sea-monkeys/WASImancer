@@ -1,0 +1,1377 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="🧙🏻‍♂️ WASImancer is a WebAssembly-Powered MCP SSE Server.">
+      
+      
+        <meta name="author" content="Philippe Charrière (@k33g)">
+      
+      
+        <link rel="canonical" href="https://sea-monkeys.github.io/wasimancer/prompts-rest-api-guide/">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>WASImancer Prompt Management API Guide - WASImancer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wasimancer-prompt-management-api-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="WASImancer" class="md-header__button md-logo" aria-label="WASImancer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            WASImancer
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              WASImancer Prompt Management API Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sea-monkeys/wasimancer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sea-monkeys/wasimancer
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="WASImancer" class="md-nav__button md-logo" aria-label="WASImancer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    WASImancer
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sea-monkeys/wasimancer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sea-monkeys/wasimancer
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏠 Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wasm-plugins-concept/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔌 WebAssembly Plugin
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../go-plugin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🐿️ Create Go Plugins
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rust-plugin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🦀 Create Rust Plugins
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugins-rest-api-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌐 Plugins REST API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dynamic-resources-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Dynamic Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources-rest-api-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Resources REST API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompts-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🗣️ Prompts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test-with-curl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ✅ Testing Guide with curl
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../langchainjs-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📒 StreamableHTTP Client and LangchainJS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#administration-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Administration authentication
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-a-new-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Add a New Prompt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-update-an-existing-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Update an Existing Prompt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-remove-a-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Remove a Prompt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-prompts-in-wasimancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Prompts in WASImancer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding Prompts in WASImancer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prompt-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prompt Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#variable-substitution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variable Substitution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-prompt-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Prompt Types
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example Prompt Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conversation-starters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conversation Starters
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-message-interaction-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Message Interaction Templates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool-invocation-templates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tool Invocation Templates
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Applications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Applications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-creating-an-interactive-qa-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Creating an Interactive QA Template
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-creating-a-tool-augmented-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Creating a Tool-Augmented Prompt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#designing-effective-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Designing Effective Prompts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Organization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="wasimancer-prompt-management-api-guide">WASImancer Prompt Management API Guide</h1>
+<div class="admonition info">
+<p class="admonition-title">🚧 work in progress</p>
+</div>
+<p>This guide explains how to use WASImancer's REST API to dynamically add, update, and remove prompts without restarting the server.</p>
+<h2 id="overview">Overview</h2>
+<p>WASImancer provides a REST API that enables:</p>
+<ul>
+<li><strong>Publishing new prompts</strong> - Add template-based prompts with variable substitution</li>
+<li><strong>Updating existing prompts</strong> - Modify a prompt's structure, arguments, and templates</li>
+<li><strong>Removing prompts</strong> - Delete prompts that are no longer needed</li>
+</ul>
+<p>These operations allow you to manage your MCP server's prompts at runtime without service interruption.</p>
+<h2 id="administration-authentication">Administration authentication</h2>
+<p>All Administration API endpoints require authentication using a Bearer token. This token is configured when starting the WASImancer server using the <code>WASIMANCER_ADMIN_TOKEN</code> environment variable:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WASIMANCER_ADMIN_TOKEN=wasimancer-rocks</span>
+</code></pre></div></td></tr></table></div>
+<p>In all API requests, include this header:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>Authorization: Bearer wasimancer-rocks
+</code></pre></div></td></tr></table></div>
+<h2 id="api-endpoints">API Endpoints</h2>
+<h3 id="1-add-a-new-prompt">1. Add a New Prompt</h3>
+<p>Add a new prompt template to the server.</p>
+<p><strong>Endpoint</strong>: <code>POST /add-prompt</code></p>
+<p><strong>Headers</strong>:
+- <code>Authorization: Bearer &lt;token&gt;</code> - Authentication token
+- <code>Content-Type: application/json</code> - Content type for the request body</p>
+<p><strong>Request Body</strong>:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span>
+<span class="normal"><a href="#__codelineno-2-18">18</a></span>
+<span class="normal"><a href="#__codelineno-2-19">19</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;character-greeting&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;character&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;emotion&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="w">  </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Greet the user as \${character} feeling \${emotion}&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user&quot;</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p><strong>Success Response</strong>:
+- Status Code: 200
+- Body:
+  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;🎉 Prompt character-greeting added successfully&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// The prompt data you provided</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p><strong>Error Responses</strong>:
+- Status Code: 400 - Missing or invalid prompt data
+- Status Code: 403 - Invalid authentication token
+- Status Code: 500 - Server error</p>
+<p><strong>cURL Example</strong>:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span>
+<span class="normal"><a href="#__codelineno-4-25">25</a></span>
+<span class="normal"><a href="#__codelineno-4-26">26</a></span>
+<span class="normal"><a href="#__codelineno-4-27">27</a></span>
+<span class="normal"><a href="#__codelineno-4-28">28</a></span>
+<span class="normal"><a href="#__codelineno-4-29">29</a></span>
+<span class="normal"><a href="#__codelineno-4-30">30</a></span>
+<span class="normal"><a href="#__codelineno-4-31">31</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">&quot;wasimancer-rocks&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="nv">ADD_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:3001/add-prompt&quot;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="s">{</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="s">  &quot;name&quot;: &quot;character-greeting&quot;,</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="s">  &quot;arguments&quot;: [</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="s">    {</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="s">      &quot;name&quot;: &quot;character&quot;,</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="s">      &quot;type&quot;: &quot;string&quot;</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="s">    },</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="s">    {</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="s">      &quot;name&quot;: &quot;emotion&quot;,</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="s">      &quot;type&quot;: &quot;string&quot;</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="s">    }</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="s">  ],</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19"></a><span class="s">  &quot;messages&quot;: [</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="s">    {</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21"></a><span class="s">      &quot;text&quot;: &quot;Greet the user as \${character} feeling \${emotion}&quot;,</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22"></a><span class="s">      &quot;role&quot;: &quot;user&quot;</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23"></a><span class="s">    }</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24"></a><span class="s">  ]</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25"></a><span class="s">}</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26"></a><span class="s">EOM</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27"></a>
+<a id="__codelineno-4-28" name="__codelineno-4-28"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="si">${</span><span class="nv">ADD_ENDPOINT</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="2-update-an-existing-prompt">2. Update an Existing Prompt</h3>
+<p>Update an existing prompt's definition, arguments, or messages.</p>
+<p><strong>Endpoint</strong>: <code>PUT /update-prompt/:name</code></p>
+<p><strong>URL Parameters</strong>:
+- <code>:name</code> - The name of the prompt to update</p>
+<p><strong>Headers</strong>:
+- <code>Authorization: Bearer &lt;token&gt;</code> - Authentication token
+- <code>Content-Type: application/json</code> - Content type</p>
+<p><strong>Request Body</strong>:
+Same format as for adding a prompt, but must include the same name as in the URL.</p>
+<p><strong>Success Response</strong>:
+- Status Code: 200
+- Body:
+  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">3</a></span>
+<span class="normal"><a href="#__codelineno-5-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;🎉 Prompt character-greeting updated successfully&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;prompt&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// The updated prompt data</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p><strong>Error Responses</strong>:
+- Status Code: 400 - Missing or invalid prompt data
+- Status Code: 403 - Invalid authentication token
+- Status Code: 404 - Prompt not found
+- Status Code: 500 - Server error</p>
+<p><strong>cURL Example</strong>:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span>
+<span class="normal"><a href="#__codelineno-6-13">13</a></span>
+<span class="normal"><a href="#__codelineno-6-14">14</a></span>
+<span class="normal"><a href="#__codelineno-6-15">15</a></span>
+<span class="normal"><a href="#__codelineno-6-16">16</a></span>
+<span class="normal"><a href="#__codelineno-6-17">17</a></span>
+<span class="normal"><a href="#__codelineno-6-18">18</a></span>
+<span class="normal"><a href="#__codelineno-6-19">19</a></span>
+<span class="normal"><a href="#__codelineno-6-20">20</a></span>
+<span class="normal"><a href="#__codelineno-6-21">21</a></span>
+<span class="normal"><a href="#__codelineno-6-22">22</a></span>
+<span class="normal"><a href="#__codelineno-6-23">23</a></span>
+<span class="normal"><a href="#__codelineno-6-24">24</a></span>
+<span class="normal"><a href="#__codelineno-6-25">25</a></span>
+<span class="normal"><a href="#__codelineno-6-26">26</a></span>
+<span class="normal"><a href="#__codelineno-6-27">27</a></span>
+<span class="normal"><a href="#__codelineno-6-28">28</a></span>
+<span class="normal"><a href="#__codelineno-6-29">29</a></span>
+<span class="normal"><a href="#__codelineno-6-30">30</a></span>
+<span class="normal"><a href="#__codelineno-6-31">31</a></span>
+<span class="normal"><a href="#__codelineno-6-32">32</a></span>
+<span class="normal"><a href="#__codelineno-6-33">33</a></span>
+<span class="normal"><a href="#__codelineno-6-34">34</a></span>
+<span class="normal"><a href="#__codelineno-6-35">35</a></span>
+<span class="normal"><a href="#__codelineno-6-36">36</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">&quot;wasimancer-rocks&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="nv">PROMPT_NAME</span><span class="o">=</span><span class="s2">&quot;character-greeting&quot;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="nv">UPDATE_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:3001/update-prompt/</span><span class="si">${</span><span class="nv">PROMPT_NAME</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="s">{</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="s">  &quot;name&quot;: &quot;character-greeting&quot;,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="s">  &quot;arguments&quot;: [</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="s">    {</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="s">      &quot;name&quot;: &quot;character&quot;,</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="s">      &quot;type&quot;: &quot;string&quot;</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="s">    },</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="s">    {</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="s">      &quot;name&quot;: &quot;emotion&quot;,</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="s">      &quot;type&quot;: &quot;string&quot;</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18"></a><span class="s">    },</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19"></a><span class="s">    {</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20"></a><span class="s">      &quot;name&quot;: &quot;setting&quot;,</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21"></a><span class="s">      &quot;type&quot;: &quot;string&quot;</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22"></a><span class="s">    }</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23"></a><span class="s">  ],</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24"></a><span class="s">  &quot;messages&quot;: [</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25"></a><span class="s">    {</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26"></a><span class="s">      &quot;text&quot;: &quot;Greet the user as \${character} feeling \${emotion} in a \${setting} setting&quot;,</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27"></a><span class="s">      &quot;role&quot;: &quot;user&quot;</span>
+<a id="__codelineno-6-28" name="__codelineno-6-28"></a><span class="s">    }</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29"></a><span class="s">  ]</span>
+<a id="__codelineno-6-30" name="__codelineno-6-30"></a><span class="s">}</span>
+<a id="__codelineno-6-31" name="__codelineno-6-31"></a><span class="s">EOM</span>
+<a id="__codelineno-6-32" name="__codelineno-6-32"></a>
+<a id="__codelineno-6-33" name="__codelineno-6-33"></a>curl<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span><span class="si">${</span><span class="nv">UPDATE_ENDPOINT</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-34" name="__codelineno-6-34"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-35" name="__codelineno-6-35"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-36" name="__codelineno-6-36"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="3-remove-a-prompt">3. Remove a Prompt</h3>
+<p>Remove a prompt from the server.</p>
+<p><strong>Endpoint</strong>: <code>DELETE /remove-prompt/:name</code></p>
+<p><strong>URL Parameters</strong>:
+- <code>:name</code> - The name of the prompt to remove</p>
+<p><strong>Headers</strong>:
+- <code>Authorization: Bearer &lt;token&gt;</code> - Authentication token</p>
+<p><strong>Success Response</strong>:
+- Status Code: 200
+- Body:
+  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
+<span class="normal"><a href="#__codelineno-7-2">2</a></span>
+<span class="normal"><a href="#__codelineno-7-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;🙂 Prompt character-greeting removed successfully&quot;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p><strong>Error Responses</strong>:
+- Status Code: 400 - Missing prompt name
+- Status Code: 403 - Invalid authentication token
+- Status Code: 404 - Prompt not found
+- Status Code: 500 - Server error</p>
+<p><strong>cURL Example</strong>:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
+<span class="normal"><a href="#__codelineno-8-2">2</a></span>
+<span class="normal"><a href="#__codelineno-8-3">3</a></span>
+<span class="normal"><a href="#__codelineno-8-4">4</a></span>
+<span class="normal"><a href="#__codelineno-8-5">5</a></span>
+<span class="normal"><a href="#__codelineno-8-6">6</a></span>
+<span class="normal"><a href="#__codelineno-8-7">7</a></span>
+<span class="normal"><a href="#__codelineno-8-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">&quot;wasimancer-rocks&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3"></a><span class="nv">PROMPT_NAME</span><span class="o">=</span><span class="s2">&quot;character-greeting&quot;</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="nv">REMOVE_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:3001/remove-prompt/</span><span class="si">${</span><span class="nv">PROMPT_NAME</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7"></a>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span><span class="si">${</span><span class="nv">REMOVE_ENDPOINT</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="understanding-prompts-in-wasimancer">Understanding Prompts in WASImancer</h2>
+<h3 id="prompt-structure">Prompt Structure</h3>
+<p>A prompt in WASImancer consists of:</p>
+<ol>
+<li><strong>Name</strong>: A unique identifier for the prompt</li>
+<li><strong>Arguments</strong>: Variables that can be substituted in the template</li>
+<li>Each argument has a name and type (string, number, boolean)</li>
+<li><strong>Messages</strong>: An array of message templates</li>
+<li>Each message has text content with variable placeholders</li>
+<li>Each message has a role (user, assistant, system)</li>
+</ol>
+<h3 id="variable-substitution">Variable Substitution</h3>
+<p>The core functionality of prompts is variable substitution, where placeholders in the form <code>${variableName}</code> are replaced with actual values provided by the client.</p>
+<p>For example, if a prompt template contains:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a>Hello, ${name}! Welcome to ${service}.
+</code></pre></div></td></tr></table></div></p>
+<p>And a client provides:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span>
+<span class="normal"><a href="#__codelineno-10-3">3</a></span>
+<span class="normal"><a href="#__codelineno-10-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="p">{</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="w">  </span><span class="nt">&quot;service&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;WASImancer&quot;</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p>The resulting text would be:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a>Hello, Alice! Welcome to WASImancer.
+</code></pre></div></td></tr></table></div></p>
+<h2 id="example-prompt-types">Example Prompt Types</h2>
+<h3 id="conversation-starters">Conversation Starters</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-12-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-12-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-12-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-12-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-12-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-12-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-12-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-12-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-12-10">10</a></span>
+<span class="normal"><a href="#__codelineno-12-11">11</a></span>
+<span class="normal"><a href="#__codelineno-12-12">12</a></span>
+<span class="normal"><a href="#__codelineno-12-13">13</a></span>
+<span class="normal"><a href="#__codelineno-12-14">14</a></span>
+<span class="normal"><a href="#__codelineno-12-15">15</a></span>
+<span class="normal"><a href="#__codelineno-12-16">16</a></span>
+<span class="normal"><a href="#__codelineno-12-17">17</a></span>
+<span class="normal"><a href="#__codelineno-12-18">18</a></span>
+<span class="normal"><a href="#__codelineno-12-19">19</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="p">{</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;creative-writing-coach&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;genre&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;topic&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13"></a><span class="w">  </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15"></a><span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I am a writing coach specializing in \${genre} fiction. Let&#39;s develop a story about \${topic}.&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16"></a><span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="multi-message-interaction-templates">Multi-Message Interaction Templates</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-13-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-13-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-13-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-13-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-13-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-13-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-13-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-13-10">10</a></span>
+<span class="normal"><a href="#__codelineno-13-11">11</a></span>
+<span class="normal"><a href="#__codelineno-13-12">12</a></span>
+<span class="normal"><a href="#__codelineno-13-13">13</a></span>
+<span class="normal"><a href="#__codelineno-13-14">14</a></span>
+<span class="normal"><a href="#__codelineno-13-15">15</a></span>
+<span class="normal"><a href="#__codelineno-13-16">16</a></span>
+<span class="normal"><a href="#__codelineno-13-17">17</a></span>
+<span class="normal"><a href="#__codelineno-13-18">18</a></span>
+<span class="normal"><a href="#__codelineno-13-19">19</a></span>
+<span class="normal"><a href="#__codelineno-13-20">20</a></span>
+<span class="normal"><a href="#__codelineno-13-21">21</a></span>
+<span class="normal"><a href="#__codelineno-13-22">22</a></span>
+<span class="normal"><a href="#__codelineno-13-23">23</a></span>
+<span class="normal"><a href="#__codelineno-13-24">24</a></span>
+<span class="normal"><a href="#__codelineno-13-25">25</a></span>
+<span class="normal"><a href="#__codelineno-13-26">26</a></span>
+<span class="normal"><a href="#__codelineno-13-27">27</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="p">{</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;interview-simulation&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;position&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;candidateName&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13"></a><span class="w">  </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15"></a><span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I am an interviewer for a \${position} position. I&#39;ll be conducting your interview today.&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16"></a><span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19"></a><span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hello, my name is \${candidateName} and I&#39;m applying for the ${position} role.&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20"></a><span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user&quot;</span>
+<a id="__codelineno-13-21" name="__codelineno-13-21"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-13-22" name="__codelineno-13-22"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23"></a><span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Great to meet you, \${candidateName}. Can you tell me about your experience with this type of work?&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-24" name="__codelineno-13-24"></a><span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assistant&quot;</span>
+<a id="__codelineno-13-25" name="__codelineno-13-25"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-13-26" name="__codelineno-13-26"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-13-27" name="__codelineno-13-27"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="tool-invocation-templates">Tool Invocation Templates</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-14-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-14-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-14-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-14-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-14-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-14-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-14-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-14-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-14-10">10</a></span>
+<span class="normal"><a href="#__codelineno-14-11">11</a></span>
+<span class="normal"><a href="#__codelineno-14-12">12</a></span>
+<span class="normal"><a href="#__codelineno-14-13">13</a></span>
+<span class="normal"><a href="#__codelineno-14-14">14</a></span>
+<span class="normal"><a href="#__codelineno-14-15">15</a></span>
+<span class="normal"><a href="#__codelineno-14-16">16</a></span>
+<span class="normal"><a href="#__codelineno-14-17">17</a></span>
+<span class="normal"><a href="#__codelineno-14-18">18</a></span>
+<span class="normal"><a href="#__codelineno-14-19">19</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="p">{</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;search-request&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="w">  </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;query&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9"></a><span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;maxResults&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12"></a><span class="w">  </span><span class="p">],</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13"></a><span class="w">  </span><span class="nt">&quot;messages&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15"></a><span class="w">      </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Please search for information about &#39;\${query}&#39; and return up to \${maxResults} results.&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-16" name="__codelineno-14-16"></a><span class="w">      </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user&quot;</span>
+<a id="__codelineno-14-17" name="__codelineno-14-17"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="practical-applications">Practical Applications</h2>
+<h3 id="1-creating-an-interactive-qa-template">1. Creating an Interactive QA Template</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-15-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-15-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-15-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-15-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-15-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-15-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-15-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-15-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-15-10">10</a></span>
+<span class="normal"><a href="#__codelineno-15-11">11</a></span>
+<span class="normal"><a href="#__codelineno-15-12">12</a></span>
+<span class="normal"><a href="#__codelineno-15-13">13</a></span>
+<span class="normal"><a href="#__codelineno-15-14">14</a></span>
+<span class="normal"><a href="#__codelineno-15-15">15</a></span>
+<span class="normal"><a href="#__codelineno-15-16">16</a></span>
+<span class="normal"><a href="#__codelineno-15-17">17</a></span>
+<span class="normal"><a href="#__codelineno-15-18">18</a></span>
+<span class="normal"><a href="#__codelineno-15-19">19</a></span>
+<span class="normal"><a href="#__codelineno-15-20">20</a></span>
+<span class="normal"><a href="#__codelineno-15-21">21</a></span>
+<span class="normal"><a href="#__codelineno-15-22">22</a></span>
+<span class="normal"><a href="#__codelineno-15-23">23</a></span>
+<span class="normal"><a href="#__codelineno-15-24">24</a></span>
+<span class="normal"><a href="#__codelineno-15-25">25</a></span>
+<span class="normal"><a href="#__codelineno-15-26">26</a></span>
+<span class="normal"><a href="#__codelineno-15-27">27</a></span>
+<span class="normal"><a href="#__codelineno-15-28">28</a></span>
+<span class="normal"><a href="#__codelineno-15-29">29</a></span>
+<span class="normal"><a href="#__codelineno-15-30">30</a></span>
+<span class="normal"><a href="#__codelineno-15-31">31</a></span>
+<span class="normal"><a href="#__codelineno-15-32">32</a></span>
+<span class="normal"><a href="#__codelineno-15-33">33</a></span>
+<span class="normal"><a href="#__codelineno-15-34">34</a></span>
+<span class="normal"><a href="#__codelineno-15-35">35</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">&quot;wasimancer-rocks&quot;</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4"></a><span class="nv">ADD_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:3001/add-prompt&quot;</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5"></a>
+<a id="__codelineno-15-6" name="__codelineno-15-6"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7"></a><span class="s">{</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8"></a><span class="s">  &quot;name&quot;: &quot;qa-expert&quot;,</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9"></a><span class="s">  &quot;arguments&quot;: [</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10"></a><span class="s">    {</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11"></a><span class="s">      &quot;name&quot;: &quot;topic&quot;,</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12"></a><span class="s">      &quot;type&quot;: &quot;string&quot;</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13"></a><span class="s">    },</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14"></a><span class="s">    {</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15"></a><span class="s">      &quot;name&quot;: &quot;expertise_level&quot;,</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16"></a><span class="s">      &quot;type&quot;: &quot;string&quot;</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17"></a><span class="s">    }</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18"></a><span class="s">  ],</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19"></a><span class="s">  &quot;messages&quot;: [</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20"></a><span class="s">    {</span>
+<a id="__codelineno-15-21" name="__codelineno-15-21"></a><span class="s">      &quot;text&quot;: &quot;You are an expert on \${topic}. Provide answers suitable for someone with \${expertise_level} knowledge.&quot;,</span>
+<a id="__codelineno-15-22" name="__codelineno-15-22"></a><span class="s">      &quot;role&quot;: &quot;assistant&quot;</span>
+<a id="__codelineno-15-23" name="__codelineno-15-23"></a><span class="s">    },</span>
+<a id="__codelineno-15-24" name="__codelineno-15-24"></a><span class="s">    {</span>
+<a id="__codelineno-15-25" name="__codelineno-15-25"></a><span class="s">      &quot;text&quot;: &quot;I&#39;d like to learn more about \${topic}. Can you help me?&quot;,</span>
+<a id="__codelineno-15-26" name="__codelineno-15-26"></a><span class="s">      &quot;role&quot;: &quot;user&quot;</span>
+<a id="__codelineno-15-27" name="__codelineno-15-27"></a><span class="s">    }</span>
+<a id="__codelineno-15-28" name="__codelineno-15-28"></a><span class="s">  ]</span>
+<a id="__codelineno-15-29" name="__codelineno-15-29"></a><span class="s">}</span>
+<a id="__codelineno-15-30" name="__codelineno-15-30"></a><span class="s">EOM</span>
+<a id="__codelineno-15-31" name="__codelineno-15-31"></a>
+<a id="__codelineno-15-32" name="__codelineno-15-32"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="si">${</span><span class="nv">ADD_ENDPOINT</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-33" name="__codelineno-15-33"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-34" name="__codelineno-15-34"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-35" name="__codelineno-15-35"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="2-creating-a-tool-augmented-prompt">2. Creating a Tool-Augmented Prompt</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-16-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-16-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-16-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-16-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-16-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-16-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-16-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-16-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-16-10">10</a></span>
+<span class="normal"><a href="#__codelineno-16-11">11</a></span>
+<span class="normal"><a href="#__codelineno-16-12">12</a></span>
+<span class="normal"><a href="#__codelineno-16-13">13</a></span>
+<span class="normal"><a href="#__codelineno-16-14">14</a></span>
+<span class="normal"><a href="#__codelineno-16-15">15</a></span>
+<span class="normal"><a href="#__codelineno-16-16">16</a></span>
+<span class="normal"><a href="#__codelineno-16-17">17</a></span>
+<span class="normal"><a href="#__codelineno-16-18">18</a></span>
+<span class="normal"><a href="#__codelineno-16-19">19</a></span>
+<span class="normal"><a href="#__codelineno-16-20">20</a></span>
+<span class="normal"><a href="#__codelineno-16-21">21</a></span>
+<span class="normal"><a href="#__codelineno-16-22">22</a></span>
+<span class="normal"><a href="#__codelineno-16-23">23</a></span>
+<span class="normal"><a href="#__codelineno-16-24">24</a></span>
+<span class="normal"><a href="#__codelineno-16-25">25</a></span>
+<span class="normal"><a href="#__codelineno-16-26">26</a></span>
+<span class="normal"><a href="#__codelineno-16-27">27</a></span>
+<span class="normal"><a href="#__codelineno-16-28">28</a></span>
+<span class="normal"><a href="#__codelineno-16-29">29</a></span>
+<span class="normal"><a href="#__codelineno-16-30">30</a></span>
+<span class="normal"><a href="#__codelineno-16-31">31</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">&quot;wasimancer-rocks&quot;</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4"></a><span class="nv">ADD_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:3001/add-prompt&quot;</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5"></a>
+<a id="__codelineno-16-6" name="__codelineno-16-6"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7"></a><span class="s">{</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8"></a><span class="s">  &quot;name&quot;: &quot;dice-game-master&quot;,</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9"></a><span class="s">  &quot;arguments&quot;: [</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10"></a><span class="s">    {</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11"></a><span class="s">      &quot;name&quot;: &quot;character_name&quot;,</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12"></a><span class="s">      &quot;type&quot;: &quot;string&quot;</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13"></a><span class="s">    },</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14"></a><span class="s">    {</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15"></a><span class="s">      &quot;name&quot;: &quot;difficulty&quot;,</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16"></a><span class="s">      &quot;type&quot;: &quot;string&quot;</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17"></a><span class="s">    }</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18"></a><span class="s">  ],</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19"></a><span class="s">  &quot;messages&quot;: [</span>
+<a id="__codelineno-16-20" name="__codelineno-16-20"></a><span class="s">    {</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21"></a><span class="s">      &quot;text&quot;: &quot;You are playing as \${character_name} in a tabletop RPG. The game master sets a \${difficulty} challenge. Roll the dice to determine your success.&quot;,</span>
+<a id="__codelineno-16-22" name="__codelineno-16-22"></a><span class="s">      &quot;role&quot;: &quot;user&quot;</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23"></a><span class="s">    }</span>
+<a id="__codelineno-16-24" name="__codelineno-16-24"></a><span class="s">  ]</span>
+<a id="__codelineno-16-25" name="__codelineno-16-25"></a><span class="s">}</span>
+<a id="__codelineno-16-26" name="__codelineno-16-26"></a><span class="s">EOM</span>
+<a id="__codelineno-16-27" name="__codelineno-16-27"></a>
+<a id="__codelineno-16-28" name="__codelineno-16-28"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="si">${</span><span class="nv">ADD_ENDPOINT</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-29" name="__codelineno-16-29"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-30" name="__codelineno-16-30"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-31" name="__codelineno-16-31"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="designing-effective-prompts">Designing Effective Prompts</h3>
+<ol>
+<li><strong>Be Clear and Specific</strong>: Prompts should provide clear instructions</li>
+<li><strong>Use Appropriate Context</strong>: Include relevant context in the prompt</li>
+<li><strong>Maintain Consistency</strong>: Use consistent language and structure</li>
+<li><strong>Consider Roles</strong>: Use "user" and "assistant" roles appropriately</li>
+</ol>
+<h3 id="organization">Organization</h3>
+<ol>
+<li><strong>Group Related Prompts</strong>: Create prompt families for related use cases</li>
+<li><strong>Use Descriptive Names</strong>: Choose names that clearly indicate purpose</li>
+<li><strong>Document Arguments</strong>: Provide clear descriptions for each argument</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>WASImancer's Prompt Management API provides a powerful way to dynamically extend your MCP server's capabilities without service interruption. By leveraging this API, you can implement dynamic prompt templates that enhance your AI applications with structured, reusable interaction patterns.</p>
+<p>The combination of template-based prompts with dynamic management capabilities allows you to create rich, interactive experiences for users while maintaining flexibility and control over your system's behavior.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 - 2025 Philippe Charrière
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1326 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="🧙🏻‍♂️ WASImancer is a WebAssembly-Powered MCP SSE Server.">
+      
+      
+        <meta name="author" content="Philippe Charrière (@k33g)">
+      
+      
+        <link rel="canonical" href="https://sea-monkeys.github.io/wasimancer/test-with-curl/">
+      
+      
+        <link rel="prev" href="../prompts-guide/">
+      
+      
+        <link rel="next" href="../langchainjs-guide/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>✅ Testing Guide with curl - WASImancer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wasimancer-mcp-streamablehttp-server-testing-guide-with-curl" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="WASImancer" class="md-header__button md-logo" aria-label="WASImancer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            WASImancer
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ✅ Testing Guide with curl
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sea-monkeys/wasimancer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sea-monkeys/wasimancer
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="WASImancer" class="md-nav__button md-logo" aria-label="WASImancer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    WASImancer
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sea-monkeys/wasimancer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sea-monkeys/wasimancer
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏠 Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wasm-plugins-concept/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔌 WebAssembly Plugin
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../go-plugin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🐿️ Create Go Plugins
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rust-plugin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🦀 Create Rust Plugins
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugins-rest-api-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌐 Plugins REST API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dynamic-resources-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Dynamic Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources-rest-api-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Resources REST API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompts-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🗣️ Prompts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    ✅ Testing Guide with curl
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    ✅ Testing Guide with curl
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-testing-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available Testing Scripts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Available Testing Scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#listing-available-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Listing Available Resources
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing Resources
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Prompts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-rpc-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON-RPC Structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response Processing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-your-own-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Your Own Tests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Methods
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../langchainjs-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📒 StreamableHTTP Client and LangchainJS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-testing-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available Testing Scripts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Available Testing Scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#listing-available-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Listing Available Resources
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing Resources
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Prompts
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-rpc-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON-RPC Structure
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#response-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Response Processing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-your-own-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Your Own Tests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Methods
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="wasimancer-mcp-streamablehttp-server-testing-guide-with-curl">WASImancer MCP StreamableHTTP Server Testing Guide (with curl)</h1>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This document explains how to test the WASImancer MCP (Model Control Protocol) StreamableHTTP Server using the provided shell scripts.</p>
+</div>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>A running WASImancer MCP StreamableHTTP Server (default: http://localhost:3001)</li>
+<li>Authentication token (default: mcp-is-the-way)</li>
+<li>curl and jq installed on your system</li>
+</ul>
+<h2 id="configuration">Configuration</h2>
+<p>All scripts use the following common configuration:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nv">MCP_SERVER</span><span class="o">=</span>http://localhost:3001
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="nv">AUTHENTICATION_TOKEN</span><span class="o">=</span>mcp-is-the-way
+</code></pre></div></td></tr></table></div>
+<blockquote>
+<p>Look at the <code>./tests</code> folder for the scripts.</p>
+</blockquote>
+<h2 id="available-testing-scripts">Available Testing Scripts</h2>
+<h3 id="listing-available-resources">Listing Available Resources</h3>
+<ol>
+<li><strong>List Available Tools</strong></li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span>
+<span class="normal"><a href="#__codelineno-1-18">18</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="nv">MCP_SERVER</span><span class="o">=</span>http://localhost:3001
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="nv">AUTHENTICATION_TOKEN</span><span class="o">=</span>mcp-is-the-way
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="s">{</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="s">  &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="s">  &quot;id&quot;: &quot;1&quot;,</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="s">  &quot;method&quot;: &quot;tools/list&quot;,</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="s">  &quot;params&quot;: {}</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="s">}</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="s">EOM</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13"></a>curl<span class="w"> </span><span class="si">${</span><span class="nv">MCP_SERVER</span><span class="si">}</span>/mcp<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">AUTHENTICATION_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json, text/event-stream&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^data:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^data: //&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>Lists all available tools that can be called through the MCP server.</p>
+<ol>
+<li><strong>List Resource Templates</strong></li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span>
+<span class="normal"><a href="#__codelineno-2-15">15</a></span>
+<span class="normal"><a href="#__codelineno-2-16">16</a></span>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span>
+<span class="normal"><a href="#__codelineno-2-18">18</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="nv">MCP_SERVER</span><span class="o">=</span>http://localhost:3001
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="nv">AUTHENTICATION_TOKEN</span><span class="o">=</span>mcp-is-the-way
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="s">{</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="s">  &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="s">  &quot;id&quot;: &quot;1&quot;,</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="s">  &quot;method&quot;: &quot;resources/templates/list&quot;,</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="s">  &quot;params&quot;: {}</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="s">}</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="s">EOM</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a>
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a>curl<span class="w"> </span><span class="si">${</span><span class="nv">MCP_SERVER</span><span class="si">}</span>/mcp<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">AUTHENTICATION_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json, text/event-stream&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^data:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^data: //&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>Lists all available resource templates that can be used.</p>
+<ol>
+<li><strong>List Resources</strong></li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-3-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-3-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-3-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-3-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-3-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-3-10">10</a></span>
+<span class="normal"><a href="#__codelineno-3-11">11</a></span>
+<span class="normal"><a href="#__codelineno-3-12">12</a></span>
+<span class="normal"><a href="#__codelineno-3-13">13</a></span>
+<span class="normal"><a href="#__codelineno-3-14">14</a></span>
+<span class="normal"><a href="#__codelineno-3-15">15</a></span>
+<span class="normal"><a href="#__codelineno-3-16">16</a></span>
+<span class="normal"><a href="#__codelineno-3-17">17</a></span>
+<span class="normal"><a href="#__codelineno-3-18">18</a></span>
+<span class="normal"><a href="#__codelineno-3-19">19</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="nv">MCP_SERVER</span><span class="o">=</span>http://localhost:3001
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="nv">AUTHENTICATION_TOKEN</span><span class="o">=</span>mcp-is-the-way
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="s">{</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="s">  &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="s">  &quot;id&quot;: &quot;1&quot;,</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="s">  &quot;method&quot;: &quot;resources/list&quot;,</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="s">  &quot;params&quot;: {}</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="s">}</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="s">EOM</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13"></a>
+<a id="__codelineno-3-14" name="__codelineno-3-14"></a>curl<span class="w"> </span><span class="si">${</span><span class="nv">MCP_SERVER</span><span class="si">}</span>/mcp<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">AUTHENTICATION_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json, text/event-stream&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^data:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^data: //&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>Lists all available resources that can be accessed.</p>
+<ol>
+<li><strong>List Prompts</strong></li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="nv">MCP_SERVER</span><span class="o">=</span>http://localhost:3001
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="nv">AUTHENTICATION_TOKEN</span><span class="o">=</span>mcp-is-the-way
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="s">{</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="s">  &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="s">  &quot;id&quot;: &quot;1&quot;,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="s">  &quot;method&quot;: &quot;prompts/list&quot;,</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="s">  &quot;params&quot;: {}</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="s">}</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="s">EOM</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13"></a>curl<span class="w"> </span><span class="si">${</span><span class="nv">MCP_SERVER</span><span class="si">}</span>/mcp<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">AUTHENTICATION_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json, text/event-stream&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^data:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^data: //&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>Lists all available prompts that can be used.</p>
+<h3 id="using-tools">Using Tools</h3>
+<ol>
+<li><strong>Roll Dice Tool</strong></li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-5-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-5-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-5-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-5-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-5-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-5-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-5-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-5-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-5-10">10</a></span>
+<span class="normal"><a href="#__codelineno-5-11">11</a></span>
+<span class="normal"><a href="#__codelineno-5-12">12</a></span>
+<span class="normal"><a href="#__codelineno-5-13">13</a></span>
+<span class="normal"><a href="#__codelineno-5-14">14</a></span>
+<span class="normal"><a href="#__codelineno-5-15">15</a></span>
+<span class="normal"><a href="#__codelineno-5-16">16</a></span>
+<span class="normal"><a href="#__codelineno-5-17">17</a></span>
+<span class="normal"><a href="#__codelineno-5-18">18</a></span>
+<span class="normal"><a href="#__codelineno-5-19">19</a></span>
+<span class="normal"><a href="#__codelineno-5-20">20</a></span>
+<span class="normal"><a href="#__codelineno-5-21">21</a></span>
+<span class="normal"><a href="#__codelineno-5-22">22</a></span>
+<span class="normal"><a href="#__codelineno-5-23">23</a></span>
+<span class="normal"><a href="#__codelineno-5-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="nv">MCP_SERVER</span><span class="o">=</span>http://localhost:3001
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="nv">AUTHENTICATION_TOKEN</span><span class="o">=</span>mcp-is-the-way
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="s">{</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6"></a><span class="s">  &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7"></a><span class="s">  &quot;id&quot;: &quot;1&quot;,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8"></a><span class="s">  &quot;method&quot;: &quot;tools/call&quot;,</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9"></a><span class="s">  &quot;params&quot;: {</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10"></a><span class="s">    &quot;name&quot;: &quot;rollDice&quot;,</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11"></a><span class="s">    &quot;arguments&quot;: {</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12"></a><span class="s">      &quot;numDice&quot;: 3,</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13"></a><span class="s">      &quot;numFaces&quot;: 6</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14"></a><span class="s">    }</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15"></a><span class="s">  }</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="s">}</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17"></a><span class="s">EOM</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18"></a>
+<a id="__codelineno-5-19" name="__codelineno-5-19"></a>curl<span class="w"> </span><span class="si">${</span><span class="nv">MCP_SERVER</span><span class="si">}</span>/mcp<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">AUTHENTICATION_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json, text/event-stream&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^data:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^data: //&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>Calls the <code>rollDice</code> tool with parameters to roll 3 dice with 6 faces each.</p>
+<ol>
+<li><strong>Addition Tool</strong></li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span>
+<span class="normal"><a href="#__codelineno-6-13">13</a></span>
+<span class="normal"><a href="#__codelineno-6-14">14</a></span>
+<span class="normal"><a href="#__codelineno-6-15">15</a></span>
+<span class="normal"><a href="#__codelineno-6-16">16</a></span>
+<span class="normal"><a href="#__codelineno-6-17">17</a></span>
+<span class="normal"><a href="#__codelineno-6-18">18</a></span>
+<span class="normal"><a href="#__codelineno-6-19">19</a></span>
+<span class="normal"><a href="#__codelineno-6-20">20</a></span>
+<span class="normal"><a href="#__codelineno-6-21">21</a></span>
+<span class="normal"><a href="#__codelineno-6-22">22</a></span>
+<span class="normal"><a href="#__codelineno-6-23">23</a></span>
+<span class="normal"><a href="#__codelineno-6-24">24</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="nv">MCP_SERVER</span><span class="o">=</span>http://localhost:3001
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="nv">AUTHENTICATION_TOKEN</span><span class="o">=</span>mcp-is-the-way
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="s">{</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="s">  &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="s">  &quot;id&quot;: &quot;1&quot;,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="s">  &quot;method&quot;: &quot;tools/call&quot;,</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="s">  &quot;params&quot;: {</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="s">    &quot;name&quot;: &quot;add with rust&quot;,</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="s">    &quot;arguments&quot;: {</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="s">      &quot;left&quot;: 23,</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="s">      &quot;right&quot;: 19</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="s">    }</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="s">  }</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="s">}</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="s">EOM</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18"></a>
+<a id="__codelineno-6-19" name="__codelineno-6-19"></a>curl<span class="w"> </span><span class="si">${</span><span class="nv">MCP_SERVER</span><span class="si">}</span>/mcp<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">AUTHENTICATION_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json, text/event-stream&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^data:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^data: //&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>Calls the <code>add with rust</code> tool to add two numbers (23 + 19).</p>
+<h3 id="accessing-resources">Accessing Resources</h3>
+<ol>
+<li><strong>Access Resource Template</strong></li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-7-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-7-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-7-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-7-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-7-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-7-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-7-10">10</a></span>
+<span class="normal"><a href="#__codelineno-7-11">11</a></span>
+<span class="normal"><a href="#__codelineno-7-12">12</a></span>
+<span class="normal"><a href="#__codelineno-7-13">13</a></span>
+<span class="normal"><a href="#__codelineno-7-14">14</a></span>
+<span class="normal"><a href="#__codelineno-7-15">15</a></span>
+<span class="normal"><a href="#__codelineno-7-16">16</a></span>
+<span class="normal"><a href="#__codelineno-7-17">17</a></span>
+<span class="normal"><a href="#__codelineno-7-18">18</a></span>
+<span class="normal"><a href="#__codelineno-7-19">19</a></span>
+<span class="normal"><a href="#__codelineno-7-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="nv">MCP_SERVER</span><span class="o">=</span>http://localhost:3001
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="nv">AUTHENTICATION_TOKEN</span><span class="o">=</span>mcp-is-the-way
+<a id="__codelineno-7-3" name="__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="s">{</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="s">  &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="s">  &quot;id&quot;: &quot;1&quot;,</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="s">  &quot;method&quot;: &quot;resources/read&quot;,</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9"></a><span class="s">  &quot;params&quot;: {</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="s">    &quot;uri&quot;: &quot;greet-user://Bob/Morane&quot;</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11"></a><span class="s">  }</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12"></a><span class="s">}</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13"></a><span class="s">EOM</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14"></a>
+<a id="__codelineno-7-15" name="__codelineno-7-15"></a>curl<span class="w"> </span><span class="si">${</span><span class="nv">MCP_SERVER</span><span class="si">}</span>/mcp<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">AUTHENTICATION_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json, text/event-stream&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^data:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^data: //&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>Reads a resource using a template URI: <code>greet-user://Bob/Morane</code></p>
+<ol>
+<li><strong>Access Resource</strong></li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-8-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-8-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-8-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-8-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-8-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-8-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-8-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-8-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-8-10">10</a></span>
+<span class="normal"><a href="#__codelineno-8-11">11</a></span>
+<span class="normal"><a href="#__codelineno-8-12">12</a></span>
+<span class="normal"><a href="#__codelineno-8-13">13</a></span>
+<span class="normal"><a href="#__codelineno-8-14">14</a></span>
+<span class="normal"><a href="#__codelineno-8-15">15</a></span>
+<span class="normal"><a href="#__codelineno-8-16">16</a></span>
+<span class="normal"><a href="#__codelineno-8-17">17</a></span>
+<span class="normal"><a href="#__codelineno-8-18">18</a></span>
+<span class="normal"><a href="#__codelineno-8-19">19</a></span>
+<span class="normal"><a href="#__codelineno-8-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="nv">MCP_SERVER</span><span class="o">=</span>http://localhost:3001
+<a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="nv">AUTHENTICATION_TOKEN</span><span class="o">=</span>mcp-is-the-way
+<a id="__codelineno-8-3" name="__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="s">{</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6"></a><span class="s">  &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7"></a><span class="s">  &quot;id&quot;: &quot;1&quot;,</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="s">  &quot;method&quot;: &quot;resources/read&quot;,</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9"></a><span class="s">  &quot;params&quot;: {</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10"></a><span class="s">    &quot;uri&quot;: &quot;config://server&quot;</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11"></a><span class="s">  }</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12"></a><span class="s">}</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13"></a><span class="s">EOM</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14"></a>
+<a id="__codelineno-8-15" name="__codelineno-8-15"></a>curl<span class="w"> </span><span class="si">${</span><span class="nv">MCP_SERVER</span><span class="si">}</span>/mcp<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">AUTHENTICATION_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json, text/event-stream&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^data:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^data: //&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>Reads a resource directly using the URI: <code>config://server</code></p>
+<h3 id="using-prompts">Using Prompts</h3>
+<ol>
+<li><strong>Use Prompt</strong></li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-9-10">10</a></span>
+<span class="normal"><a href="#__codelineno-9-11">11</a></span>
+<span class="normal"><a href="#__codelineno-9-12">12</a></span>
+<span class="normal"><a href="#__codelineno-9-13">13</a></span>
+<span class="normal"><a href="#__codelineno-9-14">14</a></span>
+<span class="normal"><a href="#__codelineno-9-15">15</a></span>
+<span class="normal"><a href="#__codelineno-9-16">16</a></span>
+<span class="normal"><a href="#__codelineno-9-17">17</a></span>
+<span class="normal"><a href="#__codelineno-9-18">18</a></span>
+<span class="normal"><a href="#__codelineno-9-19">19</a></span>
+<span class="normal"><a href="#__codelineno-9-20">20</a></span>
+<span class="normal"><a href="#__codelineno-9-21">21</a></span>
+<span class="normal"><a href="#__codelineno-9-22">22</a></span>
+<span class="normal"><a href="#__codelineno-9-23">23</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="nv">MCP_SERVER</span><span class="o">=</span>http://localhost:3001
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="nv">AUTHENTICATION_TOKEN</span><span class="o">=</span>mcp-is-the-way
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="s">{</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="s">  &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="s">  &quot;id&quot;: &quot;1&quot;,</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="s">  &quot;method&quot;: &quot;prompts/get&quot;,</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="s">  &quot;params&quot;: {</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10"></a><span class="s">    &quot;name&quot;: &quot;greet-user&quot;,</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11"></a><span class="s">    &quot;arguments&quot;: {</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12"></a><span class="s">      &quot;nickName&quot;: &quot;Bob Morane&quot;</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13"></a><span class="s">    }  </span>
+<a id="__codelineno-9-14" name="__codelineno-9-14"></a><span class="s">  }</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="s">}</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16"></a><span class="s">EOM</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17"></a>
+<a id="__codelineno-9-18" name="__codelineno-9-18"></a>curl<span class="w"> </span><span class="si">${</span><span class="nv">MCP_SERVER</span><span class="si">}</span>/mcp<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">AUTHENTICATION_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json, text/event-stream&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^data:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^data: //&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>Gets a prompt named "greet-user" with an argument for the nickname.</p>
+<h2 id="json-rpc-structure">JSON-RPC Structure</h2>
+<p>All requests follow the JSON-RPC 2.0 specification with:</p>
+<ul>
+<li><code>jsonrpc</code>: Always "2.0"</li>
+<li><code>id</code>: Request identifier</li>
+<li><code>method</code>: The API method to call</li>
+<li><code>params</code>: Method-specific parameters</li>
+</ul>
+<h2 id="response-processing">Response Processing</h2>
+<p>All scripts process the server response with:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">2</a></span>
+<span class="normal"><a href="#__codelineno-10-3">3</a></span>
+<span class="normal"><a href="#__codelineno-10-4">4</a></span>
+<span class="normal"><a href="#__codelineno-10-5">5</a></span>
+<span class="normal"><a href="#__codelineno-10-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a>curl<span class="w"> </span><span class="si">${</span><span class="nv">MCP_SERVER</span><span class="si">}</span>/mcp<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">AUTHENTICATION_TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Accept: application/json, text/event-stream&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="w">  </span>-d<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^data:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^data: //&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+</code></pre></div></td></tr></table></div>
+<p>This:
+1. Sends a POST request to the server
+2. Sets appropriate headers including authentication
+3. Filters response stream data with <code>grep "^data:"</code>
+4. Removes the <code>data:</code> prefix with <code>sed</code>
+5. Pretty-prints the JSON with <code>jq</code></p>
+<h2 id="creating-your-own-tests">Creating Your Own Tests</h2>
+<p>To create a new test script:</p>
+<ol>
+<li>Copy an existing script as a template</li>
+<li>Modify the <code>method</code> and <code>params</code> in the JSON data</li>
+<li>Make the script executable with <code>chmod +x your-script.sh</code></li>
+<li>Run with <code>./your-script.sh</code></li>
+</ol>
+<h2 id="common-methods">Common Methods</h2>
+<ul>
+<li><code>tools/list</code>: List available tools</li>
+<li><code>tools/call</code>: Call a tool with arguments</li>
+<li><code>resources/templates/list</code>: List resource templates</li>
+<li><code>resources/list</code>: List available resources</li>
+<li><code>resources/read</code>: Read a resource with a specific URI</li>
+<li><code>prompts/list</code>: List available prompts</li>
+<li><code>prompts/get</code>: Get a specific prompt with arguments</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li>Check that the server is running at the specified address</li>
+<li>Verify that the authentication token is correct</li>
+<li>Ensure the <code>curl</code> and <code>jq</code> commands are available in your environment</li>
+<li>Examine the full response for error messages if parsing fails</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 - 2025 Philippe Charrière
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

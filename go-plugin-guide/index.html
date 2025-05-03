@@ -1,0 +1,1555 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="🧙🏻‍♂️ WASImancer is a WebAssembly-Powered MCP SSE Server.">
+      
+      
+        <meta name="author" content="Philippe Charrière (@k33g)">
+      
+      
+        <link rel="canonical" href="https://sea-monkeys.github.io/wasimancer/go-plugin-guide/">
+      
+      
+        <link rel="prev" href="../wasm-plugins-concept/">
+      
+      
+        <link rel="next" href="../rust-plugin-guide/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>🐿️ Create Go Plugins - WASImancer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#creating-go-plugins-for-wasimancer-a-step-by-step-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="WASImancer" class="md-header__button md-logo" aria-label="WASImancer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            WASImancer
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🐿️ Create Go Plugins
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sea-monkeys/wasimancer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sea-monkeys/wasimancer
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="WASImancer" class="md-nav__button md-logo" aria-label="WASImancer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    WASImancer
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sea-monkeys/wasimancer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sea-monkeys/wasimancer
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏠 Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wasm-plugins-concept/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔌 WebAssembly Plugin
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    🐿️ Create Go Plugins
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    🐿️ Create Go Plugins
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-go-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the Go Module
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-the-plugin-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Writing the Plugin Code
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing the Plugin Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the Code
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-the-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building the Plugin
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building the Plugin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-local-tinygo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Local TinyGo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Docker
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-the-plugin-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing the Plugin Locally
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing the Plugin Locally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-local-extism-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Local Extism CLI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-docker_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Docker
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-plugin-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the Plugin Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-the-plugin-to-wasimancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying the Plugin to WASImancer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploying the Plugin to WASImancer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-manual-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 1: Manual Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-using-the-upload-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 2: Using the Upload API
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-the-plugin-in-wasimancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing the Plugin in WASImancer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging Tips
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rust-plugin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🦀 Create Rust Plugins
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plugins-rest-api-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌐 Plugins REST API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dynamic-resources-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Dynamic Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources-rest-api-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Resources REST API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompts-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🗣️ Prompts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test-with-curl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ✅ Testing Guide with curl
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../langchainjs-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📒 StreamableHTTP Client and LangchainJS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Project Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-go-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the Go Module
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-the-plugin-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Writing the Plugin Code
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing the Plugin Code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-the-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the Code
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-the-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building the Plugin
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building the Plugin">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-local-tinygo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Local TinyGo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Docker
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-the-plugin-locally" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing the Plugin Locally
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing the Plugin Locally">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-local-extism-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Local Extism CLI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-docker_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Docker
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-plugin-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the Plugin Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-the-plugin-to-wasimancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying the Plugin to WASImancer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploying the Plugin to WASImancer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#method-1-manual-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 1: Manual Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#method-2-using-the-upload-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Method 2: Using the Upload API
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-the-plugin-in-wasimancer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing the Plugin in WASImancer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging Tips
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="creating-go-plugins-for-wasimancer-a-step-by-step-guide">Creating Go Plugins for WASImancer: A Step-by-Step Guide</h1>
+<div class="admonition info">
+<p class="admonition-title">🚧 work in progress</p>
+</div>
+<p>This guide will walk you through the process of creating, building, and running a WebAssembly plugin for WASImancer using Go. We'll create a simple plugin that generates random character names.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>To follow this guide, you'll need:</p>
+<ul>
+<li><a href="https://golang.org/dl/">Go</a> (1.18 or newer) installed</li>
+<li><a href="https://tinygo.org/getting-started/install/">TinyGo</a> installed (required for WebAssembly compilation)</li>
+<li><a href="https://github.com/extism/cli">Extism CLI</a> installed (for testing)</li>
+</ul>
+<p>Alternatively, you can use the Docker image provided by WASImancer:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>docker<span class="w"> </span>pull<span class="w"> </span>k33g/wasm-builder:0.0.7
+</code></pre></div></td></tr></table></div></p>
+<h2 id="project-setup">Project Setup</h2>
+<p>Let's create a new plugin project:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>character-name-generator
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>character-name-generator
+</code></pre></div></td></tr></table></div>
+<h2 id="creating-the-go-module">Creating the Go Module</h2>
+<p>Initialize a new Go module:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>go<span class="w"> </span>mod<span class="w"> </span>init<span class="w"> </span>character-name-generator
+</code></pre></div></td></tr></table></div>
+<p>Add the Extism PDK (Plugin Development Kit) as a dependency:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>go<span class="w"> </span>get<span class="w"> </span>github.com/extism/go-pdk
+</code></pre></div></td></tr></table></div>
+<h2 id="writing-the-plugin-code">Writing the Plugin Code</h2>
+<p>Create a file named <code>main.go</code> with the following content:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span>
+<span class="normal"><a href="#__codelineno-4-25">25</a></span>
+<span class="normal"><a href="#__codelineno-4-26">26</a></span>
+<span class="normal"><a href="#__codelineno-4-27">27</a></span>
+<span class="normal"><a href="#__codelineno-4-28">28</a></span>
+<span class="normal"><a href="#__codelineno-4-29">29</a></span>
+<span class="normal"><a href="#__codelineno-4-30">30</a></span>
+<span class="normal"><a href="#__codelineno-4-31">31</a></span>
+<span class="normal"><a href="#__codelineno-4-32">32</a></span>
+<span class="normal"><a href="#__codelineno-4-33">33</a></span>
+<span class="normal"><a href="#__codelineno-4-34">34</a></span>
+<span class="normal"><a href="#__codelineno-4-35">35</a></span>
+<span class="normal"><a href="#__codelineno-4-36">36</a></span>
+<span class="normal"><a href="#__codelineno-4-37">37</a></span>
+<span class="normal"><a href="#__codelineno-4-38">38</a></span>
+<span class="normal"><a href="#__codelineno-4-39">39</a></span>
+<span class="normal"><a href="#__codelineno-4-40">40</a></span>
+<span class="normal"><a href="#__codelineno-4-41">41</a></span>
+<span class="normal"><a href="#__codelineno-4-42">42</a></span>
+<span class="normal"><a href="#__codelineno-4-43">43</a></span>
+<span class="normal"><a href="#__codelineno-4-44">44</a></span>
+<span class="normal"><a href="#__codelineno-4-45">45</a></span>
+<span class="normal"><a href="#__codelineno-4-46">46</a></span>
+<span class="normal"><a href="#__codelineno-4-47">47</a></span>
+<span class="normal"><a href="#__codelineno-4-48">48</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">    </span><span class="s">&quot;math/rand&quot;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">    </span><span class="s">&quot;time&quot;</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="w">    </span><span class="s">&quot;github.com/extism/go-pdk&quot;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="p">)</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="c1">// Word lists for generating character names</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="kd">var</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="w">    </span><span class="nx">adjectives</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="w">        </span><span class="s">&quot;admirable&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;brave&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;charming&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;determined&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;elegant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;fantastic&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;graceful&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="w">        </span><span class="s">&quot;heroic&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;inspiring&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;jolly&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;kind&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;loyal&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;majestic&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;noble&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="w">        </span><span class="s">&quot;optimistic&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;peaceful&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;quirky&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;resilient&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;serene&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;tenacious&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;unique&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="w">        </span><span class="s">&quot;valiant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wonderful&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;xenial&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;zealous&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;agile&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;brilliant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;curious&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="w">        </span><span class="s">&quot;daring&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;energetic&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;fierce&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;generous&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;honest&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;imaginative&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;jovial&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19"></a>
+<a id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="w">    </span><span class="nx">nouns</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21"></a><span class="w">        </span><span class="s">&quot;eagle&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;whale&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hummingbird&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dolphin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;elephant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;falcon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gorilla&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22"></a><span class="w">        </span><span class="s">&quot;owl&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;iguana&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;jaguar&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;koala&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;leopard&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;medusa&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;narwhal&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23"></a><span class="w">        </span><span class="s">&quot;orca&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;panther&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;quokka&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;raccoon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salamander&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;tiger&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;unicorn&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24"></a><span class="w">        </span><span class="s">&quot;vulture&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wombat&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;xerus&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;yak&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;zebra&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;albatross&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bison&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chameleon&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25"></a><span class="w">        </span><span class="s">&quot;dragon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;squirrel&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;flamingo&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gazelle&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hippocampus&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ibis&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27"></a><span class="p">)</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28"></a>
+<a id="__codelineno-4-29" name="__codelineno-4-29"></a><span class="c1">//export GenerateCharacterName</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30"></a><span class="kd">func</span><span class="w"> </span><span class="nx">GenerateCharacterName</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31"></a><span class="w">    </span><span class="c1">// Initialize random number generator with a time-based seed</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32"></a><span class="w">    </span><span class="nx">r</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">rand</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="nx">rand</span><span class="p">.</span><span class="nx">NewSource</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">().</span><span class="nx">UnixNano</span><span class="p">()))</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33"></a>
+<a id="__codelineno-4-34" name="__codelineno-4-34"></a><span class="w">    </span><span class="c1">// Select a random adjective and noun</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35"></a><span class="w">    </span><span class="nx">adj</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">adjectives</span><span class="p">[</span><span class="nx">r</span><span class="p">.</span><span class="nx">Intn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">adjectives</span><span class="p">))]</span>
+<a id="__codelineno-4-36" name="__codelineno-4-36"></a><span class="w">    </span><span class="nx">noun</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">nouns</span><span class="p">[</span><span class="nx">r</span><span class="p">.</span><span class="nx">Intn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">nouns</span><span class="p">))]</span>
+<a id="__codelineno-4-37" name="__codelineno-4-37"></a>
+<a id="__codelineno-4-38" name="__codelineno-4-38"></a><span class="w">    </span><span class="c1">// Combine with a hyphen, GitHub-style</span>
+<a id="__codelineno-4-39" name="__codelineno-4-39"></a><span class="w">    </span><span class="nx">output</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">adj</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">noun</span>
+<a id="__codelineno-4-40" name="__codelineno-4-40"></a>
+<a id="__codelineno-4-41" name="__codelineno-4-41"></a><span class="w">    </span><span class="c1">// Return the value to the host</span>
+<a id="__codelineno-4-42" name="__codelineno-4-42"></a><span class="w">    </span><span class="nx">mem</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">pdk</span><span class="p">.</span><span class="nx">AllocateString</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span>
+<a id="__codelineno-4-43" name="__codelineno-4-43"></a><span class="w">    </span><span class="nx">pdk</span><span class="p">.</span><span class="nx">OutputMemory</span><span class="p">(</span><span class="nx">mem</span><span class="p">)</span>
+<a id="__codelineno-4-44" name="__codelineno-4-44"></a><span class="p">}</span>
+<a id="__codelineno-4-45" name="__codelineno-4-45"></a>
+<a id="__codelineno-4-46" name="__codelineno-4-46"></a><span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-47" name="__codelineno-4-47"></a><span class="w">    </span><span class="c1">// Empty main function required for compilation</span>
+<a id="__codelineno-4-48" name="__codelineno-4-48"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="understanding-the-code">Understanding the Code</h3>
+<ol>
+<li>
+<p>We import the <code>github.com/extism/go-pdk</code> package, which provides the interface between our Go code and the WebAssembly host environment.</p>
+</li>
+<li>
+<p>We define two slices of strings: <code>adjectives</code> and <code>nouns</code>, which will be used to generate random character names.</p>
+</li>
+<li>
+<p>We define a function <code>GenerateCharacterName</code> with the <code>//export</code> comment, which marks this function as exportable from the WebAssembly module.</p>
+</li>
+<li>
+<p>Inside the function, we:</p>
+</li>
+<li>Initialize a random number generator</li>
+<li>Select a random adjective and noun</li>
+<li>Combine them with a hyphen to create a character name</li>
+<li>
+<p>Allocate memory for the string and output it to the host</p>
+</li>
+<li>
+<p>The <code>main()</code> function is empty but required for compilation.</p>
+</li>
+</ol>
+<h2 id="building-the-plugin">Building the Plugin</h2>
+<h3 id="using-local-tinygo">Using Local TinyGo</h3>
+<p>To compile your Go code to WebAssembly, run:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>tinygo<span class="w"> </span>build<span class="w"> </span>-scheduler<span class="o">=</span>none<span class="w"> </span>--no-debug<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">  </span>-o<span class="w"> </span>character-name-generator.wasm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">  </span>-target<span class="w"> </span>wasi<span class="w"> </span>main.go
+</code></pre></div></td></tr></table></div>
+<h3 id="using-docker">Using Docker</h3>
+<p>If you're using the WASImancer's Docker image:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
+<span class="normal"><a href="#__codelineno-6-2">2</a></span>
+<span class="normal"><a href="#__codelineno-6-3">3</a></span>
+<span class="normal"><a href="#__codelineno-6-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/character-name-generator<span class="w"> </span>-w<span class="w"> </span>/character-name-generator<span class="w"> </span>k33g/wasm-builder:0.0.7<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="w">  </span>tinygo<span class="w"> </span>build<span class="w"> </span>-scheduler<span class="o">=</span>none<span class="w"> </span>--no-debug<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="w">    </span>-o<span class="w"> </span>character-name-generator.wasm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">    </span>-target<span class="w"> </span>wasi<span class="w"> </span>main.go
+</code></pre></div></td></tr></table></div>
+<p>This will create a file called <code>character-name-generator.wasm</code> in your project directory.</p>
+<h2 id="testing-the-plugin-locally">Testing the Plugin Locally</h2>
+<p>You can test your plugin using the Extism CLI before deploying it to WASImancer:</p>
+<h3 id="using-local-extism-cli">Using Local Extism CLI</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a>extism<span class="w"> </span>call<span class="w"> </span>character-name-generator.wasm<span class="w"> </span>GenerateCharacterName<span class="w"> </span>--wasi
+</code></pre></div></td></tr></table></div>
+<h3 id="using-docker_1">Using Docker</h3>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
+<span class="normal"><a href="#__codelineno-8-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/character-name-generator<span class="w"> </span>-w<span class="w"> </span>/character-name-generator<span class="w"> </span>k33g/wasm-builder:0.0.7<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="w">  </span>extism<span class="w"> </span>call<span class="w"> </span>character-name-generator.wasm<span class="w"> </span>GenerateCharacterName<span class="w"> </span>--wasi
+</code></pre></div></td></tr></table></div>
+<p>You should see a randomly generated character name as output, like <code>brave-dolphin</code> or <code>tenacious-dragon</code>.</p>
+<h2 id="creating-the-plugin-configuration">Creating the Plugin Configuration</h2>
+<p>To use your plugin with WASImancer, you need to create a configuration in the <code>plugins.yml</code> file. Add the following entry:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-9-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="nt">plugins</span><span class="p">:</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">character-name-generator</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./bucket/character-name-generator.wasm</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0.0</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a character name generator</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="w">    </span><span class="nt">functions</span><span class="p">:</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">displayName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GenerateCharacterName</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="w">        </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GenerateCharacterName</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="w">        </span><span class="nt">arguments</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10"></a><span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a function to generate a character name</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="deploying-the-plugin-to-wasimancer">Deploying the Plugin to WASImancer</h2>
+<h3 id="method-1-manual-deployment">Method 1: Manual Deployment</h3>
+<ol>
+<li>
+<p>Copy your WebAssembly file to the WASImancer plugins directory:
+   <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a>cp<span class="w"> </span>character-name-generator.wasm<span class="w"> </span>/path/to/wasimancer/plugins/bucket/
+</code></pre></div></td></tr></table></div></p>
+</li>
+<li>
+<p>Restart WASImancer or use the hot-reload API (next method).</p>
+</li>
+</ol>
+<h3 id="method-2-using-the-upload-api">Method 2: Using the Upload API</h3>
+<p>You can use the WASImancer API to upload your plugin without restarting the server:</p>
+<ol>
+<li>Create a shell script named <code>publish.sh</code> with the following content:</li>
+</ol>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-11-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-11-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-11-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-11-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-11-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-11-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-11-10">10</a></span>
+<span class="normal"><a href="#__codelineno-11-11">11</a></span>
+<span class="normal"><a href="#__codelineno-11-12">12</a></span>
+<span class="normal"><a href="#__codelineno-11-13">13</a></span>
+<span class="normal"><a href="#__codelineno-11-14">14</a></span>
+<span class="normal"><a href="#__codelineno-11-15">15</a></span>
+<span class="normal"><a href="#__codelineno-11-16">16</a></span>
+<span class="normal"><a href="#__codelineno-11-17">17</a></span>
+<span class="normal"><a href="#__codelineno-11-18">18</a></span>
+<span class="normal"><a href="#__codelineno-11-19">19</a></span>
+<span class="normal"><a href="#__codelineno-11-20">20</a></span>
+<span class="normal"><a href="#__codelineno-11-21">21</a></span>
+<span class="normal"><a href="#__codelineno-11-22">22</a></span>
+<span class="normal"><a href="#__codelineno-11-23">23</a></span>
+<span class="normal"><a href="#__codelineno-11-24">24</a></span>
+<span class="normal"><a href="#__codelineno-11-25">25</a></span>
+<span class="normal"><a href="#__codelineno-11-26">26</a></span>
+<span class="normal"><a href="#__codelineno-11-27">27</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">&quot;wasimancer-rocks&quot;</span><span class="w">  </span><span class="c1"># Use your configured token</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="nv">UPLOAD_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:3001/upload-plugin&quot;</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="nv">WASM_FILE</span><span class="o">=</span><span class="s2">&quot;./character-name-generator.wasm&quot;</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="s">{</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="s">  &quot;name&quot;: &quot;character-name-generator&quot;,</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10"></a><span class="s">  &quot;path&quot;: &quot;./bucket/character-name-generator.wasm&quot;,</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11"></a><span class="s">  &quot;version&quot;: &quot;1.0.0&quot;,</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12"></a><span class="s">  &quot;description&quot;: &quot;a character name generator&quot;,</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13"></a><span class="s">  &quot;functions&quot;: [</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14"></a><span class="s">    {</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15"></a><span class="s">      &quot;displayName&quot;: &quot;GenerateCharacterName&quot;,</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16"></a><span class="s">      &quot;function&quot;: &quot;GenerateCharacterName&quot;,</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17"></a><span class="s">      &quot;arguments&quot;: [],</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18"></a><span class="s">      &quot;description&quot;: &quot;a function to generate a character name&quot;</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19"></a><span class="s">    }</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20"></a><span class="s">  ]</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21"></a><span class="s">}</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22"></a><span class="s">EOM</span>
+<a id="__codelineno-11-23" name="__codelineno-11-23"></a>
+<a id="__codelineno-11-24" name="__codelineno-11-24"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="si">${</span><span class="nv">UPLOAD_ENDPOINT</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-25" name="__codelineno-11-25"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-26" name="__codelineno-11-26"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;wasmFile=@</span><span class="si">${</span><span class="nv">WASM_FILE</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-27" name="__codelineno-11-27"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;pluginData=</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<ol>
+<li>Make the script executable and run it:
+   <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
+<span class="normal"><a href="#__codelineno-12-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a>chmod<span class="w"> </span>+x<span class="w"> </span>publish.sh
+<a id="__codelineno-12-2" name="__codelineno-12-2"></a>./publish.sh
+</code></pre></div></td></tr></table></div></li>
+</ol>
+<h2 id="testing-the-plugin-in-wasimancer">Testing the Plugin in WASImancer</h2>
+<p>You can test your deployed plugin using the MCP Inspector:</p>
+<ol>
+<li>
+<p>Start the Inspector:
+   <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1"></a>npx<span class="w"> </span>@modelcontextprotocol/inspector
+</code></pre></div></td></tr></table></div></p>
+</li>
+<li>
+<p>Connect to your WASImancer instance (typically at <code>http://localhost:3001/sse</code>).</p>
+</li>
+<li>
+<p>Navigate to the "Tools" tab, find your plugin, and click "Run Tool".</p>
+</li>
+</ol>
+<!--
+## Creating a Plugin with Arguments
+
+Let's modify our plugin to accept arguments. Create a new file called `main_with_args.go`:
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-14-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-14-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-14-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-14-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-14-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-14-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-14-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-14-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-14-10">10</a></span>
+<span class="normal"><a href="#__codelineno-14-11">11</a></span>
+<span class="normal"><a href="#__codelineno-14-12">12</a></span>
+<span class="normal"><a href="#__codelineno-14-13">13</a></span>
+<span class="normal"><a href="#__codelineno-14-14">14</a></span>
+<span class="normal"><a href="#__codelineno-14-15">15</a></span>
+<span class="normal"><a href="#__codelineno-14-16">16</a></span>
+<span class="normal"><a href="#__codelineno-14-17">17</a></span>
+<span class="normal"><a href="#__codelineno-14-18">18</a></span>
+<span class="normal"><a href="#__codelineno-14-19">19</a></span>
+<span class="normal"><a href="#__codelineno-14-20">20</a></span>
+<span class="normal"><a href="#__codelineno-14-21">21</a></span>
+<span class="normal"><a href="#__codelineno-14-22">22</a></span>
+<span class="normal"><a href="#__codelineno-14-23">23</a></span>
+<span class="normal"><a href="#__codelineno-14-24">24</a></span>
+<span class="normal"><a href="#__codelineno-14-25">25</a></span>
+<span class="normal"><a href="#__codelineno-14-26">26</a></span>
+<span class="normal"><a href="#__codelineno-14-27">27</a></span>
+<span class="normal"><a href="#__codelineno-14-28">28</a></span>
+<span class="normal"><a href="#__codelineno-14-29">29</a></span>
+<span class="normal"><a href="#__codelineno-14-30">30</a></span>
+<span class="normal"><a href="#__codelineno-14-31">31</a></span>
+<span class="normal"><a href="#__codelineno-14-32">32</a></span>
+<span class="normal"><a href="#__codelineno-14-33">33</a></span>
+<span class="normal"><a href="#__codelineno-14-34">34</a></span>
+<span class="normal"><a href="#__codelineno-14-35">35</a></span>
+<span class="normal"><a href="#__codelineno-14-36">36</a></span>
+<span class="normal"><a href="#__codelineno-14-37">37</a></span>
+<span class="normal"><a href="#__codelineno-14-38">38</a></span>
+<span class="normal"><a href="#__codelineno-14-39">39</a></span>
+<span class="normal"><a href="#__codelineno-14-40">40</a></span>
+<span class="normal"><a href="#__codelineno-14-41">41</a></span>
+<span class="normal"><a href="#__codelineno-14-42">42</a></span>
+<span class="normal"><a href="#__codelineno-14-43">43</a></span>
+<span class="normal"><a href="#__codelineno-14-44">44</a></span>
+<span class="normal"><a href="#__codelineno-14-45">45</a></span>
+<span class="normal"><a href="#__codelineno-14-46">46</a></span>
+<span class="normal"><a href="#__codelineno-14-47">47</a></span>
+<span class="normal"><a href="#__codelineno-14-48">48</a></span>
+<span class="normal"><a href="#__codelineno-14-49">49</a></span>
+<span class="normal"><a href="#__codelineno-14-50">50</a></span>
+<span class="normal"><a href="#__codelineno-14-51">51</a></span>
+<span class="normal"><a href="#__codelineno-14-52">52</a></span>
+<span class="normal"><a href="#__codelineno-14-53">53</a></span>
+<span class="normal"><a href="#__codelineno-14-54">54</a></span>
+<span class="normal"><a href="#__codelineno-14-55">55</a></span>
+<span class="normal"><a href="#__codelineno-14-56">56</a></span>
+<span class="normal"><a href="#__codelineno-14-57">57</a></span>
+<span class="normal"><a href="#__codelineno-14-58">58</a></span>
+<span class="normal"><a href="#__codelineno-14-59">59</a></span>
+<span class="normal"><a href="#__codelineno-14-60">60</a></span>
+<span class="normal"><a href="#__codelineno-14-61">61</a></span>
+<span class="normal"><a href="#__codelineno-14-62">62</a></span>
+<span class="normal"><a href="#__codelineno-14-63">63</a></span>
+<span class="normal"><a href="#__codelineno-14-64">64</a></span>
+<span class="normal"><a href="#__codelineno-14-65">65</a></span>
+<span class="normal"><a href="#__codelineno-14-66">66</a></span>
+<span class="normal"><a href="#__codelineno-14-67">67</a></span>
+<span class="normal"><a href="#__codelineno-14-68">68</a></span>
+<span class="normal"><a href="#__codelineno-14-69">69</a></span>
+<span class="normal"><a href="#__codelineno-14-70">70</a></span>
+<span class="normal"><a href="#__codelineno-14-71">71</a></span>
+<span class="normal"><a href="#__codelineno-14-72">72</a></span>
+<span class="normal"><a href="#__codelineno-14-73">73</a></span>
+<span class="normal"><a href="#__codelineno-14-74">74</a></span>
+<span class="normal"><a href="#__codelineno-14-75">75</a></span>
+<span class="normal"><a href="#__codelineno-14-76">76</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3"></a><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="w">    </span><span class="s">&quot;encoding/json&quot;</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="w">    </span><span class="s">&quot;math/rand&quot;</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="w">    </span><span class="s">&quot;strings&quot;</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7"></a><span class="w">    </span><span class="s">&quot;time&quot;</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8"></a>
+<a id="__codelineno-14-9" name="__codelineno-14-9"></a><span class="w">    </span><span class="s">&quot;github.com/extism/go-pdk&quot;</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10"></a><span class="p">)</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11"></a>
+<a id="__codelineno-14-12" name="__codelineno-14-12"></a><span class="c1">// Word lists (same as before)</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13"></a><span class="kd">var</span><span class="w"> </span><span class="p">(</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14"></a><span class="w">    </span><span class="nx">adjectives</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15"></a><span class="w">        </span><span class="s">&quot;admirable&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;brave&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;charming&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;determined&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;elegant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;fantastic&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;graceful&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-16" name="__codelineno-14-16"></a><span class="w">        </span><span class="s">&quot;heroic&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;inspiring&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;jolly&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;kind&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;loyal&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;majestic&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;noble&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-17" name="__codelineno-14-17"></a><span class="w">        </span><span class="s">&quot;optimistic&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;peaceful&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;quirky&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;resilient&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;serene&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;tenacious&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;unique&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18"></a><span class="w">        </span><span class="s">&quot;valiant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wonderful&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;xenial&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;zealous&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;agile&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;brilliant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;curious&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19"></a><span class="w">        </span><span class="s">&quot;daring&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;energetic&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;fierce&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;generous&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;honest&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;imaginative&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;jovial&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-20" name="__codelineno-14-20"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-14-21" name="__codelineno-14-21"></a>
+<a id="__codelineno-14-22" name="__codelineno-14-22"></a><span class="w">    </span><span class="nx">nouns</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span><span class="kt">string</span><span class="p">{</span>
+<a id="__codelineno-14-23" name="__codelineno-14-23"></a><span class="w">        </span><span class="s">&quot;eagle&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;whale&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hummingbird&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;dolphin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;elephant&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;falcon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gorilla&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-24" name="__codelineno-14-24"></a><span class="w">        </span><span class="s">&quot;owl&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;iguana&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;jaguar&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;koala&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;leopard&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;medusa&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;narwhal&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-25" name="__codelineno-14-25"></a><span class="w">        </span><span class="s">&quot;orca&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;panther&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;quokka&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;raccoon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;salamander&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;tiger&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;unicorn&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-26" name="__codelineno-14-26"></a><span class="w">        </span><span class="s">&quot;vulture&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;wombat&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;xerus&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;yak&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;zebra&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;albatross&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;bison&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chameleon&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-27" name="__codelineno-14-27"></a><span class="w">        </span><span class="s">&quot;dragon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;squirrel&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;flamingo&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;gazelle&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hippocampus&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ibis&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-28" name="__codelineno-14-28"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-14-29" name="__codelineno-14-29"></a><span class="p">)</span>
+<a id="__codelineno-14-30" name="__codelineno-14-30"></a>
+<a id="__codelineno-14-31" name="__codelineno-14-31"></a><span class="c1">// Arguments structure for the function</span>
+<a id="__codelineno-14-32" name="__codelineno-14-32"></a><span class="kd">type</span><span class="w"> </span><span class="nx">Arguments</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-33" name="__codelineno-14-33"></a><span class="w">    </span><span class="nx">Prefix</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="s">`json:&quot;prefix&quot;`</span>
+<a id="__codelineno-14-34" name="__codelineno-14-34"></a><span class="w">    </span><span class="nx">Count</span><span class="w">  </span><span class="kt">int</span><span class="w">    </span><span class="s">`json:&quot;count&quot;`</span>
+<a id="__codelineno-14-35" name="__codelineno-14-35"></a><span class="p">}</span>
+<a id="__codelineno-14-36" name="__codelineno-14-36"></a>
+<a id="__codelineno-14-37" name="__codelineno-14-37"></a><span class="c1">//export GenerateCharacterNames</span>
+<a id="__codelineno-14-38" name="__codelineno-14-38"></a><span class="kd">func</span><span class="w"> </span><span class="nx">GenerateCharacterNames</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-39" name="__codelineno-14-39"></a><span class="w">    </span><span class="c1">// Get input arguments</span>
+<a id="__codelineno-14-40" name="__codelineno-14-40"></a><span class="w">    </span><span class="nx">arguments</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">pdk</span><span class="p">.</span><span class="nx">InputString</span><span class="p">()</span>
+<a id="__codelineno-14-41" name="__codelineno-14-41"></a>
+<a id="__codelineno-14-42" name="__codelineno-14-42"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">args</span><span class="w"> </span><span class="nx">Arguments</span>
+<a id="__codelineno-14-43" name="__codelineno-14-43"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">json</span><span class="p">.</span><span class="nx">Unmarshal</span><span class="p">([]</span><span class="nb">byte</span><span class="p">(</span><span class="nx">arguments</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">args</span><span class="p">);</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-44" name="__codelineno-14-44"></a><span class="w">        </span><span class="nx">pdk</span><span class="p">.</span><span class="nx">OutputString</span><span class="p">(</span><span class="s">&quot;Error parsing arguments: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">err</span><span class="p">.</span><span class="nx">Error</span><span class="p">())</span>
+<a id="__codelineno-14-45" name="__codelineno-14-45"></a><span class="w">        </span><span class="k">return</span>
+<a id="__codelineno-14-46" name="__codelineno-14-46"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-14-47" name="__codelineno-14-47"></a>
+<a id="__codelineno-14-48" name="__codelineno-14-48"></a><span class="w">    </span><span class="c1">// Use default values if not provided</span>
+<a id="__codelineno-14-49" name="__codelineno-14-49"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">args</span><span class="p">.</span><span class="nx">Count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-50" name="__codelineno-14-50"></a><span class="w">        </span><span class="nx">args</span><span class="p">.</span><span class="nx">Count</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-14-51" name="__codelineno-14-51"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-14-52" name="__codelineno-14-52"></a>
+<a id="__codelineno-14-53" name="__codelineno-14-53"></a><span class="w">    </span><span class="c1">// Initialize random number generator</span>
+<a id="__codelineno-14-54" name="__codelineno-14-54"></a><span class="w">    </span><span class="nx">r</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">rand</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="nx">rand</span><span class="p">.</span><span class="nx">NewSource</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">().</span><span class="nx">UnixNano</span><span class="p">()))</span>
+<a id="__codelineno-14-55" name="__codelineno-14-55"></a>
+<a id="__codelineno-14-56" name="__codelineno-14-56"></a><span class="w">    </span><span class="c1">// Generate the requested number of names</span>
+<a id="__codelineno-14-57" name="__codelineno-14-57"></a><span class="w">    </span><span class="nx">names</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">args</span><span class="p">.</span><span class="nx">Count</span><span class="p">)</span>
+<a id="__codelineno-14-58" name="__codelineno-14-58"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="p">&lt;</span><span class="w"> </span><span class="nx">args</span><span class="p">.</span><span class="nx">Count</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-59" name="__codelineno-14-59"></a><span class="w">        </span><span class="nx">adj</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">adjectives</span><span class="p">[</span><span class="nx">r</span><span class="p">.</span><span class="nx">Intn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">adjectives</span><span class="p">))]</span>
+<a id="__codelineno-14-60" name="__codelineno-14-60"></a><span class="w">        </span><span class="nx">noun</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">nouns</span><span class="p">[</span><span class="nx">r</span><span class="p">.</span><span class="nx">Intn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">nouns</span><span class="p">))]</span>
+<a id="__codelineno-14-61" name="__codelineno-14-61"></a>
+<a id="__codelineno-14-62" name="__codelineno-14-62"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">args</span><span class="p">.</span><span class="nx">Prefix</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-63" name="__codelineno-14-63"></a><span class="w">            </span><span class="nx">names</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">args</span><span class="p">.</span><span class="nx">Prefix</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">adj</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">noun</span>
+<a id="__codelineno-14-64" name="__codelineno-14-64"></a><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-65" name="__codelineno-14-65"></a><span class="w">            </span><span class="nx">names</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">adj</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">noun</span>
+<a id="__codelineno-14-66" name="__codelineno-14-66"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-14-67" name="__codelineno-14-67"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-14-68" name="__codelineno-14-68"></a>
+<a id="__codelineno-14-69" name="__codelineno-14-69"></a><span class="w">    </span><span class="c1">// Return the result as JSON</span>
+<a id="__codelineno-14-70" name="__codelineno-14-70"></a><span class="w">    </span><span class="nx">result</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">json</span><span class="p">.</span><span class="nx">Marshal</span><span class="p">(</span><span class="nx">names</span><span class="p">)</span>
+<a id="__codelineno-14-71" name="__codelineno-14-71"></a><span class="w">    </span><span class="nx">pdk</span><span class="p">.</span><span class="nx">OutputString</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">result</span><span class="p">))</span>
+<a id="__codelineno-14-72" name="__codelineno-14-72"></a><span class="p">}</span>
+<a id="__codelineno-14-73" name="__codelineno-14-73"></a>
+<a id="__codelineno-14-74" name="__codelineno-14-74"></a><span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-75" name="__codelineno-14-75"></a><span class="w">    </span><span class="c1">// Empty main function required for compilation</span>
+<a id="__codelineno-14-76" name="__codelineno-14-76"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+
+Build this modified plugin:
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span>
+<span class="normal"><a href="#__codelineno-15-2">2</a></span>
+<span class="normal"><a href="#__codelineno-15-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1"></a>tinygo<span class="w"> </span>build<span class="w"> </span>-scheduler<span class="o">=</span>none<span class="w"> </span>--no-debug<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2"></a><span class="w">  </span>-o<span class="w"> </span>character-name-generator-with-args.wasm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3"></a><span class="w">  </span>-target<span class="w"> </span>wasi<span class="w"> </span>main_with_args.go
+</code></pre></div></td></tr></table></div>
+
+Test it with arguments:
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-16-1">1</a></span>
+<span class="normal"><a href="#__codelineno-16-2">2</a></span>
+<span class="normal"><a href="#__codelineno-16-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1"></a>extism<span class="w"> </span>call<span class="w"> </span>character-name-generator-with-args.wasm<span class="w"> </span>GenerateCharacterNames<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2"></a><span class="w">  </span>--input<span class="w"> </span><span class="s1">&#39;{&quot;prefix&quot;:&quot;hero&quot;,&quot;count&quot;:3}&#39;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3"></a><span class="w">  </span>--wasi
+</code></pre></div></td></tr></table></div>
+
+And update your plugin configuration accordingly:
+
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-17-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-17-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-17-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-17-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-17-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-17-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-17-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-17-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-17-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-17-10">10</a></span>
+<span class="normal"><a href="#__codelineno-17-11">11</a></span>
+<span class="normal"><a href="#__codelineno-17-12">12</a></span>
+<span class="normal"><a href="#__codelineno-17-13">13</a></span>
+<span class="normal"><a href="#__codelineno-17-14">14</a></span>
+<span class="normal"><a href="#__codelineno-17-15">15</a></span>
+<span class="normal"><a href="#__codelineno-17-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1"></a><span class="nt">plugins</span><span class="p">:</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">character-name-generator-advanced</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3"></a><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./bucket/character-name-generator-with-args.wasm</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4"></a><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0.0</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5"></a><span class="w">    </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">an advanced character name generator</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6"></a><span class="w">    </span><span class="nt">functions</span><span class="p">:</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">displayName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GenerateCharacterNames</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8"></a><span class="w">        </span><span class="nt">function</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GenerateCharacterNames</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9"></a><span class="w">        </span><span class="nt">arguments</span><span class="p">:</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prefix</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11"></a><span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12"></a><span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">optional prefix for the name</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">count</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14"></a><span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15"></a><span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">number of names to generate</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16"></a><span class="w">        </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">a function to generate multiple character names</span>
+</code></pre></div></td></tr></table></div>
+-->
+
+<h2 id="debugging-tips">Debugging Tips</h2>
+<ol>
+<li>
+<p><strong>Use Simple Data Types</strong>: Start with simple data types like strings and integers.</p>
+</li>
+<li>
+<p><strong>Print to Console</strong>: The PDK provides functions for debug logging:
+   <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-18-1">1</a></span>
+<span class="normal"><a href="#__codelineno-18-2">2</a></span>
+<span class="normal"><a href="#__codelineno-18-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1"></a><span class="nx">pdk</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="nx">pdk</span><span class="p">.</span><span class="nx">LogDebug</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Debug message&quot;</span><span class="p">)</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2"></a><span class="nx">pdk</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="nx">pdk</span><span class="p">.</span><span class="nx">LogInfo</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Info message&quot;</span><span class="p">)</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3"></a><span class="nx">pdk</span><span class="p">.</span><span class="nx">Log</span><span class="p">(</span><span class="nx">pdk</span><span class="p">.</span><span class="nx">LogError</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Error message&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div></p>
+</li>
+<li>
+<p><strong>Test Incrementally</strong>: Build and test your plugin after each small change.</p>
+</li>
+<li>
+<p><strong>Check Return Values</strong>: Always validate the data returned by your functions.</p>
+</li>
+</ol>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li>
+<p><strong>Error Handling</strong>: Always handle errors and provide meaningful error messages.</p>
+</li>
+<li>
+<p><strong>Input Validation</strong>: Validate all input arguments before processing.</p>
+</li>
+<li>
+<p><strong>Memory Management</strong>: The PDK handles memory allocation, but be conscious of large data structures.</p>
+</li>
+<li>
+<p><strong>Statelessness</strong>: Design your plugins to be stateless whenever possible.</p>
+</li>
+<li>
+<p><strong>Documentation</strong>: Comment your code and provide clear descriptions in your plugin configuration.</p>
+</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>You've now learned how to create, build, test, and deploy a Go plugin for WASImancer. By leveraging Go's performance and the WebAssembly sandbox, you can create powerful, secure tools that enhance your AI applications through the Model Context Protocol.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 - 2025 Philippe Charrière
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1869 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="🧙🏻‍♂️ WASImancer is a WebAssembly-Powered MCP SSE Server.">
+      
+      
+        <meta name="author" content="Philippe Charrière (@k33g)">
+      
+      
+        <link rel="canonical" href="https://sea-monkeys.github.io/wasimancer/plugins-rest-api-guide/">
+      
+      
+        <link rel="prev" href="../rust-plugin-guide/">
+      
+      
+        <link rel="next" href="../resources-guide/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
+    
+    
+      
+        <title>🌐 Plugins REST API - WASImancer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.2afb09e1.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#wasimancer-plugin-management-api-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="WASImancer" class="md-header__button md-logo" aria-label="WASImancer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            WASImancer
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              🌐 Plugins REST API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sea-monkeys/wasimancer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sea-monkeys/wasimancer
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="WASImancer" class="md-nav__button md-logo" aria-label="WASImancer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    WASImancer
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sea-monkeys/wasimancer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    sea-monkeys/wasimancer
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🏠 Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../wasm-plugins-concept/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🔌 WebAssembly Plugin
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../go-plugin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🐿️ Create Go Plugins
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rust-plugin-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🦀 Create Rust Plugins
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    🌐 Plugins REST API
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    🌐 Plugins REST API
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#administration-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Administration authentication
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-upload-a-new-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Upload a New Plugin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-update-an-existing-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Update an Existing Plugin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-remove-a-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Remove a Plugin
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-creating-and-publishing-a-new-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Creating and Publishing a New Plugin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-updating-an-existing-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Updating an Existing Plugin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-removing-a-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Removing a Plugin
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Versioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugin-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plugin Naming
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authorization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automation-and-cicd-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automation and CI/CD Integration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dynamic-resources-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Dynamic Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources-rest-api-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📦 Resources REST API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../prompts-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    🗣️ Prompts
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test-with-curl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ✅ Testing Guide with curl
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../langchainjs-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    📒 StreamableHTTP Client and LangchainJS
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#administration-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Administration authentication
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Endpoints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="API Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-upload-a-new-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Upload a New Plugin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-update-an-existing-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Update an Existing Plugin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-remove-a-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Remove a Plugin
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-1-creating-and-publishing-a-new-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 1: Creating and Publishing a New Plugin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-2-updating-an-existing-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 2: Updating an Existing Plugin
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-3-removing-a-plugin" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example 3: Removing a Plugin
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Versioning
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugin-naming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Plugin Naming
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authorization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Error Handling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Troubleshooting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#common-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Issues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automation-and-cicd-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automation and CI/CD Integration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="wasimancer-plugin-management-api-guide">WASImancer Plugin Management API Guide</h1>
+<div class="admonition info">
+<p class="admonition-title">🚧 work in progress</p>
+</div>
+<p>This guide explains how to use WASImancer's REST API to dynamically publish, update, and remove WebAssembly plugins without restarting the server.</p>
+<h2 id="overview">Overview</h2>
+<p>WASImancer provides a REST API that enables:</p>
+<ul>
+<li><strong>Publishing new plugins</strong> - Upload WebAssembly modules and register them as tools</li>
+<li><strong>Updating existing plugins</strong> - Replace a plugin's implementation while preserving its interface</li>
+<li><strong>Removing plugins</strong> - Unregister and delete plugins that are no longer needed</li>
+</ul>
+<p>These operations allow you to manage your MCP server's capabilities at runtime without service interruption.</p>
+<h2 id="administration-authentication">Administration authentication</h2>
+<p>All Administration API endpoints require authentication using a Bearer token. This token is configured when starting the WASImancer server using the <code>WASIMANCER_ADMIN_TOKEN</code> environment variable:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">WASIMANCER_ADMIN_TOKEN=wasimancer-rocks</span>
+</code></pre></div></td></tr></table></div>
+<p>In all API requests, include this header:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>Authorization: Bearer wasimancer-rocks
+</code></pre></div></td></tr></table></div>
+<h2 id="api-endpoints">API Endpoints</h2>
+<h3 id="1-upload-a-new-plugin">1. Upload a New Plugin</h3>
+<p>Upload a new WebAssembly plugin and register it with the server.</p>
+<p><strong>Endpoint</strong>: <code>POST /upload-plugin</code></p>
+<p><strong>Headers</strong>:
+- <code>Authorization: Bearer &lt;token&gt;</code> - Authentication token
+- <code>Content-Type: multipart/form-data</code> - Required for file upload</p>
+<p><strong>Request Body</strong>:
+- <code>wasmFile</code> - The WebAssembly module file (.wasm)
+- <code>pluginData</code> - JSON string containing metadata about the plugin</p>
+<p><strong>Plugin Data Format</strong>:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span>
+<span class="normal"><a href="#__codelineno-2-13">13</a></span>
+<span class="normal"><a href="#__codelineno-2-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;character-name-generator&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./bucket/character-name-generator.wasm&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a character name generator&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="w">  </span><span class="nt">&quot;functions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">      </span><span class="nt">&quot;displayName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GenerateCharacterName&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">      </span><span class="nt">&quot;function&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GenerateCharacterName&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">      </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a function to generate a character name&quot;</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p><strong>Optional Parameters</strong>:
+- <code>dir</code> - Query parameter to specify a custom target directory</p>
+<p><strong>Success Response</strong>:
+- Status Code: 200
+- Body:
+  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;🎉 File uploaded successfully&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;filePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./bucket/character-name-generator.wasm&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// The plugin data you provided</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p><strong>Error Responses</strong>:
+- Status Code: 400 - Missing or invalid file/data
+- Status Code: 403 - Invalid authentication token
+- Status Code: 500 - Server error</p>
+<p><strong>cURL Example</strong>:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-4-10">10</a></span>
+<span class="normal"><a href="#__codelineno-4-11">11</a></span>
+<span class="normal"><a href="#__codelineno-4-12">12</a></span>
+<span class="normal"><a href="#__codelineno-4-13">13</a></span>
+<span class="normal"><a href="#__codelineno-4-14">14</a></span>
+<span class="normal"><a href="#__codelineno-4-15">15</a></span>
+<span class="normal"><a href="#__codelineno-4-16">16</a></span>
+<span class="normal"><a href="#__codelineno-4-17">17</a></span>
+<span class="normal"><a href="#__codelineno-4-18">18</a></span>
+<span class="normal"><a href="#__codelineno-4-19">19</a></span>
+<span class="normal"><a href="#__codelineno-4-20">20</a></span>
+<span class="normal"><a href="#__codelineno-4-21">21</a></span>
+<span class="normal"><a href="#__codelineno-4-22">22</a></span>
+<span class="normal"><a href="#__codelineno-4-23">23</a></span>
+<span class="normal"><a href="#__codelineno-4-24">24</a></span>
+<span class="normal"><a href="#__codelineno-4-25">25</a></span>
+<span class="normal"><a href="#__codelineno-4-26">26</a></span>
+<span class="normal"><a href="#__codelineno-4-27">27</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">&quot;wasimancer-rocks&quot;</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="nv">UPLOAD_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:3001/upload-plugin&quot;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="nv">WASM_FILE</span><span class="o">=</span><span class="s2">&quot;./character-name-generator.wasm&quot;</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="s">{</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="s">  &quot;name&quot;: &quot;character-name-generator&quot;,</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="s">  &quot;path&quot;: &quot;./bucket/character-name-generator.wasm&quot;,</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11"></a><span class="s">  &quot;version&quot;: &quot;1.0.0&quot;,</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12"></a><span class="s">  &quot;description&quot;: &quot;a character name generator&quot;,</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13"></a><span class="s">  &quot;functions&quot;: [</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14"></a><span class="s">    {</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15"></a><span class="s">      &quot;displayName&quot;: &quot;GenerateCharacterName&quot;,</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16"></a><span class="s">      &quot;function&quot;: &quot;GenerateCharacterName&quot;,</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17"></a><span class="s">      &quot;arguments&quot;: [],</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18"></a><span class="s">      &quot;description&quot;: &quot;a function to generate a character name&quot;</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19"></a><span class="s">    }</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20"></a><span class="s">  ]</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21"></a><span class="s">}</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22"></a><span class="s">EOM</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23"></a>
+<a id="__codelineno-4-24" name="__codelineno-4-24"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="si">${</span><span class="nv">UPLOAD_ENDPOINT</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;wasmFile=@</span><span class="si">${</span><span class="nv">WASM_FILE</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;pluginData=</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="2-update-an-existing-plugin">2. Update an Existing Plugin</h3>
+<p>Replace an existing plugin with a new implementation while preserving its registration.</p>
+<p><strong>Endpoint</strong>: <code>PUT /update-plugin</code></p>
+<p><strong>Headers</strong>:
+- <code>Authorization: Bearer &lt;token&gt;</code> - Authentication token
+- <code>Content-Type: multipart/form-data</code> - Required for file upload</p>
+<p><strong>Request Body</strong>:
+- <code>wasmFile</code> - The new WebAssembly module file (.wasm)
+- <code>pluginData</code> - JSON string containing metadata about the plugin (must include the same name as the plugin being updated)</p>
+<p><strong>Plugin Data Format</strong>: Same as for uploading a new plugin</p>
+<p><strong>Optional Parameters</strong>:
+- <code>dir</code> - Query parameter to specify a custom target directory</p>
+<p><strong>Success Response</strong>:
+- Status Code: 200
+- Body:
+  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<span class="normal"><a href="#__codelineno-5-2">2</a></span>
+<span class="normal"><a href="#__codelineno-5-3">3</a></span>
+<span class="normal"><a href="#__codelineno-5-4">4</a></span>
+<span class="normal"><a href="#__codelineno-5-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;🎉 File uploaded successfully&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3"></a><span class="w">  </span><span class="nt">&quot;filePath&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./bucket/character-name-generator.wasm&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4"></a><span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c1">// The plugin data you provided</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p><strong>Error Responses</strong>:
+- Status Code: 400 - Missing or invalid file/data
+- Status Code: 403 - Invalid authentication token
+- Status Code: 500 - Server error</p>
+<p><strong>cURL Example</strong>:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-6-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-6-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-6-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-6-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-6-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-6-10">10</a></span>
+<span class="normal"><a href="#__codelineno-6-11">11</a></span>
+<span class="normal"><a href="#__codelineno-6-12">12</a></span>
+<span class="normal"><a href="#__codelineno-6-13">13</a></span>
+<span class="normal"><a href="#__codelineno-6-14">14</a></span>
+<span class="normal"><a href="#__codelineno-6-15">15</a></span>
+<span class="normal"><a href="#__codelineno-6-16">16</a></span>
+<span class="normal"><a href="#__codelineno-6-17">17</a></span>
+<span class="normal"><a href="#__codelineno-6-18">18</a></span>
+<span class="normal"><a href="#__codelineno-6-19">19</a></span>
+<span class="normal"><a href="#__codelineno-6-20">20</a></span>
+<span class="normal"><a href="#__codelineno-6-21">21</a></span>
+<span class="normal"><a href="#__codelineno-6-22">22</a></span>
+<span class="normal"><a href="#__codelineno-6-23">23</a></span>
+<span class="normal"><a href="#__codelineno-6-24">24</a></span>
+<span class="normal"><a href="#__codelineno-6-25">25</a></span>
+<span class="normal"><a href="#__codelineno-6-26">26</a></span>
+<span class="normal"><a href="#__codelineno-6-27">27</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">&quot;wasimancer-rocks&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="nv">UPDATE_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:3001/update-plugin&quot;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="nv">WASM_FILE</span><span class="o">=</span><span class="s2">&quot;./character-name-generator.wasm&quot;</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"> </span>DATA<span class="w"> </span><span class="s">&lt;&lt;- EOM</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="s">{</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="s">  &quot;name&quot;: &quot;character-name-generator&quot;,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="s">  &quot;path&quot;: &quot;./bucket/character-name-generator.wasm&quot;,</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="s">  &quot;version&quot;: &quot;1.0.1&quot;,</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="s">  &quot;description&quot;: &quot;an updated character name generator&quot;,</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="s">  &quot;functions&quot;: [</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="s">    {</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="s">      &quot;displayName&quot;: &quot;GenerateCharacterName&quot;,</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="s">      &quot;function&quot;: &quot;GenerateCharacterName&quot;,</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="s">      &quot;arguments&quot;: [],</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18"></a><span class="s">      &quot;description&quot;: &quot;a function to generate an improved character name&quot;</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19"></a><span class="s">    }</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20"></a><span class="s">  ]</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21"></a><span class="s">}</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22"></a><span class="s">EOM</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23"></a>
+<a id="__codelineno-6-24" name="__codelineno-6-24"></a>curl<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span><span class="si">${</span><span class="nv">UPDATE_ENDPOINT</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;wasmFile=@</span><span class="si">${</span><span class="nv">WASM_FILE</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;pluginData=</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="3-remove-a-plugin">3. Remove a Plugin</h3>
+<p>Unregister and delete a plugin from the server.</p>
+<p><strong>Endpoint</strong>: <code>DELETE /remove-plugin/:name</code></p>
+<p><strong>URL Parameters</strong>:
+- <code>:name</code> - The name of the plugin to remove</p>
+<p><strong>Headers</strong>:
+- <code>Authorization: Bearer &lt;token&gt;</code> - Authentication token</p>
+<p><strong>Success Response</strong>:
+- Status Code: 200
+- Body:
+  <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
+<span class="normal"><a href="#__codelineno-7-2">2</a></span>
+<span class="normal"><a href="#__codelineno-7-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;🙂 Plugin removed successfully&quot;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p><strong>Error Responses</strong>:
+- Status Code: 400 - Missing plugin name
+- Status Code: 403 - Invalid authentication token
+- Status Code: 500 - Server error or plugin not found</p>
+<p><strong>cURL Example</strong>:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
+<span class="normal"><a href="#__codelineno-8-2">2</a></span>
+<span class="normal"><a href="#__codelineno-8-3">3</a></span>
+<span class="normal"><a href="#__codelineno-8-4">4</a></span>
+<span class="normal"><a href="#__codelineno-8-5">5</a></span>
+<span class="normal"><a href="#__codelineno-8-6">6</a></span>
+<span class="normal"><a href="#__codelineno-8-7">7</a></span>
+<span class="normal"><a href="#__codelineno-8-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2"></a><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">&quot;wasimancer-rocks&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4"></a><span class="nv">REMOVE_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:3001/remove-plugin&quot;</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5"></a><span class="nv">PLUGIN_NAME</span><span class="o">=</span><span class="s2">&quot;character-name-generator&quot;</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7"></a>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span><span class="si">${</span><span class="nv">REMOVE_ENDPOINT</span><span class="si">}</span>/<span class="si">${</span><span class="nv">PLUGIN_NAME</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="practical-examples">Practical Examples</h2>
+<h3 id="example-1-creating-and-publishing-a-new-plugin">Example 1: Creating and Publishing a New Plugin</h3>
+<p>This example shows how to create a simple Go plugin, compile it, and publish it to WASImancer:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-9-10">10</a></span>
+<span class="normal"><a href="#__codelineno-9-11">11</a></span>
+<span class="normal"><a href="#__codelineno-9-12">12</a></span>
+<span class="normal"><a href="#__codelineno-9-13">13</a></span>
+<span class="normal"><a href="#__codelineno-9-14">14</a></span>
+<span class="normal"><a href="#__codelineno-9-15">15</a></span>
+<span class="normal"><a href="#__codelineno-9-16">16</a></span>
+<span class="normal"><a href="#__codelineno-9-17">17</a></span>
+<span class="normal"><a href="#__codelineno-9-18">18</a></span>
+<span class="normal"><a href="#__codelineno-9-19">19</a></span>
+<span class="normal"><a href="#__codelineno-9-20">20</a></span>
+<span class="normal"><a href="#__codelineno-9-21">21</a></span>
+<span class="normal"><a href="#__codelineno-9-22">22</a></span>
+<span class="normal"><a href="#__codelineno-9-23">23</a></span>
+<span class="normal"><a href="#__codelineno-9-24">24</a></span>
+<span class="normal"><a href="#__codelineno-9-25">25</a></span>
+<span class="normal"><a href="#__codelineno-9-26">26</a></span>
+<span class="normal"><a href="#__codelineno-9-27">27</a></span>
+<span class="normal"><a href="#__codelineno-9-28">28</a></span>
+<span class="normal"><a href="#__codelineno-9-29">29</a></span>
+<span class="normal"><a href="#__codelineno-9-30">30</a></span>
+<span class="normal"><a href="#__codelineno-9-31">31</a></span>
+<span class="normal"><a href="#__codelineno-9-32">32</a></span>
+<span class="normal"><a href="#__codelineno-9-33">33</a></span>
+<span class="normal"><a href="#__codelineno-9-34">34</a></span>
+<span class="normal"><a href="#__codelineno-9-35">35</a></span>
+<span class="normal"><a href="#__codelineno-9-36">36</a></span>
+<span class="normal"><a href="#__codelineno-9-37">37</a></span>
+<span class="normal"><a href="#__codelineno-9-38">38</a></span>
+<span class="normal"><a href="#__codelineno-9-39">39</a></span>
+<span class="normal"><a href="#__codelineno-9-40">40</a></span>
+<span class="normal"><a href="#__codelineno-9-41">41</a></span>
+<span class="normal"><a href="#__codelineno-9-42">42</a></span>
+<span class="normal"><a href="#__codelineno-9-43">43</a></span>
+<span class="normal"><a href="#__codelineno-9-44">44</a></span>
+<span class="normal"><a href="#__codelineno-9-45">45</a></span>
+<span class="normal"><a href="#__codelineno-9-46">46</a></span>
+<span class="normal"><a href="#__codelineno-9-47">47</a></span>
+<span class="normal"><a href="#__codelineno-9-48">48</a></span>
+<span class="normal"><a href="#__codelineno-9-49">49</a></span>
+<span class="normal"><a href="#__codelineno-9-50">50</a></span>
+<span class="normal"><a href="#__codelineno-9-51">51</a></span>
+<span class="normal"><a href="#__codelineno-9-52">52</a></span>
+<span class="normal"><a href="#__codelineno-9-53">53</a></span>
+<span class="normal"><a href="#__codelineno-9-54">54</a></span>
+<span class="normal"><a href="#__codelineno-9-55">55</a></span>
+<span class="normal"><a href="#__codelineno-9-56">56</a></span>
+<span class="normal"><a href="#__codelineno-9-57">57</a></span>
+<span class="normal"><a href="#__codelineno-9-58">58</a></span>
+<span class="normal"><a href="#__codelineno-9-59">59</a></span>
+<span class="normal"><a href="#__codelineno-9-60">60</a></span>
+<span class="normal"><a href="#__codelineno-9-61">61</a></span>
+<span class="normal"><a href="#__codelineno-9-62">62</a></span>
+<span class="normal"><a href="#__codelineno-9-63">63</a></span>
+<span class="normal"><a href="#__codelineno-9-64">64</a></span>
+<span class="normal"><a href="#__codelineno-9-65">65</a></span>
+<span class="normal"><a href="#__codelineno-9-66">66</a></span>
+<span class="normal"><a href="#__codelineno-9-67">67</a></span>
+<span class="normal"><a href="#__codelineno-9-68">68</a></span>
+<span class="normal"><a href="#__codelineno-9-69">69</a></span>
+<span class="normal"><a href="#__codelineno-9-70">70</a></span>
+<span class="normal"><a href="#__codelineno-9-71">71</a></span>
+<span class="normal"><a href="#__codelineno-9-72">72</a></span>
+<span class="normal"><a href="#__codelineno-9-73">73</a></span>
+<span class="normal"><a href="#__codelineno-9-74">74</a></span>
+<span class="normal"><a href="#__codelineno-9-75">75</a></span>
+<span class="normal"><a href="#__codelineno-9-76">76</a></span>
+<span class="normal"><a href="#__codelineno-9-77">77</a></span>
+<span class="normal"><a href="#__codelineno-9-78">78</a></span>
+<span class="normal"><a href="#__codelineno-9-79">79</a></span>
+<span class="normal"><a href="#__codelineno-9-80">80</a></span>
+<span class="normal"><a href="#__codelineno-9-81">81</a></span>
+<span class="normal"><a href="#__codelineno-9-82">82</a></span>
+<span class="normal"><a href="#__codelineno-9-83">83</a></span>
+<span class="normal"><a href="#__codelineno-9-84">84</a></span>
+<span class="normal"><a href="#__codelineno-9-85">85</a></span>
+<span class="normal"><a href="#__codelineno-9-86">86</a></span>
+<span class="normal"><a href="#__codelineno-9-87">87</a></span>
+<span class="normal"><a href="#__codelineno-9-88">88</a></span>
+<span class="normal"><a href="#__codelineno-9-89">89</a></span>
+<span class="normal"><a href="#__codelineno-9-90">90</a></span>
+<span class="normal"><a href="#__codelineno-9-91">91</a></span>
+<span class="normal"><a href="#__codelineno-9-92">92</a></span>
+<span class="normal"><a href="#__codelineno-9-93">93</a></span>
+<span class="normal"><a href="#__codelineno-9-94">94</a></span>
+<span class="normal"><a href="#__codelineno-9-95">95</a></span>
+<span class="normal"><a href="#__codelineno-9-96">96</a></span>
+<span class="normal"><a href="#__codelineno-9-97">97</a></span>
+<span class="normal"><a href="#__codelineno-9-98">98</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="c1"># Step 1: Create a directory for your plugin</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>roll-dice
+<a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="nb">cd</span><span class="w"> </span>roll-dice
+<a id="__codelineno-9-5" name="__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6"></a><span class="c1"># Step 2: Create go.mod file</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>go.mod<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8"></a><span class="s">module wasimancer-plugin-roll-dice</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9"></a><span class="s">go 1.23.0</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10"></a><span class="s">require github.com/extism/go-pdk v1.1.1</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11"></a><span class="s">EOF</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12"></a>
+<a id="__codelineno-9-13" name="__codelineno-9-13"></a><span class="c1"># Step 3: Create main.go file</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>main.go<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="s">package main</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16"></a>
+<a id="__codelineno-9-17" name="__codelineno-9-17"></a><span class="s">import (</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18"></a><span class="s">    &quot;encoding/json&quot;</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19"></a><span class="s">    &quot;math/rand&quot;</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20"></a><span class="s">    &quot;strconv&quot;</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21"></a><span class="s">    &quot;github.com/extism/go-pdk&quot;</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22"></a><span class="s">)</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23"></a>
+<a id="__codelineno-9-24" name="__codelineno-9-24"></a><span class="s">type Arguments struct {</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25"></a><span class="s">    NumFaces int `json:&quot;numFaces&quot;`</span>
+<a id="__codelineno-9-26" name="__codelineno-9-26"></a><span class="s">    NumDice  int `json:&quot;numDice&quot;`</span>
+<a id="__codelineno-9-27" name="__codelineno-9-27"></a><span class="s">}</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28"></a>
+<a id="__codelineno-9-29" name="__codelineno-9-29"></a><span class="s">//export rollDice</span>
+<a id="__codelineno-9-30" name="__codelineno-9-30"></a><span class="s">func rollDice() {</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31"></a><span class="s">    arguments := pdk.InputString()</span>
+<a id="__codelineno-9-32" name="__codelineno-9-32"></a><span class="s">    var args Arguments</span>
+<a id="__codelineno-9-33" name="__codelineno-9-33"></a><span class="s">    json.Unmarshal([]byte(arguments), &amp;args)</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34"></a><span class="s">    numFaces := args.NumFaces </span>
+<a id="__codelineno-9-35" name="__codelineno-9-35"></a><span class="s">    numDice := args.NumDice</span>
+<a id="__codelineno-9-36" name="__codelineno-9-36"></a>
+<a id="__codelineno-9-37" name="__codelineno-9-37"></a><span class="s">    sum := 0</span>
+<a id="__codelineno-9-38" name="__codelineno-9-38"></a><span class="s">    for i := 0; i &lt; numDice; i++ {</span>
+<a id="__codelineno-9-39" name="__codelineno-9-39"></a><span class="s">        dieValue := rand.Intn(numFaces) + 1</span>
+<a id="__codelineno-9-40" name="__codelineno-9-40"></a><span class="s">        sum += dieValue</span>
+<a id="__codelineno-9-41" name="__codelineno-9-41"></a><span class="s">    }</span>
+<a id="__codelineno-9-42" name="__codelineno-9-42"></a>
+<a id="__codelineno-9-43" name="__codelineno-9-43"></a><span class="s">    pdk.OutputString(strconv.Itoa(sum))</span>
+<a id="__codelineno-9-44" name="__codelineno-9-44"></a><span class="s">}</span>
+<a id="__codelineno-9-45" name="__codelineno-9-45"></a>
+<a id="__codelineno-9-46" name="__codelineno-9-46"></a><span class="s">func main() {}</span>
+<a id="__codelineno-9-47" name="__codelineno-9-47"></a><span class="s">EOF</span>
+<a id="__codelineno-9-48" name="__codelineno-9-48"></a>
+<a id="__codelineno-9-49" name="__codelineno-9-49"></a><span class="c1"># Step 4: Compile the plugin</span>
+<a id="__codelineno-9-50" name="__codelineno-9-50"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/roll-dice<span class="w"> </span>-w<span class="w"> </span>/roll-dice<span class="w"> </span>k33g/wasm-builder:0.0.7<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-51" name="__codelineno-9-51"></a><span class="w">  </span>tinygo<span class="w"> </span>build<span class="w"> </span>-scheduler<span class="o">=</span>none<span class="w"> </span>--no-debug<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-52" name="__codelineno-9-52"></a><span class="w">    </span>-o<span class="w"> </span>wasimancer-plugin-roll-dice.wasm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-53" name="__codelineno-9-53"></a><span class="w">    </span>-target<span class="w"> </span>wasi<span class="w"> </span>main.go
+<a id="__codelineno-9-54" name="__codelineno-9-54"></a>
+<a id="__codelineno-9-55" name="__codelineno-9-55"></a><span class="c1"># Step 5: Create publish script</span>
+<a id="__codelineno-9-56" name="__codelineno-9-56"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>publish.sh<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+<a id="__codelineno-9-57" name="__codelineno-9-57"></a><span class="s">#!/bin/bash</span>
+<a id="__codelineno-9-58" name="__codelineno-9-58"></a><span class="s">TOKEN=&quot;wasimancer-rocks&quot;</span>
+<a id="__codelineno-9-59" name="__codelineno-9-59"></a><span class="s">UPLOAD_ENDPOINT=&quot;http://localhost:3001/upload-plugin&quot;</span>
+<a id="__codelineno-9-60" name="__codelineno-9-60"></a><span class="s">WASM_FILE=&quot;./wasimancer-plugin-roll-dice.wasm&quot;</span>
+<a id="__codelineno-9-61" name="__codelineno-9-61"></a>
+<a id="__codelineno-9-62" name="__codelineno-9-62"></a><span class="s">read -r -d &#39;&#39; DATA &lt;&lt;- EOM</span>
+<a id="__codelineno-9-63" name="__codelineno-9-63"></a><span class="s">{</span>
+<a id="__codelineno-9-64" name="__codelineno-9-64"></a><span class="s">  &quot;name&quot;: &quot;roll-dice&quot;,</span>
+<a id="__codelineno-9-65" name="__codelineno-9-65"></a><span class="s">  &quot;path&quot;: &quot;./bucket/wasimancer-plugin-roll-dice.wasm&quot;,</span>
+<a id="__codelineno-9-66" name="__codelineno-9-66"></a><span class="s">  &quot;version&quot;: &quot;1.0.0&quot;,</span>
+<a id="__codelineno-9-67" name="__codelineno-9-67"></a><span class="s">  &quot;description&quot;: &quot;roll dice&quot;,</span>
+<a id="__codelineno-9-68" name="__codelineno-9-68"></a><span class="s">  &quot;functions&quot;: [</span>
+<a id="__codelineno-9-69" name="__codelineno-9-69"></a><span class="s">    {</span>
+<a id="__codelineno-9-70" name="__codelineno-9-70"></a><span class="s">      &quot;displayName&quot;: &quot;rollDice&quot;,</span>
+<a id="__codelineno-9-71" name="__codelineno-9-71"></a><span class="s">      &quot;function&quot;: &quot;rollDice&quot;,</span>
+<a id="__codelineno-9-72" name="__codelineno-9-72"></a><span class="s">      &quot;arguments&quot;: [</span>
+<a id="__codelineno-9-73" name="__codelineno-9-73"></a><span class="s">        {</span>
+<a id="__codelineno-9-74" name="__codelineno-9-74"></a><span class="s">          &quot;name&quot;: &quot;numFaces&quot;,</span>
+<a id="__codelineno-9-75" name="__codelineno-9-75"></a><span class="s">          &quot;type&quot;: &quot;number&quot;,</span>
+<a id="__codelineno-9-76" name="__codelineno-9-76"></a><span class="s">          &quot;description&quot;: &quot;number of faces on the dice&quot;</span>
+<a id="__codelineno-9-77" name="__codelineno-9-77"></a><span class="s">        },</span>
+<a id="__codelineno-9-78" name="__codelineno-9-78"></a><span class="s">        {</span>
+<a id="__codelineno-9-79" name="__codelineno-9-79"></a><span class="s">          &quot;name&quot;: &quot;numDice&quot;,</span>
+<a id="__codelineno-9-80" name="__codelineno-9-80"></a><span class="s">          &quot;type&quot;: &quot;number&quot;,</span>
+<a id="__codelineno-9-81" name="__codelineno-9-81"></a><span class="s">          &quot;description&quot;: &quot;number of dice to roll&quot;</span>
+<a id="__codelineno-9-82" name="__codelineno-9-82"></a><span class="s">        }</span>
+<a id="__codelineno-9-83" name="__codelineno-9-83"></a><span class="s">      ],</span>
+<a id="__codelineno-9-84" name="__codelineno-9-84"></a><span class="s">      &quot;description&quot;: &quot;a function to roll dice&quot;</span>
+<a id="__codelineno-9-85" name="__codelineno-9-85"></a><span class="s">    }</span>
+<a id="__codelineno-9-86" name="__codelineno-9-86"></a><span class="s">  ]</span>
+<a id="__codelineno-9-87" name="__codelineno-9-87"></a><span class="s">}</span>
+<a id="__codelineno-9-88" name="__codelineno-9-88"></a><span class="s">EOM</span>
+<a id="__codelineno-9-89" name="__codelineno-9-89"></a>
+<a id="__codelineno-9-90" name="__codelineno-9-90"></a><span class="s">curl -X POST ${UPLOAD_ENDPOINT} \</span>
+<a id="__codelineno-9-91" name="__codelineno-9-91"></a><span class="s">  -H &quot;Authorization: Bearer ${TOKEN}&quot; \</span>
+<a id="__codelineno-9-92" name="__codelineno-9-92"></a><span class="s">  -F &quot;wasmFile=@${WASM_FILE}&quot; \</span>
+<a id="__codelineno-9-93" name="__codelineno-9-93"></a><span class="s">  -F &quot;pluginData=${DATA}&quot;</span>
+<a id="__codelineno-9-94" name="__codelineno-9-94"></a><span class="s">EOF</span>
+<a id="__codelineno-9-95" name="__codelineno-9-95"></a>
+<a id="__codelineno-9-96" name="__codelineno-9-96"></a><span class="c1"># Step 6: Make the script executable and run it</span>
+<a id="__codelineno-9-97" name="__codelineno-9-97"></a>chmod<span class="w"> </span>+x<span class="w"> </span>publish.sh
+<a id="__codelineno-9-98" name="__codelineno-9-98"></a>./publish.sh
+</code></pre></div></td></tr></table></div>
+<h3 id="example-2-updating-an-existing-plugin">Example 2: Updating an Existing Plugin</h3>
+<p>This example shows how to update the roll dice plugin with improved functionality:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1">  1</a></span>
+<span class="normal"><a href="#__codelineno-10-2">  2</a></span>
+<span class="normal"><a href="#__codelineno-10-3">  3</a></span>
+<span class="normal"><a href="#__codelineno-10-4">  4</a></span>
+<span class="normal"><a href="#__codelineno-10-5">  5</a></span>
+<span class="normal"><a href="#__codelineno-10-6">  6</a></span>
+<span class="normal"><a href="#__codelineno-10-7">  7</a></span>
+<span class="normal"><a href="#__codelineno-10-8">  8</a></span>
+<span class="normal"><a href="#__codelineno-10-9">  9</a></span>
+<span class="normal"><a href="#__codelineno-10-10"> 10</a></span>
+<span class="normal"><a href="#__codelineno-10-11"> 11</a></span>
+<span class="normal"><a href="#__codelineno-10-12"> 12</a></span>
+<span class="normal"><a href="#__codelineno-10-13"> 13</a></span>
+<span class="normal"><a href="#__codelineno-10-14"> 14</a></span>
+<span class="normal"><a href="#__codelineno-10-15"> 15</a></span>
+<span class="normal"><a href="#__codelineno-10-16"> 16</a></span>
+<span class="normal"><a href="#__codelineno-10-17"> 17</a></span>
+<span class="normal"><a href="#__codelineno-10-18"> 18</a></span>
+<span class="normal"><a href="#__codelineno-10-19"> 19</a></span>
+<span class="normal"><a href="#__codelineno-10-20"> 20</a></span>
+<span class="normal"><a href="#__codelineno-10-21"> 21</a></span>
+<span class="normal"><a href="#__codelineno-10-22"> 22</a></span>
+<span class="normal"><a href="#__codelineno-10-23"> 23</a></span>
+<span class="normal"><a href="#__codelineno-10-24"> 24</a></span>
+<span class="normal"><a href="#__codelineno-10-25"> 25</a></span>
+<span class="normal"><a href="#__codelineno-10-26"> 26</a></span>
+<span class="normal"><a href="#__codelineno-10-27"> 27</a></span>
+<span class="normal"><a href="#__codelineno-10-28"> 28</a></span>
+<span class="normal"><a href="#__codelineno-10-29"> 29</a></span>
+<span class="normal"><a href="#__codelineno-10-30"> 30</a></span>
+<span class="normal"><a href="#__codelineno-10-31"> 31</a></span>
+<span class="normal"><a href="#__codelineno-10-32"> 32</a></span>
+<span class="normal"><a href="#__codelineno-10-33"> 33</a></span>
+<span class="normal"><a href="#__codelineno-10-34"> 34</a></span>
+<span class="normal"><a href="#__codelineno-10-35"> 35</a></span>
+<span class="normal"><a href="#__codelineno-10-36"> 36</a></span>
+<span class="normal"><a href="#__codelineno-10-37"> 37</a></span>
+<span class="normal"><a href="#__codelineno-10-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-10-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-10-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-10-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-10-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-10-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-10-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-10-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-10-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-10-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-10-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-10-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-10-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-10-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-10-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-10-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-10-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-10-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-10-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-10-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-10-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-10-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-10-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-10-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-10-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-10-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-10-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-10-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-10-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-10-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-10-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-10-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-10-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-10-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-10-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-10-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-10-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-10-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-10-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-10-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-10-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-10-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-10-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-10-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-10-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-10-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-10-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-10-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-10-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-10-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-10-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-10-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-10-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-10-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-10-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-10-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-10-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-10-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-10-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-10-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-10-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-10-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-10-100">100</a></span>
+<span class="normal"><a href="#__codelineno-10-101">101</a></span>
+<span class="normal"><a href="#__codelineno-10-102">102</a></span>
+<span class="normal"><a href="#__codelineno-10-103">103</a></span>
+<span class="normal"><a href="#__codelineno-10-104">104</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="c1"># Step 1: Update the main.go file</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>main.go<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="s">package main</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5"></a>
+<a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="s">import (</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="s">    &quot;encoding/json&quot;</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="s">    &quot;math/rand&quot;</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="s">    &quot;time&quot;</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10"></a><span class="s">    &quot;github.com/extism/go-pdk&quot;</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11"></a><span class="s">)</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12"></a>
+<a id="__codelineno-10-13" name="__codelineno-10-13"></a><span class="s">type Arguments struct {</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14"></a><span class="s">    NumFaces int `json:&quot;numFaces&quot;`</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15"></a><span class="s">    NumDice  int `json:&quot;numDice&quot;`</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16"></a><span class="s">}</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17"></a>
+<a id="__codelineno-10-18" name="__codelineno-10-18"></a><span class="s">type Result struct {</span>
+<a id="__codelineno-10-19" name="__codelineno-10-19"></a><span class="s">    Total  int   `json:&quot;total&quot;`</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20"></a><span class="s">    Values []int `json:&quot;values&quot;`</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21"></a><span class="s">}</span>
+<a id="__codelineno-10-22" name="__codelineno-10-22"></a>
+<a id="__codelineno-10-23" name="__codelineno-10-23"></a><span class="s">//export rollDice</span>
+<a id="__codelineno-10-24" name="__codelineno-10-24"></a><span class="s">func rollDice() {</span>
+<a id="__codelineno-10-25" name="__codelineno-10-25"></a><span class="s">    // Initialize random with time seed</span>
+<a id="__codelineno-10-26" name="__codelineno-10-26"></a><span class="s">    rand.Seed(time.Now().UnixNano())</span>
+<a id="__codelineno-10-27" name="__codelineno-10-27"></a>
+<a id="__codelineno-10-28" name="__codelineno-10-28"></a><span class="s">    // Get input arguments</span>
+<a id="__codelineno-10-29" name="__codelineno-10-29"></a><span class="s">    arguments := pdk.InputString()</span>
+<a id="__codelineno-10-30" name="__codelineno-10-30"></a><span class="s">    var args Arguments</span>
+<a id="__codelineno-10-31" name="__codelineno-10-31"></a><span class="s">    json.Unmarshal([]byte(arguments), &amp;args)</span>
+<a id="__codelineno-10-32" name="__codelineno-10-32"></a>
+<a id="__codelineno-10-33" name="__codelineno-10-33"></a><span class="s">    // Roll dice and track individual values</span>
+<a id="__codelineno-10-34" name="__codelineno-10-34"></a><span class="s">    values := make([]int, args.NumDice)</span>
+<a id="__codelineno-10-35" name="__codelineno-10-35"></a><span class="s">    total := 0</span>
+<a id="__codelineno-10-36" name="__codelineno-10-36"></a>
+<a id="__codelineno-10-37" name="__codelineno-10-37"></a><span class="s">    for i := 0; i &lt; args.NumDice; i++ {</span>
+<a id="__codelineno-10-38" name="__codelineno-10-38"></a><span class="s">        values[i] = rand.Intn(args.NumFaces) + 1</span>
+<a id="__codelineno-10-39" name="__codelineno-10-39"></a><span class="s">        total += values[i]</span>
+<a id="__codelineno-10-40" name="__codelineno-10-40"></a><span class="s">    }</span>
+<a id="__codelineno-10-41" name="__codelineno-10-41"></a>
+<a id="__codelineno-10-42" name="__codelineno-10-42"></a><span class="s">    // Create and return result</span>
+<a id="__codelineno-10-43" name="__codelineno-10-43"></a><span class="s">    result := Result{</span>
+<a id="__codelineno-10-44" name="__codelineno-10-44"></a><span class="s">        Total:  total,</span>
+<a id="__codelineno-10-45" name="__codelineno-10-45"></a><span class="s">        Values: values,</span>
+<a id="__codelineno-10-46" name="__codelineno-10-46"></a><span class="s">    }</span>
+<a id="__codelineno-10-47" name="__codelineno-10-47"></a>
+<a id="__codelineno-10-48" name="__codelineno-10-48"></a><span class="s">    jsonResult, _ := json.Marshal(result)</span>
+<a id="__codelineno-10-49" name="__codelineno-10-49"></a><span class="s">    pdk.OutputString(string(jsonResult))</span>
+<a id="__codelineno-10-50" name="__codelineno-10-50"></a><span class="s">}</span>
+<a id="__codelineno-10-51" name="__codelineno-10-51"></a>
+<a id="__codelineno-10-52" name="__codelineno-10-52"></a><span class="s">func main() {}</span>
+<a id="__codelineno-10-53" name="__codelineno-10-53"></a><span class="s">EOF</span>
+<a id="__codelineno-10-54" name="__codelineno-10-54"></a>
+<a id="__codelineno-10-55" name="__codelineno-10-55"></a><span class="c1"># Step 2: Recompile the plugin</span>
+<a id="__codelineno-10-56" name="__codelineno-10-56"></a>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/roll-dice<span class="w"> </span>-w<span class="w"> </span>/roll-dice<span class="w"> </span>k33g/wasm-builder:0.0.7<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-57" name="__codelineno-10-57"></a><span class="w">  </span>tinygo<span class="w"> </span>build<span class="w"> </span>-scheduler<span class="o">=</span>none<span class="w"> </span>--no-debug<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-58" name="__codelineno-10-58"></a><span class="w">    </span>-o<span class="w"> </span>wasimancer-plugin-roll-dice.wasm<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-10-59" name="__codelineno-10-59"></a><span class="w">    </span>-target<span class="w"> </span>wasi<span class="w"> </span>main.go
+<a id="__codelineno-10-60" name="__codelineno-10-60"></a>
+<a id="__codelineno-10-61" name="__codelineno-10-61"></a><span class="c1"># Step 3: Create update script</span>
+<a id="__codelineno-10-62" name="__codelineno-10-62"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>update.sh<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+<a id="__codelineno-10-63" name="__codelineno-10-63"></a><span class="s">#!/bin/bash</span>
+<a id="__codelineno-10-64" name="__codelineno-10-64"></a><span class="s">TOKEN=&quot;wasimancer-rocks&quot;</span>
+<a id="__codelineno-10-65" name="__codelineno-10-65"></a><span class="s">UPDATE_ENDPOINT=&quot;http://localhost:3001/update-plugin&quot;</span>
+<a id="__codelineno-10-66" name="__codelineno-10-66"></a><span class="s">WASM_FILE=&quot;./wasimancer-plugin-roll-dice.wasm&quot;</span>
+<a id="__codelineno-10-67" name="__codelineno-10-67"></a>
+<a id="__codelineno-10-68" name="__codelineno-10-68"></a><span class="s">read -r -d &#39;&#39; DATA &lt;&lt;- EOM</span>
+<a id="__codelineno-10-69" name="__codelineno-10-69"></a><span class="s">{</span>
+<a id="__codelineno-10-70" name="__codelineno-10-70"></a><span class="s">  &quot;name&quot;: &quot;roll-dice&quot;,</span>
+<a id="__codelineno-10-71" name="__codelineno-10-71"></a><span class="s">  &quot;path&quot;: &quot;./bucket/wasimancer-plugin-roll-dice.wasm&quot;,</span>
+<a id="__codelineno-10-72" name="__codelineno-10-72"></a><span class="s">  &quot;version&quot;: &quot;1.1.0&quot;,</span>
+<a id="__codelineno-10-73" name="__codelineno-10-73"></a><span class="s">  &quot;description&quot;: &quot;enhanced dice rolling with detailed results&quot;,</span>
+<a id="__codelineno-10-74" name="__codelineno-10-74"></a><span class="s">  &quot;functions&quot;: [</span>
+<a id="__codelineno-10-75" name="__codelineno-10-75"></a><span class="s">    {</span>
+<a id="__codelineno-10-76" name="__codelineno-10-76"></a><span class="s">      &quot;displayName&quot;: &quot;rollDice&quot;,</span>
+<a id="__codelineno-10-77" name="__codelineno-10-77"></a><span class="s">      &quot;function&quot;: &quot;rollDice&quot;,</span>
+<a id="__codelineno-10-78" name="__codelineno-10-78"></a><span class="s">      &quot;arguments&quot;: [</span>
+<a id="__codelineno-10-79" name="__codelineno-10-79"></a><span class="s">        {</span>
+<a id="__codelineno-10-80" name="__codelineno-10-80"></a><span class="s">          &quot;name&quot;: &quot;numFaces&quot;,</span>
+<a id="__codelineno-10-81" name="__codelineno-10-81"></a><span class="s">          &quot;type&quot;: &quot;number&quot;,</span>
+<a id="__codelineno-10-82" name="__codelineno-10-82"></a><span class="s">          &quot;description&quot;: &quot;number of faces on the dice&quot;</span>
+<a id="__codelineno-10-83" name="__codelineno-10-83"></a><span class="s">        },</span>
+<a id="__codelineno-10-84" name="__codelineno-10-84"></a><span class="s">        {</span>
+<a id="__codelineno-10-85" name="__codelineno-10-85"></a><span class="s">          &quot;name&quot;: &quot;numDice&quot;,</span>
+<a id="__codelineno-10-86" name="__codelineno-10-86"></a><span class="s">          &quot;type&quot;: &quot;number&quot;,</span>
+<a id="__codelineno-10-87" name="__codelineno-10-87"></a><span class="s">          &quot;description&quot;: &quot;number of dice to roll&quot;</span>
+<a id="__codelineno-10-88" name="__codelineno-10-88"></a><span class="s">        }</span>
+<a id="__codelineno-10-89" name="__codelineno-10-89"></a><span class="s">      ],</span>
+<a id="__codelineno-10-90" name="__codelineno-10-90"></a><span class="s">      &quot;description&quot;: &quot;a function to roll dice and get detailed results&quot;</span>
+<a id="__codelineno-10-91" name="__codelineno-10-91"></a><span class="s">    }</span>
+<a id="__codelineno-10-92" name="__codelineno-10-92"></a><span class="s">  ]</span>
+<a id="__codelineno-10-93" name="__codelineno-10-93"></a><span class="s">}</span>
+<a id="__codelineno-10-94" name="__codelineno-10-94"></a><span class="s">EOM</span>
+<a id="__codelineno-10-95" name="__codelineno-10-95"></a>
+<a id="__codelineno-10-96" name="__codelineno-10-96"></a><span class="s">curl -X PUT ${UPDATE_ENDPOINT} \</span>
+<a id="__codelineno-10-97" name="__codelineno-10-97"></a><span class="s">  -H &quot;Authorization: Bearer ${TOKEN}&quot; \</span>
+<a id="__codelineno-10-98" name="__codelineno-10-98"></a><span class="s">  -F &quot;wasmFile=@${WASM_FILE}&quot; \</span>
+<a id="__codelineno-10-99" name="__codelineno-10-99"></a><span class="s">  -F &quot;pluginData=${DATA}&quot;</span>
+<a id="__codelineno-10-100" name="__codelineno-10-100"></a><span class="s">EOF</span>
+<a id="__codelineno-10-101" name="__codelineno-10-101"></a>
+<a id="__codelineno-10-102" name="__codelineno-10-102"></a><span class="c1"># Step 4: Make the script executable and run it</span>
+<a id="__codelineno-10-103" name="__codelineno-10-103"></a>chmod<span class="w"> </span>+x<span class="w"> </span>update.sh
+<a id="__codelineno-10-104" name="__codelineno-10-104"></a>./update.sh
+</code></pre></div></td></tr></table></div>
+<h3 id="example-3-removing-a-plugin">Example 3: Removing a Plugin</h3>
+<p>This example shows how to remove the roll dice plugin:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
+<span class="normal"><a href="#__codelineno-11-2">2</a></span>
+<span class="normal"><a href="#__codelineno-11-3">3</a></span>
+<span class="normal"><a href="#__codelineno-11-4">4</a></span>
+<span class="normal"><a href="#__codelineno-11-5">5</a></span>
+<span class="normal"><a href="#__codelineno-11-6">6</a></span>
+<span class="normal"><a href="#__codelineno-11-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="nv">TOKEN</span><span class="o">=</span><span class="s2">&quot;wasimancer-rocks&quot;</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="nv">REMOVE_ENDPOINT</span><span class="o">=</span><span class="s2">&quot;http://localhost:3001/remove-plugin&quot;</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="nv">PLUGIN_NAME</span><span class="o">=</span><span class="s2">&quot;roll-dice&quot;</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6"></a>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span><span class="si">${</span><span class="nv">REMOVE_ENDPOINT</span><span class="si">}</span>/<span class="si">${</span><span class="nv">PLUGIN_NAME</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="versioning">Versioning</h3>
+<p>Always increment your plugin version when updating:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
+<span class="normal"><a href="#__codelineno-12-2">2</a></span>
+<span class="normal"><a href="#__codelineno-12-3">3</a></span>
+<span class="normal"><a href="#__codelineno-12-4">4</a></span>
+<span class="normal"><a href="#__codelineno-12-5">5</a></span>
+<span class="normal"><a href="#__codelineno-12-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1"></a><span class="p">{</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;example-plugin&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3"></a><span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0.1&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// Increment this with each update</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4"></a><span class="w">  </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;./bucket/example-plugin.wasm&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5"></a><span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;An example plugin&quot;</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6"></a><span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+<h3 id="plugin-naming">Plugin Naming</h3>
+<p>Use consistent naming conventions:
+- Plugin names should be kebab-case (e.g., <code>character-name-generator</code>)
+- Function display names should be descriptive but concise</p>
+<h3 id="validation">Validation</h3>
+<p>Always validate plugin functionality before deployment:
+1. Test the WebAssembly module locally using the Extism CLI
+2. Verify input and output formats match your expectations
+3. Check for proper error handling</p>
+<h3 id="authorization">Authorization</h3>
+<p>Keep your authorization token secure:
+- Use a strong, unique token for each environment
+- Store tokens in secure environment variables
+- Rotate tokens periodically</p>
+<h3 id="error-handling">Error Handling</h3>
+<p>Check for and handle API errors in your deployment scripts:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-13-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-13-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-13-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-13-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-13-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-13-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-13-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-13-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-13-10">10</a></span>
+<span class="normal"><a href="#__codelineno-13-11">11</a></span>
+<span class="normal"><a href="#__codelineno-13-12">12</a></span>
+<span class="normal"><a href="#__codelineno-13-13">13</a></span>
+<span class="normal"><a href="#__codelineno-13-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1"></a><span class="nv">response</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>-w<span class="w"> </span><span class="s2">&quot;\n%{http_code}&quot;</span><span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="si">${</span><span class="nv">UPLOAD_ENDPOINT</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="si">${</span><span class="nv">TOKEN</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;wasmFile=@</span><span class="si">${</span><span class="nv">WASM_FILE</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4"></a><span class="w">  </span>-F<span class="w"> </span><span class="s2">&quot;pluginData=</span><span class="si">${</span><span class="nv">DATA</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5"></a>
+<a id="__codelineno-13-6" name="__codelineno-13-6"></a><span class="nv">http_code</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$response</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-n1<span class="k">)</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7"></a><span class="nv">response_body</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$response</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;$d&#39;</span><span class="k">)</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8"></a>
+<a id="__codelineno-13-9" name="__codelineno-13-9"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$http_code</span><span class="s2">&quot;</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">200</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Error: </span><span class="nv">$response_body</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11"></a><span class="w">  </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12"></a><span class="k">fi</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13"></a>
+<a id="__codelineno-13-14" name="__codelineno-13-14"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Success: </span><span class="nv">$response_body</span><span class="s2">&quot;</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<ol>
+<li>
+<p><strong>Invalid Token Error (403)</strong>: Verify that your <code>WASIMANCER_ADMIN_TOKEN</code> environment variable matches the token in your request.</p>
+</li>
+<li>
+<p><strong>Plugin Not Found (500)</strong>: When updating or removing, check that the plugin name in your request matches exactly with the registered plugin.</p>
+</li>
+<li>
+<p><strong>File Upload Failed (500)</strong>: Ensure that the WebAssembly file exists and is accessible.</p>
+</li>
+<li>
+<p><strong>Failed to Load Plugin (500)</strong>: Verify that your WebAssembly module is correctly compiled and exports the functions referenced in your plugin data.</p>
+</li>
+</ol>
+<h3 id="debugging">Debugging</h3>
+<ol>
+<li>
+<p><strong>Check Server Logs</strong>: WASImancer logs detailed information about plugin operations.</p>
+</li>
+<li>
+<p><strong>Inspect Plugin Registry</strong>: Use the MCP Inspector to list all registered tools and verify your changes.</p>
+</li>
+<li>
+<p><strong>Test Plugin Independently</strong>: Use the Extism CLI to test your WebAssembly module before uploading.</p>
+</li>
+</ol>
+<h2 id="automation-and-cicd-integration">Automation and CI/CD Integration</h2>
+<p>You can integrate plugin management into your CI/CD pipeline:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-14-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-14-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-14-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-14-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-14-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-14-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-14-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-14-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-14-10">10</a></span>
+<span class="normal"><a href="#__codelineno-14-11">11</a></span>
+<span class="normal"><a href="#__codelineno-14-12">12</a></span>
+<span class="normal"><a href="#__codelineno-14-13">13</a></span>
+<span class="normal"><a href="#__codelineno-14-14">14</a></span>
+<span class="normal"><a href="#__codelineno-14-15">15</a></span>
+<span class="normal"><a href="#__codelineno-14-16">16</a></span>
+<span class="normal"><a href="#__codelineno-14-17">17</a></span>
+<span class="normal"><a href="#__codelineno-14-18">18</a></span>
+<span class="normal"><a href="#__codelineno-14-19">19</a></span>
+<span class="normal"><a href="#__codelineno-14-20">20</a></span>
+<span class="normal"><a href="#__codelineno-14-21">21</a></span>
+<span class="normal"><a href="#__codelineno-14-22">22</a></span>
+<span class="normal"><a href="#__codelineno-14-23">23</a></span>
+<span class="normal"><a href="#__codelineno-14-24">24</a></span>
+<span class="normal"><a href="#__codelineno-14-25">25</a></span>
+<span class="normal"><a href="#__codelineno-14-26">26</a></span>
+<span class="normal"><a href="#__codelineno-14-27">27</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1"></a><span class="c1"># Example GitHub Actions workflow</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy Plugin</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4"></a><span class="nt">on</span><span class="p">:</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5"></a><span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6"></a><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">main</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7"></a><span class="w">    </span><span class="nt">paths</span><span class="p">:</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;plugins/**&#39;</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9"></a>
+<a id="__codelineno-14-10" name="__codelineno-14-10"></a><span class="nt">jobs</span><span class="p">:</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11"></a><span class="w">  </span><span class="nt">deploy</span><span class="p">:</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v3</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15"></a>
+<a id="__codelineno-14-16" name="__codelineno-14-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build Plugin</span>
+<a id="__codelineno-14-17" name="__codelineno-14-17"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18"></a><span class="w">          </span><span class="no">cd plugins/my-plugin</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19"></a><span class="w">          </span><span class="no">tinygo build -scheduler=none --no-debug -o my-plugin.wasm -target wasi main.go</span>
+<a id="__codelineno-14-20" name="__codelineno-14-20"></a>
+<a id="__codelineno-14-21" name="__codelineno-14-21"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy Plugin</span>
+<a id="__codelineno-14-22" name="__codelineno-14-22"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-14-23" name="__codelineno-14-23"></a><span class="w">          </span><span class="no">cd plugins/my-plugin</span>
+<a id="__codelineno-14-24" name="__codelineno-14-24"></a><span class="w">          </span><span class="no">./publish.sh</span>
+<a id="__codelineno-14-25" name="__codelineno-14-25"></a><span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+<a id="__codelineno-14-26" name="__codelineno-14-26"></a><span class="w">          </span><span class="nt">WASIMANCER_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.WASIMANCER_TOKEN }}</span>
+<a id="__codelineno-14-27" name="__codelineno-14-27"></a><span class="w">          </span><span class="nt">WASIMANCER_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.WASIMANCER_URL }}</span>
+</code></pre></div></td></tr></table></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>WASImancer's Plugin Management API provides a flexible way to dynamically extend your MCP server's capabilities without service interruption. By leveraging this API, you can implement continuous deployment of new tools and features to enhance your AI applications.</p>
+<p>The combination of WebAssembly's portability and security with WASImancer's dynamic loading capabilities creates a powerful platform for developing and deploying AI tools in production environments.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 - 2025 Philippe Charrière
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>
